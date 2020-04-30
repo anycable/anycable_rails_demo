@@ -4,9 +4,17 @@
     <title>AnyCable Rails Demo</title>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+    <meta name="viewport" content="width=device-width">
+    <%= action_cable_meta_tag %>
+    <%= stylesheet_pack_tag "application" %>
+    <%= javascript_pack_tag "application" %>
   </head>
-
   <body>
-    <%= yield %>
+    <%= render "shared/alerts" %>
+    <%= render "shared/nav" %>
+    <div class="main">
+      <%= yield %>
+    </div>
+    <%= javascript_tag("RAILS_FLASH = JSON.parse('#{ j({ success: flash.notice, error: flash.alert }.to_json) }');") %>
   </body>
 </html>

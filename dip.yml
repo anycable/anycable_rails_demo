@@ -74,5 +74,5 @@ provision:
   - dip compose down --volumes
   - dip compose up -d postgres redis
   - dip bundle install
-  # - dip yarn install
-  # - dip rails db:setup
+  - dip yarn install
+  - dip rails db:prepare

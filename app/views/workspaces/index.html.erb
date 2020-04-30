@@ -1,0 +1,27 @@
+<div class="any-container-wide">
+  <div>
+    <h2 class="mb-2">Open existing workspace</h2>
+    <form class="flex items-center border-b border-b-2 border-red mb-4 pb-1">
+      <input class="any-text-input" type="text" placeholder="Workspace ID">
+      <button class="flex-shrink-0 any-button" type="submit">
+        Open
+      </button>
+    </form>
+    <div class="flex items-center">
+      <div>...or </div>
+      <%= link_to "Create", new_workspace_path, class: "any-button-outlined ml-2 mr-2 no-underline" %>
+      <div> a new one!</div>
+    </div>
+  </div>
+
+  <% if @recent_workspaces.any? %>
+    <div class="mt-10">
+      <h2 class="mb-2">Recently viewed workspaces</h2>
+      <ul>
+        <% @recent_workspaces.each do |workspace| %>
+          <li><%= link_to workspace.name, workspace %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</div>

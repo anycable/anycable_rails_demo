@@ -1,3 +1,2 @@
-import './index.sass';
-
+import '../styles';
 import '../controllers';

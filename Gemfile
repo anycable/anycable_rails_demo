@@ -11,6 +11,8 @@ gem 'redis', '~> 4.0'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 
+gem 'nanoid'
+
 group :development, :test do
   gem 'pry-byebug', platforms: [:mri]
 end
