@@ -1,0 +1,22 @@
+require:
+  - standard/cop/semantic_blocks
+
+inherit_gem:
+  standard: config/base.yml
+
+AllCops:
+  Exclude:
+    - 'bin/*'
+    - 'tmp/**/*'
+    - 'Gemfile'
+    - 'vendor/**/*'
+    - 'gemfiles/**/*'
+    - 'node_modules/**/*'
+  DisplayCopNames: true
+  TargetRubyVersion: 2.6
+
+Standard/SemanticBlocks:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: true
