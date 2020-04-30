@@ -34,6 +34,7 @@ x-backend: &backend
     <<: *env
     REDIS_URL: redis://redis:6379/
     DATABASE_URL: postgres://postgres:postgres@postgres:5432
+    CHROME_URL: http://chrome:3000
     BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
     WEBPACKER_DEV_SERVER_HOST: webpacker
     WEB_CONCURRENCY: 1
@@ -103,6 +104,15 @@ services:
     environment:
       <<: *env
       WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+
+  chrome:
+    image: browserless/chrome:1.31-chrome-stable
+    ports:
+      - '3000:3000'
+    environment:
+      # Set connection timeout for debugging
+      # https://docs.browserless.io/docs/docker.html#connection-timeout
+      CONNECTION_TIMEOUT: 600000
 
 volumes:
   postgres:

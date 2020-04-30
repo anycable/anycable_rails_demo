@@ -22,13 +22,13 @@ Rails.application.configure do
   config.logger = ActiveSupport::TaggedLogging.new(Logger.new(nil))
   config.log_level = :fatal
 
-  # Show full error reports and disable caching.
-  config.consider_all_requests_local = true
+  # Disable caching and do not show errors (since we're only using system tests)
+  config.consider_all_requests_local = false
   config.action_controller.perform_caching = false
   config.cache_store = :null_store
 
   # Raise exceptions instead of rendering exception templates.
-  config.action_dispatch.show_exceptions = false
+  config.action_dispatch.show_exceptions = ENV["DEBUG"] != "1"
 
   # Disable request forgery protection in test environment.
   config.action_controller.allow_forgery_protection = false

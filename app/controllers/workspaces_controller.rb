@@ -20,6 +20,10 @@ class WorkspacesController < ApplicationController
     @recent_workspaces = Workspace.all.limit(4)
   end
 
+  def show
+    @workspace = Workspace.find_by!(public_id: params[:id])
+  end
+
   private
 
   def workspace_params

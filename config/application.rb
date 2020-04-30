@@ -21,8 +21,6 @@ module AnycableRailsDemo
       g.orm :active_record
       g.stylesheets false
       g.javascripts false
-      g.test_framework false
-      g.system_tests false
     end
   end
 end

@@ -15,10 +15,18 @@ gem 'nanoid'
 
 group :development, :test do
   gem 'pry-byebug', platforms: [:mri]
+  gem 'rspec-rails', '~> 4.0.0'
 end
 
 group :development do
   gem 'listen'
 
   gem "standard", "~> 0.2.0"
+end
+
+group :test do
+  gem 'capybara'
+  # Rails system tests couldn't run without it, event though we don't use it
+  gem 'selenium-webdriver'
+  gem 'cuprite'
 end
