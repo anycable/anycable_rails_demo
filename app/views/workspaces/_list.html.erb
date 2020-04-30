@@ -1,0 +1,16 @@
+<div class="any-panel-p-0 px-8 pb-8 relative">
+  <div class="sticky top-0 bg-white pt-6">
+    <h3 class="truncate">List name</h2>
+    <hr class="mt-1">
+  </div>
+  <div class="pt-2">
+    <% rand(10).times do %>
+      <%= render "item" %>
+    <% end %>
+  </div>
+  <div class="bg-white py-2">
+    <form class="flex items-center border-b border-b-2 border-teal-500 mb-4 pb-1">
+      <input class="any-text-input" type="text" placeholder="Add new item">
+    </form>
+  </div>
+</div>

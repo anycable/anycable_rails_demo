@@ -1,1 +1,11 @@
-<h1><%= @workspace.name %></h1>
+<div class="px-6">
+  <div class="grid grid-cols-1 lg:grid-cols-chat gap-4">
+    <%= render "chat" %>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <%= render "list" %>
+      <%= render "list" %>
+      <%= render "list" %>
+      <%= render "list" %>
+    </div>
+  </div>
+</div>

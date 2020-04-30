@@ -1,0 +1,14 @@
+<div class="lg:sticky top-0 any-panel h-screen-50 lg:h-screen-75 overflow-y-scroll">
+  <h1 class="truncate sticky top-0"><%= @workspace.name %></h1>
+  <hr class="mt-1">
+  <div class="messages overflow-y-scroll flex flex-col">
+    <% rand(20).times do %>
+      <%= render "message" %>
+    <% end %>
+  </div>
+  <div class="sticky bottom-0 inset-auto left-0 right-0 bg-white py-4 bg-opacity-90">
+    <form class="flex items-center border-b border-b-2 border-teal-500 mb-4 pb-1">
+      <input class="any-text-input" type="text" placeholder="Send message">
+    </form>
+  </div>
+</div>

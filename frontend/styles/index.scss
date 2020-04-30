@@ -49,8 +49,41 @@ h3 {
   }
 }
 
-.any-container-wide {
-  @apply w-9/12 mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4;
+.any-check {
+  @apply bg-white shadow w-6 h-6 p-1 flex justify-center items-center cursor-pointer;
+  min-width: 24px;
+
+  & input:checked + svg {
+    display: block !important;
+  }
+}
+
+.any-panel {
+  @apply bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4;
+}
+
+.any-panel-p-0 {
+  @apply bg-white shadow-md rounded mb-4;
+}
+
+.any-panel-wide {
+  @apply w-9/12 mx-auto any-panel;
+}
+
+@responsive {
+  .h-screen-75 {
+    height: 75vh;
+  }
+
+  .h-screen-50 {
+    height: 50vh;
+  }
+}
+
+@responsive {
+  .bg-opacity-90 {
+    --bg-opacity: 0.9;
+  }
 }
 
 // Source: https://codepen.io/lhermann/pen/EBGZRZ

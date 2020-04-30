@@ -11,6 +11,9 @@ module.exports = {
         black: '#363636',
         grey: '#646473',
       },
+      gridTemplateColumns: {
+        'chat': '30% minmax(70%, 1fr)',
+      },
     },
   },
   variants: {},
