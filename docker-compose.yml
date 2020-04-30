@@ -80,7 +80,7 @@ services:
       interval: 5s
 
   redis:
-    image: redis:3.2-alpine
+    image: redis:5.0-alpine
     volumes:
       - redis:/data
     ports:

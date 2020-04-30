@@ -1,0 +1,71 @@
+name: System Tests
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 3
+      CI: true
+    services:
+      postgres:
+        image: postgres:11.1
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:5.0-alpine
+        ports: ["6379:6379"]
+        options: --health-cmd="redis-cli ping" --health-interval 1s --health-timeout 3s --health-retries 30
+      chrome:
+        image: browserless/chrome:1.31-chrome-stable
+        ports: ["3000:3000"]
+        options: -e CONNECTION_TIMEOUT=600000
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v1
+        with:
+          path: /home/runner/bundle
+          key: bundle-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            bundle-
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6.5
+      - name: Install PostgreSQL 11 client
+        run: |
+          sudo apt-get -yqq install libpq-dev
+      - name: Bundle install
+        run: |
+          bundle config path /home/runner/bundle
+          bundle install --frozen
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '12.x'
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - uses: actions/cache@v1
+        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            yarn-
+      - name: Yarn install
+        run: |
+          yarn install
+      - name: Run RSpec
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432
+          CHROME_URL: http://localhost:3000
+          RAILS_ENV: test
+        run: |
+          bundle exec rails db:prepare
+          bundle exec rails webpacker:compile
+          bundle exec rspec
