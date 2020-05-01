@@ -18,8 +18,6 @@ class WorkspacesController < ApplicationController
   end
 
   def index
-    # TODO: move to frontend
-    @recent_workspaces = Workspace.all.limit(4)
   end
 
   def show

@@ -1,5 +1,5 @@
 <div class="px-6">
-  <div class="grid grid-cols-1 lg:grid-cols-chat gap-4">
+  <div class="grid grid-cols-1 lg:grid-cols-chat gap-4" data-controller="workspaces--remember" data-workspaces--remember-url="<%= workspace_path(@workspace) %>" data-workspaces--remember-name="<%= @workspace.name %>">
     <%= render "chat" %>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
       <%= render "list" %>

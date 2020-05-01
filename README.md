@@ -30,6 +30,14 @@ dip up rails
 
 Then go to [http://localhost:3000/](http://localhost:3000/) and see the application in action.
 
+## Aknowledgements
+
+Built and tested with the help of these awesome technologies:
+
+- [Tailwind CSS](https://tailwindcss.com)
+- [StimulusJS](https://stimulusjs.org)
+- [Cuprite](https://github.com/rubycdp/cuprite) & [Browserless](https://www.browserless.io)
+
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at [https://github.com/anycable/anycable_rails_demo](https://github.com/anycable/anycable_rails_demo).

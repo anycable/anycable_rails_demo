@@ -1,3 +1,7 @@
 empty:
   name: Just created workspace for fun
   public_id: empty-workspace
+
+demo:
+  name: Demo Workspace
+  public_id: demo
