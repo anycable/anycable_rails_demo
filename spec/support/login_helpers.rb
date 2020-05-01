@@ -2,12 +2,13 @@
 
 module LoginHelpers
   def login_user(name)
-    page.driver.set_cookie :uid, [name, Nanoid.generate(size: 3)].join("/")
+    page.driver.set_cookie(
+      :uid,
+      [name, Nanoid.generate(size: 3)].join("/")
+    )
   end
 
-  def logout
-    page.driver.clear_cookies
-  end
+  def logout() = page.driver.clear_cookies
 end
 
 RSpec.configure do |config|

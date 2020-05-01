@@ -1,4 +1,5 @@
 require:
+  - ruby-next/rubocop
   - standard/cop/semantic_blocks
 
 inherit_mode:
@@ -21,7 +22,7 @@ AllCops:
     - 'gemfiles/**/*'
     - 'node_modules/**/*'
   DisplayCopNames: true
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: next
 
 Standard/SemanticBlocks:
   Enabled: false

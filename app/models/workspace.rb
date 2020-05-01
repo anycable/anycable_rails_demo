@@ -5,9 +5,7 @@ class Workspace < ApplicationRecord
 
   before_validation :assign_uniq_id, unless: :public_id
 
-  def to_param
-    public_id
-  end
+  def to_param() = public_id
 
   private
 

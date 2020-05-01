@@ -9,8 +9,6 @@ class User
   attribute :id, :string
 
   class << self
-    def generate(name)
-      new(name: name, id: Nanoid.generate(size: 5))
-    end
+    def generate(name) = new(name: name, id: Nanoid.generate(size: 5))
   end
 end

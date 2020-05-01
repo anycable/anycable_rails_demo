@@ -15,9 +15,7 @@ module Authenticated
     @current_user = login_from_session || login_from_cookie
   end
 
-  def logged_in?
-    !current_user.nil?
-  end
+  def logged_in?() = !current_user.nil?
 
   private
 
