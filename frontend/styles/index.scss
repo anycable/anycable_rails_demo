@@ -66,8 +66,16 @@ h3 {
   @apply bg-white shadow-md rounded mb-4;
 }
 
-.any-panel-wide {
-  @apply w-9/12 mx-auto any-panel;
+@responsive {
+  .any-panel-wide {
+    @apply w-9/12 mx-auto any-panel;
+  }
+}
+
+@responsive {
+  .any-panel-small {
+    @apply w-1/3 mx-auto any-panel;
+  }
 }
 
 @responsive {
@@ -96,4 +104,9 @@ h3 {
 input:checked ~ .any-toggle__dot {
   transform: translateX(100%);
   background-color: #ff5e5e;
+}
+
+.negative-captcha {
+  position: absolute;
+  left: -20000px;
 }

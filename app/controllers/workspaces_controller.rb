@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class WorkspacesController < ApplicationController
+  skip_before_action :authenticate_user!, only: [:index]
+
   def new
     @workspace = Workspace.new
   end

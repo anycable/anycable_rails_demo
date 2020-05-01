@@ -1,6 +1,8 @@
 <nav class="flex items-center justify-between flex-wrap p-6">
   <div class="flex items-center flex-shrink-0 text-black mr-6">
-    <svg class="h-16 w-16 mr-2" width="90" height="90" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg"><path d="M78,22.118034 L41,40.618034 L41,87.263932 L78,68.763932 L78,22.118034 Z M76.645898,20.559017 L40,2.23606798 L3.35410197,20.559017 L40,38.881966 L76.645898,20.559017 Z M2,22.118034 L2,68.763932 L39,87.263932 L39,40.618034 L2,22.118034 Z M0,20 L40,0 L80,20 L80,70 L40,90 L0,70 L0,20 Z M23,20 L27,18 L41,25 L37,27 L23,20 Z M37,13 L41,11 L55,18 L51,20 L37,13 Z" id="Rectangle-9" fill="#363636" stroke-width="1" fill-rule="evenodd"></path></svg>
+    <%= link_to root_path do %>
+      <svg class="h-16 w-16 mr-2" width="90" height="90" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg"><path d="M78,22.118034 L41,40.618034 L41,87.263932 L78,68.763932 L78,22.118034 Z M76.645898,20.559017 L40,2.23606798 L3.35410197,20.559017 L40,38.881966 L76.645898,20.559017 Z M2,22.118034 L2,68.763932 L39,87.263932 L39,40.618034 L2,22.118034 Z M0,20 L40,0 L80,20 L80,70 L40,90 L0,70 L0,20 Z M23,20 L27,18 L41,25 L37,27 L23,20 Z M37,13 L41,11 L55,18 L51,20 L37,13 Z" id="Rectangle-9" fill="#363636" stroke-width="1" fill-rule="evenodd"></path></svg>
+    <% end %>
     <div class="flex flex-col content-start">
       <p class="font-semibold text-xl tracking-tight">AnyWork</p>
       <p class="text-sm tracking-tight text-grey"><a href="https://anycable.io/" target="_blank">AnyCable</a> demo</p>
@@ -15,14 +17,25 @@
     <div class="lg:flex-grow p-4 lg:p-0">
       <%= link_to "Workspaces", workspaces_path, class: "block mt-4 lg:inline-block lg:mt-0 text-black hover:text-red mr-4 no-underline" %>
     </div>
-    <div class="pl-4">
-      <label for="toogle-connect" class="flex items-center cursor-pointer">
+    <div class="pl-4 flex flex-col lg:flex-row">
+      <% if logged_in? %>
+        <%= form_tag logout_path, method: :delete do %>
+          <span>Welcome, <%= current_user.name %>!</span>
+          <span class="text-sm">(<%=
+            button_tag "Sign out", type: :submit, class: "text-black hover:text-red no-underline" %>)</span>
+        <% end %>
+      <% else %>
+        <div>
+          <%= link_to "Sign in", login_path, class: "text-black hover:text-red mr-4 no-underline" %>
+        </div>
+      <% end %>
+      <label for="toogle-connect" class="mt-4 lg:mt-0 ml-0 lg:ml-2 flex items-center cursor-pointer">
+        <div class="mr-3 text-black">Connect</div>
         <div class="relative">
           <input id="toogle-connect" type="checkbox" class="hidden" />
           <div class="toggle__line w-10 h-4 bg-gray-400 rounded-full shadow-inner"></div>
           <div class="any-toggle__dot absolute w-6 h-6 bg-white rounded-full shadow inset-y-0 left-0"></div>
         </div>
-        <div class="ml-3 text-black">Connect</div>
       </label>
     </div>
   </div>

@@ -1,0 +1,10 @@
+<div class="any-panel-wide lg:any-panel-small">
+  <div>
+    <h2 class="mb-2">Please, name yourself!</h2>
+    <%= form_tag login_path, method: :post, class: "flex items-center border-b border-b-2 border-red mb-4 pb-1" do %>
+      <%= text_field_tag :name, params[:name], class: "any-text-input", placeholder: "Enter your name" %>
+      <%= text_field_tag :full_name, params[:full_name], class: "negative-captcha", placeholder: "Enter your full name" %>
+      <%= button_tag "Log in", type: :submit, class: "flex-shrink-0 any-button" %>
+    <% end %>
+  </div>
+</div>
