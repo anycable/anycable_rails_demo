@@ -22,6 +22,8 @@ group :development do
   gem 'listen'
 
   gem "standard", "~> 0.2.0"
+  gem "rubocop-rspec"
+  gem "rubocop-rails"
 end
 
 group :test do

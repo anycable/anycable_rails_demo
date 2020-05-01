@@ -27,7 +27,7 @@ end
 require "rspec/rails"
 
 # support/ files contain framework configurations and helpers
-Dir[Rails.root.join("spec/support/**/*.rb")].sort.each { |file| require file }
+Dir[File.join(__dir__, "support/**/*.rb")].sort.each { |file| require file }
 
 RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
@@ -57,7 +57,7 @@ RSpec.configure do |config|
   # See https://andycroll.com/ruby/replace-timecop-with-rails-time-helpers-in-rspec/
   config.include ActiveSupport::Testing::TimeHelpers
 
-  config.after(:each) do
+  config.after do
     # Make sure every example starts with the current time
     travel_back
 

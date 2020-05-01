@@ -4,6 +4,9 @@ class SessionsController < ApplicationController
   before_action :redirect_logged_in, only: [:new, :create], if: :logged_in?
   skip_before_action :authenticate_user!, only: [:new, :create]
 
+  def new
+  end
+
   def create
     # Handle negative captcha by simply rerendering the form
     return render :new if params[:full_name].present?

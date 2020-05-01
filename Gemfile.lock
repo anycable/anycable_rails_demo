@@ -191,6 +191,12 @@ GEM
       unicode-display_width (>= 1.4.0, < 1.7)
     rubocop-performance (1.5.2)
       rubocop (>= 0.71.0)
+    rubocop-rails (2.5.2)
+      activesupport
+      rack (>= 1.1)
+      rubocop (>= 0.72.0)
+    rubocop-rspec (1.39.0)
+      rubocop (>= 0.68.1)
     ruby-progressbar (1.10.1)
     rubyzip (2.3.0)
     selenium-webdriver (3.142.7)
@@ -237,6 +243,8 @@ DEPENDENCIES
   rails (~> 6.0.2, >= 6.0.2.2)
   redis (~> 4.0)
   rspec-rails (~> 4.0.0)
+  rubocop-rails
+  rubocop-rspec
   selenium-webdriver
   standard (~> 0.2.0)
   webpacker (~> 4.0)
