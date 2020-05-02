@@ -30,6 +30,12 @@ dip up rails
 
 Then go to [http://localhost:3000/](http://localhost:3000/) and see the application in action.
 
+## Resources
+
+- [Ruby on Whales](https://evilmartians.com/chronicles/ruby-on-whales-docker-for-ruby-rails-development)—learn about the Docker development setup used for this application
+- [RuboCoping with legacy](https://evilmartians.com/chronicles/rubocoping-with-legacy-bring-your-ruby-code-up-to-standard)—this is how we configure RuboCop
+- [Evil Front](https://evilmartians.com/chronicles/evil-front-part-3)—some frontend ideas are borrowed from this post
+
 ## Aknowledgements
 
 Built and tested with the help of these awesome technologies:
