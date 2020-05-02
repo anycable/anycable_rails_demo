@@ -7,6 +7,10 @@
     <meta name="viewport" content="width=device-width">
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <% if logged_in? %>
+      <meta name="current-user-name" content="<%= current_user.name %>">
+      <meta name="current-user-id" content="<%= current_user.id %>">
+    <% end %>
     <%= action_cable_meta_tag %>
     <%= stylesheet_pack_tag "application" %>
     <%= javascript_pack_tag "application" %>

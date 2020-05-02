@@ -1,5 +1,0 @@
-<% mine, name = rand > 0.7, mine ? "Jack" : "Kate" %>
-<div class="rounded text-sm lg:text-base border p-2 mt-2 flex flex-col <%= mine ? "self-start border-teal-300 mr-4" : "self-end ml-4" %>">
-  <%= "Hey, how are you doing?Hey, how are you doing?".chars.sample(rand(50)).join(" ") %>
-  <span class="text-xs lg:text-sm truncate <%= mine ? "text-teal-300 self-start" : "text-gray-500 self-end"%>"><%= name %></span>
-</div>

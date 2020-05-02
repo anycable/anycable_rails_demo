@@ -1,0 +1,17 @@
+.chat--msg {
+  &.theirs {
+    @apply self-end ml-4;
+
+    & .chat--msg--author {
+      @apply self-end;
+    }
+  }
+
+  &.mine {
+    @apply self-start border-teal-300 mr-4;
+
+    & .chat--msg--author {
+      @apply text-teal-300 self-start;
+    }
+  }
+}
