@@ -1,8 +1,11 @@
 import { Controller } from "stimulus";
 import { visitedWorkspaces } from "../../utils/workspaces";
+import { isPreview as isTurbolinksPreview } from "../../utils/turbolinks";
 
 export default class extends Controller {
   connect() {
+    if (isTurbolinksPreview()) return;
+
     let visited = visitedWorkspaces();
     if (visited) {
       this.addWorkspaces(visited);
