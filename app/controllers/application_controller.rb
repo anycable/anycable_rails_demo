@@ -3,6 +3,7 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
+  include Turbolinks::Redirection
   include Authenticated
 
   before_action :authenticate_user!, unless: :logged_in?

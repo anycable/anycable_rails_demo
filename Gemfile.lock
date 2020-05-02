@@ -235,6 +235,9 @@ GEM
       rubocop-performance (~> 1.5.2)
     thor (1.0.1)
     thread_safe (0.3.6)
+    turbolinks (5.2.1)
+      turbolinks-source (~> 5.2)
+    turbolinks-source (5.2.0)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     unicode-display_width (1.6.1)
@@ -278,6 +281,7 @@ DEPENDENCIES
   ruby-next (>= 0.8.0)
   selenium-webdriver
   standard (~> 0.2.0)
+  turbolinks
   webpacker (~> 4.0)
 
 RUBY VERSION

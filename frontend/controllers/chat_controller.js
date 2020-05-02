@@ -1,11 +1,14 @@
 import { Controller } from "stimulus";
 import { createChannel } from "../utils/cable";
 import { currentUser } from "../utils/current_user";
+import { isPreview as isTurbolinksPreview } from '../utils/turbolinks';
 
 export default class extends Controller {
   static targets = ["input", "messages", "placeholder"];
 
   connect() {
+    if (isTurbolinksPreview()) return;
+
     const channel = "ChatChannel";
     const id = this.data.get("id");
     this.channel = createChannel(
@@ -19,7 +22,10 @@ export default class extends Controller {
   }
 
   disconnect() {
-    this.channel.disconnect();
+    if (this.channel) {
+      this.channel.unsubscribe();
+      delete this.channel;
+    }
   }
 
   handleMessage(data) {
