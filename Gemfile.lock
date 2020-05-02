@@ -134,6 +134,8 @@ GEM
     pry-byebug (3.9.0)
       byebug (~> 11.0)
       pry (~> 0.13.0)
+    pry-rails (0.3.9)
+      pry (>= 0.10.4)
     public_suffix (4.0.4)
     puma (4.3.3)
       nio4r (~> 2.0)
@@ -266,6 +268,7 @@ DEPENDENCIES
   nanoid
   pg (~> 1.0)
   pry-byebug
+  pry-rails
   puma (~> 4.1)
   rails (~> 6.0.2, >= 6.0.2.2)
   redis (~> 4.0)

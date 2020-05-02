@@ -15,7 +15,8 @@ gem 'ruby-next', '>= 0.8.0', require: false
 gem 'nanoid'
 
 group :development, :test do
-  gem 'pry-byebug', platforms: [:mri]
+  gem 'pry-byebug'
+  gem 'pry-rails'
   gem 'rspec-rails', '~> 4.0.0'
 end
 

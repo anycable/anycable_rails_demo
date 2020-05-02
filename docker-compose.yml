@@ -96,6 +96,7 @@ services:
     command: ./bin/webpack-dev-server
     ports:
       - '3035:3035'
+      - '3036:3036'
     volumes:
       - .:/app:cached
       - bundle:/usr/local/bundle
