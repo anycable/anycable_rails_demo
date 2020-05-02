@@ -95,15 +95,21 @@ h3 {
 }
 
 // Source: https://codepen.io/lhermann/pen/EBGZRZ
-.any-toggle__dot {
+.any-toggle--dot {
   top: -.25rem;
   left: -.25rem;
   transition: all 0.3s ease-in-out;
 }
 
-input:checked ~ .any-toggle__dot {
+.any-toggle--icon.active {
+  transition: all 0.3s ease-in-out;
+  @apply text-teal-500;
+}
+
+input:checked ~ .any-toggle--dot {
   transform: translateX(100%);
-  background-color: #ff5e5e;
+
+  @apply bg-teal-500;
 }
 
 .negative-captcha {
