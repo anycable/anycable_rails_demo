@@ -1,7 +1,8 @@
 {
   "dependencies": {
-    "@rails/webpacker": "4.2.2",
     "@rails/actioncable": "6.0.2",
+    "@rails/webpacker": "4.2.2",
+    "js-cookie": "^2.2.1",
     "stimulus": "^1.1.1",
     "tailwindcss": "^1.4.0",
     "turbolinks": "^5.2.0"

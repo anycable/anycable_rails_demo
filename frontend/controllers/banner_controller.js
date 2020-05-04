@@ -1,14 +1,25 @@
 import { Controller } from "stimulus";
+import Cookies from "js-cookie";
+
+const PREFIX = "any_banner_";
+// Allow hiding all banners by setting a cookie
+// (we use it only in tests for now)
+const COOKIE = "show_banners";
 
 export default class extends Controller {
+  initialize() {
+    this.bannerId = `${PREFIX}_${this.data.get("id")}`;
+    this.hiddenByCookie = Cookies.get(COOKIE) == "N";
+  }
+
   connect() {
-    if (localStorage.getItem(this.data.get("id"))) {
+    if (this.hiddenByCookie || localStorage.getItem(this.bannerId)) {
       this.hide();
     }
   }
 
   close() {
-    localStorage.setItem(this.data.get("id"), "y");
+    localStorage.setItem(this.bannerId, "y");
     this.hide();
   }
 
