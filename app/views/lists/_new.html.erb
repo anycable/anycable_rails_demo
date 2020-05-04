@@ -1,5 +1,5 @@
 <div class="px-8 pb-8 relative">
-  <%= form_for [@workspace, @list], html: {class: "flex items-center border-b border-b-2 border-teal-500 mb-4 pb-1"} do |f| %>
+  <%= form_for [workspace, workspace.lists.new], html: {class: "flex items-center border-b border-b-2 border-teal-500 mb-4 pb-1"} do |f| %>
     <%= f.text_field :name, autocomplete: "off", class: "any-text-input", placeholder: "List name" %>
     <%= f.button "Create", type: "submit", class: "flex-shrink-0 any-button" %>
   <% end %>

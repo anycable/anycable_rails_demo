@@ -1,0 +1,8 @@
+demo_cables:
+  workspace: demo
+  name: AnyCable Checklist
+
+demo_empty:
+  workspace: demo
+  name: My TODO
+

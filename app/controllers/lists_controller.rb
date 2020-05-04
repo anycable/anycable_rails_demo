@@ -3,18 +3,18 @@
 class ListsController < ApplicationController
   before_action :set_workspace
 
-  def create
-    @list = @workspace.lists.build(list_params)
+  attr_reader :workspace
 
-    if @list.save
+  def create
+    list = workspace.lists.build(list_params)
+
+    if list.save
       flash.now[:notice] = "New list has been created!"
-      # create new instance for the form
-      @list = @workspace.lists.build(list_params)
     else
       flash.now[:alert] = "Failed to create a list: #{@list.errors.full_messages.join(";")}"
     end
 
-    render template: "workspaces/show"
+    render template: "workspaces/show", locals: {workspace: workspace}
   end
 
   private

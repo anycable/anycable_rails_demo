@@ -1,0 +1,8 @@
+demo_anycable:
+  list: demo_cables
+  desc: Install AnyCable
+  completed: true
+
+demo_acli:
+  list: demo_cables
+  desc: Install ACLI
