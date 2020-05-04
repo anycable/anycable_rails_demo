@@ -2,7 +2,7 @@
 
 class ItemsController < ApplicationController
   before_action :set_workspace, :set_list
-  before_action :set_item, only: [:destroy]
+  before_action :set_item, only: [:destroy, :update]
 
   attr_reader :workspace, :list, :item
 
@@ -17,6 +17,20 @@ class ItemsController < ApplicationController
     end
 
     redirect_to workspace
+  end
+
+  def update
+    item.update!(item_params)
+    respond_to do |format|
+      format.json do
+        render json: item.as_json(only: [:id, :desc, :completed])
+      end
+
+      format.html do
+        flash[:notice] = "Item has been updated"
+        redirect_to workspace
+      end
+    end
   end
 
   def destroy
@@ -37,7 +51,7 @@ class ItemsController < ApplicationController
   private
 
   def item_params
-    params.require(:item).permit(:desc)
+    params.require(:item).permit(:desc, :completed)
   end
 
   def set_workspace

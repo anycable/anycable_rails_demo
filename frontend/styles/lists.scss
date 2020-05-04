@@ -1,3 +1,9 @@
-.any-list--panel {
-  @apply any-panel-p-0 px-8 pb-8 relative;
+.any-list {
+  &--panel {
+    @apply any-panel-p-0 px-8 pb-8 relative;
+  }
+
+  &--item.checked &--item--text {
+    @apply line-through;
+  }
 }

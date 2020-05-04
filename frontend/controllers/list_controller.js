@@ -1,5 +1,5 @@
 import { Controller } from "stimulus";
-import { DELETE } from "../utils/api";
+import { DELETE, PATCH } from "../utils/api";
 
 export default class extends Controller {
   static targets = ["items"];
@@ -22,6 +22,20 @@ export default class extends Controller {
     });
   }
 
+  toggleCompleted(e) {
+    const checkbox = e.currentTarget;
+    const url = checkbox.dataset["url"];
+
+    if (!url) {
+      console.error("URL not set for button", e.currentTarget);
+      return;
+    }
+
+    PATCH(url, {item: {completed: checkbox.checked}}).then((data) => {
+      this.updateCompleted(data.id, data.completed);
+    });
+  }
+
   removeItem(id) {
     const item = this.itemsTarget.querySelector(`#item_${id}`);
     if (!item) {
@@ -30,5 +44,22 @@ export default class extends Controller {
     }
 
     item.remove();
+  }
+
+  updateCompleted(id, completed) {
+    const item = this.itemsTarget.querySelector(`#item_${id}`);
+    if (!item) {
+      console.error("Failed to find list item with id:", id);
+      return;
+    }
+
+    const checkbox = item.querySelector("input[type=checkbox]");
+
+    checkbox.checked = completed;
+    if(completed) {
+      item.classList.add("checked");
+    } else if (item.classList.contains("checked")) {
+      item.classList.remove("checked");
+    }
   }
 }
