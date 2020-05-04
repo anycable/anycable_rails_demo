@@ -30,4 +30,32 @@ describe "Workspaces -> New list" do
       expect(page).to have_text "AnyCable 2.0"
     end
   end
+
+  context "with multiple sessions" do
+    before do
+      within_session :john do
+        login_user "John"
+
+        visit workspace_path(workspace)
+        expect(page).to have_text workspace.name
+      end
+    end
+
+    it "all users see the newly created list" do
+      within "#new_list" do
+        fill_in "list[name]", with: "ManyCable"
+
+        click_on "Create"
+      end
+
+      expect(page).to have_text "New list has been created!"
+
+      within_session :john do
+        within "#lists" do
+          expect(page).to have_css(".any-list--panel", count: 1)
+          expect(page).to have_text "ManyCable"
+        end
+      end
+    end
+  end
 end

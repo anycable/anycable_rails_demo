@@ -4,10 +4,13 @@ class ListsController < ApplicationController
   before_action :set_workspace
   before_action :set_list, only: [:destroy]
 
+  after_action :broadcast_new_list, only: [:create]
+  after_action :broadcast_changes, only: [:destroy]
+
   attr_reader :workspace, :list
 
   def create
-    list = List.new(list_params)
+    @list = List.new(list_params)
     list.workspace = workspace
 
     if list.save
@@ -37,5 +40,17 @@ class ListsController < ApplicationController
 
   def set_list
     @list = workspace.lists.find(params[:id])
+  end
+
+  def broadcast_new_list
+    return if list.errors.any?
+    WorkspaceChannel.broadcast_to workspace, type: "newList", html: render_to_string(partial: "lists/list", layout: false, locals: {list: list})
+  end
+
+  def broadcast_changes
+    return if list.errors.any?
+    if list.destroyed?
+      WorkspaceChannel.broadcast_to workspace, type: "deletedList", id: list.id
+    end
   end
 end

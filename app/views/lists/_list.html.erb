@@ -1,4 +1,4 @@
-<div class="any-list--panel" id="list_<%= list.id %>" data-controller="list">
+<div class="any-list--panel" id="list_<%= list.id %>" data-controller="list" data-list-id="<%= list.id %>" data-list-workspace="<%= list.workspace.to_param %>">
   <div id="list_<%= list.id %>_header">
     <%= form_for [list.workspace, list], method: :delete, html: {data: {"controller" => "forms--confirm", "forms--confirm-text" => "Are you sure you want to delete #{list.name} list?"}, class: "sticky top-0 bg-white pt-6 flex justify-between"} do |f|%>
       <h3 class="truncate"><%= list.name %></h3>

@@ -1,13 +1,43 @@
 import { Controller } from "stimulus";
+import { createChannel } from "../utils/cable";
+import { isPreview as isTurbolinksPreview } from '../utils/turbolinks';
 import { DELETE, PATCH } from "../utils/api";
 
 export default class extends Controller {
   static targets = ["items"];
 
   connect() {
+    if (isTurbolinksPreview()) return;
+
+    const channel = "ListChannel";
+    const id = this.data.get("id");
+    const workspace = this.data.get("workspace");
+
+    this.channel = createChannel(
+      {channel, id, workspace},
+      {
+        received: (data) => {
+          this.handleUpdate(data);
+        },
+      }
+    );
   }
 
   disconnect() {
+    if (this.channel) {
+      this.channel.unsubscribe();
+      delete this.channel;
+    }
+  }
+
+  handleUpdate(data) {
+    if (data.type == "deleted") {
+      this.removeItem(data.id);
+    } else if (data.type == "updated") {
+      this.updateCompleted(data.id, data.completed);
+    } else if (data.type == "created") {
+      this.itemsTarget.insertAdjacentHTML("beforeend", data.html);
+    }
   }
 
   deleteItem(e) {
