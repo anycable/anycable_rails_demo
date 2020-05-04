@@ -2,5 +2,5 @@
 
 ActiveRecord::Base.transaction do
   # create demo workspace
-  _demo = Workspace.create!(name: "Demo Workspace", public_id: "demo")
+  _demo = Workspaces::CreateDemo.call(id: "demo")
 end

@@ -11,6 +11,8 @@ class WorkspacesController < ApplicationController
   def create
     workspace = Workspace.new(workspace_params)
     if workspace.save
+      # populate demo data
+      Workspaces::CreateDemo.call(workspace: workspace)
       redirect_to workspace_path(workspace), notice: "Welcome to your new workspace!"
     else
       flash.now[:alert] = "Failed to create a workspace: #{workspace.errors.full_messages.join(";")}"
