@@ -2,8 +2,9 @@
 
 class ListsController < ApplicationController
   before_action :set_workspace
+  before_action :set_list, only: [:destroy]
 
-  attr_reader :workspace
+  attr_reader :workspace, :list
 
   def create
     list = List.new(list_params)
@@ -18,6 +19,12 @@ class ListsController < ApplicationController
     redirect_to workspace
   end
 
+  def destroy
+    list.destroy!
+    flash[:notice] = "#{list.name} has been deleted!"
+    redirect_to workspace
+  end
+
   private
 
   def list_params
@@ -26,5 +33,9 @@ class ListsController < ApplicationController
 
   def set_workspace
     @workspace = Workspace.find_by!(public_id: params[:workspace_id])
+  end
+
+  def set_list
+    @list = workspace.lists.find(params[:id])
   end
 end

@@ -1,14 +1,20 @@
-<div class="any-list--panel" id="list_<%= list.id %>">
-  <div class="sticky top-0 bg-white pt-6">
-    <h3 class="truncate"><%= list.name %></h3>
-    <hr class="mt-1">
+<div class="any-list--panel" id="list_<%= list.id %>" data-controller="list">
+  <div id="list_<%= list.id %>_header">
+    <%= form_for [list.workspace, list], method: :delete, html: {data: {"controller" => "forms--confirm", "forms--confirm-text" => "Are you sure you want to delete #{list.name} list?"}, class: "sticky top-0 bg-white pt-6 flex justify-between"} do |f|%>
+      <h3 class="truncate"><%= list.name %></h3>
+      <button class="hover:text-red rounded inline-flex items-center outline-none focus:outline-none delete-btn">
+        <svg class="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M8 6V4c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2h5a1 1 0 0 1 0 2h-1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8H3a1 1 0 1 1 0-2h5zM6 8v12h12V8H6zm8-2V4h-4v2h4zm-4 4a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z"/>
+        </svg>
+      </button>
+    <% end %>
   </div>
-  <div class="pt-2" id="list_<%= list.id %>_items">
+  <hr class="mt-1">
+  <div class="pt-2" id="list_<%= list.id %>_items" data-target="list.items">
     <%= render list.items %>
   </div>
-  <div class="bg-white py-2">
-    <%= form_for [list.workspace, list, list.items.new], html: {class: "flex items-center border-b border-b-2 border-teal-500 mb-4 pb-1"} do |f| %>
-      <%= f.text_field :desc, class: "any-text-input", placeholder: "New item" %>
+  <div class="bg-white py-2" id="list_<%= list.id %>_new_item">
+    <%= form_for [list.workspace, list, list.items.new], html: {class: "flex items-center border-b border-b-2 border-teal-500 mb-4 pb-1", data: {controller: "forms--remote"}} do |f| %>
+      <%= f.text_field :desc, class: "any-text-input", placeholder: "New item", autocomplete: "off" %>
     <% end %>
   </div>
 </div>
