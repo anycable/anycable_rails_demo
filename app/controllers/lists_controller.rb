@@ -6,15 +6,16 @@ class ListsController < ApplicationController
   attr_reader :workspace
 
   def create
-    list = workspace.lists.build(list_params)
+    list = List.new(list_params)
+    list.workspace = workspace
 
     if list.save
-      flash.now[:notice] = "New list has been created!"
+      flash[:notice] = "New list has been created!"
     else
-      flash.now[:alert] = "Failed to create a list: #{@list.errors.full_messages.join(";")}"
+      flash[:alert] = "Failed to create a list: #{list.errors.full_messages.join(";")}"
     end
 
-    render template: "workspaces/show", locals: {workspace: workspace}
+    redirect_to workspace
   end
 
   private

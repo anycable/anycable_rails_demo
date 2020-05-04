@@ -23,9 +23,11 @@ export default class extends Controller {
         origOpen.call();
         this.monitor(this.connection.webSocket);
       }
-    } else {
-      this.connection.isActive() && this.handleOpen();
+    } else if (this.connection.isActive()) {
+      return this.handleOpen();
     }
+
+    this.handleClose();
   }
 
   connectCable() {

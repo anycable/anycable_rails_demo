@@ -5,15 +5,16 @@ class ItemsController < ApplicationController
   attr_reader :workspace, :list
 
   def create
-    item = list.items.build(item_params)
+    item = Item.new(item_params)
+    item.list = list
 
     if item.save
-      flash.now[:notice] = "New item has been added to #{list.name}!"
+      flash[:notice] = "New item has been added to #{list.name}!"
     else
-      flash.now[:alert] = "Failed to create an item: #{item.errors.full_messages.join(";")}"
+      flash[:alert] = "Failed to create an item: #{item.errors.full_messages.join(";")}"
     end
 
-    render template: "workspaces/show", locals: {workspace: workspace}
+    redirect_to workspace
   end
 
   private
