@@ -35,4 +35,6 @@ group :test do
   # Rails system tests couldn't run without it, event though we don't use it
   gem 'selenium-webdriver'
   gem 'cuprite'
+
+  gem 'test-prof'
 end

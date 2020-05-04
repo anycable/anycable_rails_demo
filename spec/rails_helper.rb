@@ -24,6 +24,8 @@ rescue ActiveRecord::PendingMigrationError => e
   exit 1
 end
 
+require "test_prof/recipes/logging"
+
 require "rspec/rails"
 
 # support/ files contain framework configurations and helpers

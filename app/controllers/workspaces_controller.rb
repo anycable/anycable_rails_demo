@@ -22,6 +22,7 @@ class WorkspacesController < ApplicationController
 
   def show
     @workspace = Workspace.find_by!(public_id: params[:id])
+    @list = @workspace.lists.build
   end
 
   private

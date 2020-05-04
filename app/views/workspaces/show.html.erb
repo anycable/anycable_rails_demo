@@ -1,7 +1,7 @@
 <div class="px-6">
   <div class="grid grid-cols-1 lg:grid-cols-chat gap-4" data-controller="workspaces--remember" data-workspaces--remember-url="<%= workspace_path(@workspace) %>" data-workspaces--remember-name="<%= @workspace.name %>">
     <%= render "chats/chat" %>
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4" id="lists">
       <div class="any-banner mb-4" role="alert" data-controller="banner" data-banner-id="todo">
         <svg data-action="click->banner#close" class="any-banner--btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path class="heroicon-ui" d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2zm0 2v14h14V5H5zm8.41 7l1.42 1.41a1 1 0 1 1-1.42 1.42L12 13.4l-1.41 1.42a1 1 0 1 1-1.42-1.42L10.6 12l-1.42-1.41a1 1 0 1 1 1.42-1.42L12 10.6l1.41-1.42a1 1 0 1 1 1.42 1.42L13.4 12z"/></svg>
         <p class="font-bold">TODOs with live updates</p>
@@ -12,6 +12,7 @@
         <br/>
         <p>Check out <code>ListsController</code> and <code>ItemsController</code> classes.</p>
       </div>
+      <%= render @workspace.lists.select(&:persisted?) %>
       <%= render "lists/new" %>
     </div>
   </div>

@@ -233,6 +233,7 @@ GEM
     standard (0.2.5)
       rubocop (~> 0.80.1)
       rubocop-performance (~> 1.5.2)
+    test-prof (0.11.3)
     thor (1.0.1)
     thread_safe (0.3.6)
     turbolinks (5.2.1)
@@ -281,6 +282,7 @@ DEPENDENCIES
   ruby-next (>= 0.8.0)
   selenium-webdriver
   standard (~> 0.2.0)
+  test-prof
   turbolinks
   webpacker (~> 4.0)
 
