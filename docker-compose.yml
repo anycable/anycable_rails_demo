@@ -42,25 +42,26 @@ x-backend: &backend
     HISTFILE: /app/log/.bash_history
     PSQL_HISTFILE: /app/log/.psql_history
     EDITOR: vi
-  depends_on:
+  depends_on: &backend_depends_on
     postgres:
       condition: service_healthy
     redis:
       condition: service_healthy
 
 services:
-  runner:
-    <<: *backend
-    command: /bin/bash
-    ports:
-      - '3000:3000'
-      - '3002:3002'
-
   rails:
     <<: *backend
     command: bundle exec rails server -b 0.0.0.0
     ports:
       - '3000:3000'
+
+  # Separate definition for system tests to add Chrome as a dependency
+  rspec_system:
+    <<: *backend
+    depends_on:
+      <<: *backend_depends_on
+      chrome:
+        condition: service_started
 
   sidekiq:
     <<: *backend

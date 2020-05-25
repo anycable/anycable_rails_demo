@@ -33,6 +33,18 @@ dip up rails
 
 Then go to [http://localhost:3000/](http://localhost:3000/) and see the application in action.
 
+## Testing
+
+We separate unit and system specs and provide convenient Dip commands to run them:
+
+```sh
+# only unit tests
+dip rspec
+
+# only system tests
+dip rspec system
+```
+
 ## Resources
 
 - [Ruby on Whales](https://evilmartians.com/chronicles/ruby-on-whales-docker-for-ruby-rails-development)—learn about the Docker development setup used for this application

@@ -4,6 +4,9 @@
 # Do not precompile if webpack-dev-server is running (NOTE: MUST be launched with RAILS_ENV=test)
 # rubocop:disable Rails/TimeZone
 RSpec.configure do |config|
+  # Skip assets precompilcation if we exclude system specs.
+  next if config.filter.opposite.rules[:type] == "system"
+
   config.before(:suite) do
     if Webpacker.dev_server.running?
       $stdout.puts "\n⚙️  Webpack dev server is running! Skip assets compilation.\n"
