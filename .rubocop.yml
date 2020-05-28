@@ -10,8 +10,8 @@ inherit_gem:
   standard: config/base.yml
 
 inherit_from:
-  - .rubocop_rspec.yml
-  - .rubocop_rails.yml
+  - .rubocop/rubocop_rspec.yml
+  - .rubocop/rubocop_rails.yml
 
 AllCops:
   Exclude:
