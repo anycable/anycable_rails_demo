@@ -1,0 +1,48 @@
+name: Unit Tests
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 3
+      CI: true
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432
+      RAILS_ENV: test
+    services:
+      postgres:
+        image: postgres:11.1
+        ports: ["5432:5432"]
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+      redis:
+        image: redis:5.0-alpine
+        ports: ["6379:6379"]
+        options: --health-cmd="redis-cli ping" --health-interval 1s --health-timeout 3s --health-retries 30
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v1
+        with:
+          path: /home/runner/bundle
+          key: bundle-${{ hashFiles('**/Gemfile.lock') }}
+          restore-keys: |
+            bundle-
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 2.6.5
+      - name: Install PostgreSQL 11 client
+        run: |
+          sudo apt-get -yqq install libpq-dev
+      - name: Bundle install
+        run: |
+          bundle config path /home/runner/bundle
+          bundle install --frozen
+      - name: Run RSpec
+        run: |
+          bundle exec rails db:prepare
+          bundle exec rspec --tag ~type:system

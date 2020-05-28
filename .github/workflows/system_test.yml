@@ -13,6 +13,9 @@ jobs:
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3
       CI: true
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432
+      CHROME_URL: http://localhost:3000
+      RAILS_ENV: test
     services:
       postgres:
         image: postgres:11.1
@@ -61,11 +64,7 @@ jobs:
         run: |
           yarn install
       - name: Run RSpec
-        env:
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432
-          CHROME_URL: http://localhost:3000
-          RAILS_ENV: test
         run: |
           bundle exec rails db:prepare
           bundle exec rails webpacker:compile
-          bundle exec rspec
+          bundle exec rspec --tag type:system
