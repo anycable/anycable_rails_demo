@@ -29,6 +29,7 @@ RSpec.configure do |config|
   config.before(:each, type: :system) do
     # Rails sets host to `127.0.0.1` for every test by default.
     # That would break in Docker
+    # NOTE: Fixed in 6.1 (https://github.com/rails/rails/commit/d415eb4f6d6bb24b78b968ae28c22bb7e1721285#diff-9de6fe0bff4847b77cba72441ee855c2)
     host! "http://#{Capybara.server_host}"
     # Use JS driver always
     driven_by Capybara.javascript_driver

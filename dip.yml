@@ -52,12 +52,12 @@ interaction:
     service: rails
     environment:
       RAILS_ENV: test
-    command: bundle exec rspec --tag ~type:system
+    command: bundle exec rspec --exclude-pattern spec/system/**/*_spec.rb
     subcommands:
       system:
         description: Run Rails system tests
         service: rspec_system
-        command: bundle exec rspec --tag type:system
+        command: bundle exec rspec --pattern spec/system/**/*_spec.rb
 
   rubocop:
     description: Run Rubocop

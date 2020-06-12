@@ -5,7 +5,7 @@
 # rubocop:disable Rails/TimeZone
 RSpec.configure do |config|
   # Skip assets precompilcation if we exclude system specs.
-  next if config.filter.opposite.rules[:type] == "system"
+  next if config.filter.opposite.rules[:type] == "system" || config.exclude_pattern.match?(%r{spec/system})
 
   config.before(:suite) do
     if Webpacker.dev_server.running?
