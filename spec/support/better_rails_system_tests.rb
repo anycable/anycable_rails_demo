@@ -3,6 +3,7 @@
 # Rails is not flexible enough; at least for now(
 module BetterRailsSystemTests
   # Use our `Capybara.save_path` to store images (required for CircleCI artifacts)
+  # (Rails screenshots path is not configurable https://github.com/rails/rails/blob/49baf092439fc74fc3377b12e3334c3dd9d0752f/actionpack/lib/action_dispatch/system_testing/test_helpers/screenshot_helper.rb#L79)
   def absolute_image_path
     Rails.root.join("#{Capybara.save_path}/#{image_name}.png")
   end

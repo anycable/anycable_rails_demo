@@ -33,6 +33,7 @@ end
 group :test do
   gem 'capybara'
   # Rails system tests couldn't run without it, event though we don't use it
+  # https://github.com/rails/rails/pull/39179
   gem 'selenium-webdriver'
   gem 'cuprite'
 
