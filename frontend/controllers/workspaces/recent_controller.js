@@ -6,6 +6,9 @@ export default class extends Controller {
   connect() {
     if (isTurbolinksPreview()) return;
 
+    // remove stale data first
+    this.element.innerHTML = '';
+
     let visited = visitedWorkspaces();
     if (visited) {
       this.addWorkspaces(visited);
