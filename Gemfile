@@ -5,9 +5,8 @@ ruby '3.0.1'
 
 gem 'rails', '~> 6.1'
 gem 'webpacker', '6.0.0.beta.6'
-gem 'pg', '~> 1.0'
+gem 'sqlite3', '~> 1.4'
 gem 'puma', '~> 4.1'
-gem 'redis', '~> 4.0'
 gem 'anycable', '> 1.0.99'
 gem 'anycable-rails', '> 1.0.99'
 
