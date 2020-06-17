@@ -14,38 +14,13 @@ jobs:
       BUNDLE_RETRY: 3
       BUNDLE_FROZEN: true
       CI: true
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432
-      CHROME_URL: http://localhost:3000
-      ANYCABLE_RPC_HOST: 0.0.0.0:50051
       RAILS_ENV: test
-    services:
-      postgres:
-        image: postgres:15.0
-        env:
-          POSTGRES_PASSWORD: postgres
-        ports: ["5432:5432"]
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-      redis:
-        image: redis:6.2-alpine
-        ports: ["6379:6379"]
-        options: --health-cmd="redis-cli ping" --health-interval 1s --health-timeout 3s --health-retries 30
-      chrome:
-        image: browserless/chrome:latest
-        ports: ["3000:3000"]
-        options: -e CONNECTION_TIMEOUT=600000 -e PORT=3000
-      anycable:
-        image: anycable/anycable-go:1.4.0-rc.1
-        ports: ["8080:8080"]
-        options: --add-host=host.docker.internal:host-gateway
-        env:
-          ANYCABLE_HOST: "0.0.0.0"
-          ANYCABLE_REDIS_URL: redis://host.docker.internal:6379/0
-          ANYCABLE_RPC_HOST: host.docker.internal:50051
     steps:
-      - uses: actions/checkout@v3
-      - name: Install PostgreSQL client
+      - uses: actions/checkout@v2
+      - name: Install libsqlite3
         run: |
-          sudo apt-get -yqq install libpq-dev
+          sudo apt-get update
+          sudo apt-get install libsqlite3-dev
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2.1
@@ -68,6 +43,7 @@ jobs:
           bundle exec rails db:test:prepare
           export CABLE_URL="ws://$(hostname):8080/cable"
           bundle exec rspec --tag type:system --force-color
+
   wsdirector:
     runs-on: ubuntu-latest
     env:
@@ -75,20 +51,8 @@ jobs:
       BUNDLE_RETRY: 3
       BUNDLE_FROZEN: true
       CI: true
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432
-      ANYCABLE_RPC_HOST: 0.0.0.0:50051
       RAILS_ENV: test
     services:
-      postgres:
-        image: postgres:15.0
-        env:
-          POSTGRES_PASSWORD: postgres
-        ports: ["5432:5432"]
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-      redis:
-        image: redis:6.2-alpine
-        ports: ["6379:6379"]
-        options: --health-cmd="redis-cli ping" --health-interval 1s --health-timeout 3s --health-retries 30
       anycable:
         image: anycable/anycable-go:1.4.0-rc.1
         ports: ["8080:8080"]
@@ -99,9 +63,10 @@ jobs:
           ANYCABLE_RPC_HOST: host.docker.internal:50051
     steps:
       - uses: actions/checkout@v3
-      - name: Install PostgreSQL client
+      - name: Install libsqlite3
         run: |
-          sudo apt-get -yqq install libpq-dev
+          sudo apt-get update
+          sudo apt-get install libsqlite3-dev
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2.1
