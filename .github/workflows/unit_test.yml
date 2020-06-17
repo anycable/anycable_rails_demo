@@ -14,27 +14,16 @@ jobs:
       BUNDLE_RETRY: 3
       BUNDLE_FROZEN: true
       CI: true
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432
       RAILS_ENV: test
-    services:
-      postgres:
-        image: postgres:16.0
-        ports: ["5432:5432"]
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-      redis:
-        image: redis:6.2-alpine
-        ports: ["6379:6379"]
-        options: --health-cmd="redis-cli ping" --health-interval 1s --health-timeout 3s --health-retries 30
     steps:
-      - uses: actions/checkout@v3
-      - name: Install PostgreSQL client
+      - uses: actions/checkout@v2
+      - name: Install libsqlite3
         run: |
-          sudo apt-get -yqq install libpq-dev
+          sudo apt-get update
+          sudo apt-get install libsqlite3-dev
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.0
+          ruby-version: 3.2.0
           bundler-cache: true
       - name: Run RSpec
         run: |
