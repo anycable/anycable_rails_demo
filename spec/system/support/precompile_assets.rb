@@ -2,7 +2,6 @@
 
 # Precompile assets before running tests to avoid timeouts.
 # Do not precompile if webpack-dev-server is running (NOTE: MUST be launched with RAILS_ENV=test)
-# rubocop:disable Rails/TimeZone
 RSpec.configure do |config|
   # Skip assets precompilcation if we exclude system specs.
   next if config.filter.opposite.rules[:type] == "system" || config.exclude_pattern.match?(%r{spec/system})
@@ -15,7 +14,7 @@ RSpec.configure do |config|
       $stdout.puts "\n🐢  Precompiling assets.\n"
       original_stdout = $stdout.clone
       # Use test-prof now 'cause it couldn't be monkey-patched (e.g., by Timecop or similar)
-      start = Time.now
+      start = Time.current
       begin
         # Silence Webpacker output
         $stdout.reopen(File.new("/dev/null", "w"))
@@ -25,9 +24,8 @@ RSpec.configure do |config|
         Rake::Task["webpacker:compile"].execute
       ensure
         $stdout.reopen(original_stdout)
-        $stdout.puts "Finished in #{(Time.now - start).round(2)} seconds"
+        $stdout.puts "Finished in #{(Time.current - start).round(2)} seconds"
       end
     end
   end
 end
-# rubocop:enable Rails/TimeZone

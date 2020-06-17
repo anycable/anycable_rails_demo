@@ -35,7 +35,7 @@ Capybara.register_driver(:cuprite) do |app|
     app,
     **{
       window_size: [1200, 800],
-      browser_options: {"no-sandbox" => nil},
+      browser_options: remote_chrome ? {"no-sandbox" => nil} : {},
       inspector: true
     }.merge(remote_options)
   )
@@ -49,8 +49,10 @@ module CupriteHelpers
     page.driver.pause
   end
 
-  def debug(*args)
-    page.driver.debug(*args)
+  def debug(binding = nil)
+    $stdout.puts "🔎 Open Chrome inspector at http://localhost:3333"
+    return binding.pry if binding
+    page.driver.pause
   end
 end
 

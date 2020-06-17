@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require "system_helper"
 
 describe "Workspaces -> Chat" do
   fixtures :workspaces

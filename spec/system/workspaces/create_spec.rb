@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "rails_helper"
+require "system_helper"
 
 describe "Workspaces -> New" do
   it "I can create a new workspace" do
