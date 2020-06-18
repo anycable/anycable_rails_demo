@@ -42,6 +42,7 @@ x-backend: &backend
     HISTFILE: /app/log/.bash_history
     PSQL_HISTFILE: /app/log/.psql_history
     EDITOR: vi
+    LOG: ${LOG:-0}
   depends_on: &backend_depends_on
     postgres:
       condition: service_healthy
@@ -58,20 +59,34 @@ services:
   # Separate definition for system tests to add Chrome as a dependency
   rspec_system:
     <<: *backend
+    ports:
+      - '3000:3000'
+      - '50051'
+    environment:
+      <<: *backend_environment
+      APP_HOST: anycable.test
+      ANYCABLE_RPC_HOST: 0.0.0.0:50051
+      CABLE_URL: "ws://ws.anycable.test:8080/cable"
     depends_on:
       <<: *backend_depends_on
       chrome:
         condition: service_started
+      ws_test:
+        condition: service_started
+    networks:
+      default:
+        aliases:
+          - anycable.test
 
   sidekiq:
     <<: *backend
     command: bundle exec sidekiq -C config/sidekiq.yml
 
-  ws:
+  ws: &ws
     image: anycable/anycable-go:1.0
     ports:
       - '8080:8080'
-    environment:
+    environment: &ws_environment
       ANYCABLE_HOST: "0.0.0.0"
       ANYCABLE_REDIS_URL: redis://redis:6379/0
       ANYCABLE_RPC_HOST: anycable:50051
@@ -79,6 +94,18 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+
+  ws_test:
+    <<: *ws
+    ports:
+      - '8080'
+    environment:
+      <<: *ws_environment
+      ANYCABLE_RPC_HOST: anycable.test:50051
+    networks:
+      default:
+        aliases:
+          - ws.anycable.test
 
   anycable:
     <<: *backend

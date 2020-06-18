@@ -25,6 +25,9 @@ rescue ActiveRecord::PendingMigrationError => e
 end
 
 require "test_prof/recipes/logging"
+TestProf.activate("LOG", "all") do
+  ::ActionCable.server.config.logger = TestProf::Rails::LoggingHelpers.logger
+end
 
 require "rspec/rails"
 
