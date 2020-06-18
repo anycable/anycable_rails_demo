@@ -63,6 +63,8 @@ interaction:
         description: Run Rails system tests
         service: rspec_system
         command: bundle exec rspec --pattern spec/system/**/*_spec.rb
+        compose:
+          run_options: [service-ports, use-aliases]
 
   rubocop:
     description: Run Rubocop

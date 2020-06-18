@@ -66,5 +66,8 @@ jobs:
       - name: Run RSpec
         run: |
           bundle exec rails db:prepare
+          bundle exec rails g anycable:download --bin-path=./bin
           bundle exec rails webpacker:compile
+          ./bin/anycable-go --host "0.0.0.0" &
+          export CABLE_URL="ws://$(hostname):8080/cable"
           bundle exec rspec --tag type:system

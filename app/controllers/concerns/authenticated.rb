@@ -37,12 +37,13 @@ module Authenticated
   end
 
   def reset_user_session!
-    cookies.delete(:uid)
+    cookies.delete(:uid, domain: :all)
     reset_session
   end
 
   def commit_user_to_session!(user)
     session[:name] = user.name
     session[:id] = user.id
+    cookies[:uid] = {value: "#{user.name}/#{user.id}", domain: :all}
   end
 end
