@@ -25,13 +25,25 @@ dip provision
 
 ## Running
 
-You can start Rails server by running:
+You can start Rails server along with AnyCable by running:
 
 ```sh
-dip up rails
+dip up rails anycable
 ```
 
 Then go to [http://localhost:3000/](http://localhost:3000/) and see the application in action.
+
+## Debugging
+
+If you want to run Rails server and/or with debugging capabilites, run the following commands:
+
+```sh
+# for Rails server
+dip rails s
+
+# for AnyCable
+dip anycable
+```
 
 ## Testing
 
