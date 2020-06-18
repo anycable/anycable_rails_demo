@@ -31,7 +31,7 @@ x-backend: &backend
     - .dockerdev/.psqlrc:/root/.psqlrc:ro
     - .dockerdev/.bashrc:/root/.bashrc:ro
     - .dockerdev/.pryrc:/root/.pryrc:ro
-  environment:
+  environment: &backend_environment
     <<: *env
     REDIS_URL: redis://redis:6379/
     DATABASE_URL: postgres://postgres:postgres@postgres:5432
@@ -66,6 +66,34 @@ services:
   sidekiq:
     <<: *backend
     command: bundle exec sidekiq -C config/sidekiq.yml
+
+  ws:
+    image: anycable/anycable-go:1.0
+    ports:
+      - '8080:8080'
+    environment:
+      ANYCABLE_HOST: "0.0.0.0"
+      ANYCABLE_REDIS_URL: redis://redis:6379/0
+      ANYCABLE_RPC_HOST: anycable:50051
+      ANYCABLE_DEBUG: 1
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  anycable:
+    <<: *backend
+    command: bundle exec anycable
+    environment:
+      <<: *backend_environment
+      ANYCABLE_REDIS_URL: redis://redis:6379/0
+      ANYCABLE_RPC_HOST: 0.0.0.0:50051
+      ANYCABLE_DEBUG: 1
+    ports:
+      - '50051'
+    depends_on:
+      <<: *backend_depends_on
+      ws:
+        condition: service_started
 
   postgres:
     image: postgres:11.1
