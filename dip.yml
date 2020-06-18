@@ -41,6 +41,11 @@ interaction:
         compose:
           run_options: [service-ports, use-aliases]
 
+  anycable:
+    description: Run AnyCable RPC (with debugging capabilities)
+    service: anycable
+    compose_run_options: [service-ports, use-aliases]
+
   yarn:
     description: Run Yarn commands
     service: rails
