@@ -4,6 +4,7 @@
 class User
   include ActiveModel::Model
   include ActiveModel::Attributes
+  include AnycableIdentified
 
   attribute :name, :string
   attribute :id, :string
