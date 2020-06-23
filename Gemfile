@@ -10,7 +10,7 @@ gem 'puma', '~> 4.1'
 gem 'redis', '~> 4.0'
 
 gem 'bootsnap', '>= 1.4.2', require: false
-gem 'ruby-next', '>= 0.8.0', require: false
+gem 'ruby-next', '>= 0.9.2', require: false
 
 gem 'nanoid'
 # We only need controllers integration
