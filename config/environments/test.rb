@@ -11,7 +11,12 @@ Rails.application.configure do
     AnyCable::Rails.extend_adapter!(ActionCable.server.pubsub)
   end
 
+  # Specify AnyCable WebSocket server URL to use by JS client
+  config.action_cable.url = "/rack_cable"
+  # Disable built-in Action Cable
   config.action_cable.mount_path = nil
+  # Run AnyCable Rack server at a custom path
+  config.any_cable_rack.mount_path = "/rack_cable"
 
   # Settings specified here will take precedence over those in config/application.rb.
   config.cache_classes = true

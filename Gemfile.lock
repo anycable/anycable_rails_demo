@@ -68,15 +68,20 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.4)
       public_suffix (>= 2.0.2, < 6.0)
-    anycable (1.3.1)
-      anycable-core (= 1.3.1)
+    anycable (1.4.0.rc.1)
+      anycable-core (= 1.4.0.rc.1)
       grpc (~> 1.37)
-    anycable-core (1.3.1)
+    anycable-core (1.4.0.rc.1)
       anyway_config (~> 2.2)
       google-protobuf (>= 3.13)
-    anycable-rails (1.3.7)
+    anycable-rack-server (0.5.1)
+      anycable (> 1.0.99, < 2.0)
+      anyway_config (>= 2.1.0)
+      connection_pool (~> 2.2)
+      websocket (~> 1.2)
+    anycable-rails (1.4.0.rc.1)
       actioncable (>= 6.0)
-      anycable (~> 1.3.0)
+      anycable (= 1.4.0.rc.1)
       globalid
     anyway_config (2.4.2)
       ruby-next-core (>= 0.14.0)
@@ -93,7 +98,7 @@ GEM
       rack-test (>= 0.6.3)
       regexp_parser (>= 1.5, < 3.0)
       xpath (~> 3.2)
-    concurrent-ruby (1.2.2)
+    concurrent-ruby (1.1.8)
     connection_pool (2.4.1)
     crass (1.0.6)
     cssbundling-rails (1.2.0)
@@ -243,7 +248,8 @@ GEM
       diff-lcs (~> 1.3)
       parser (>= 3.2.0)
     webrick (1.8.1)
-    websocket-driver (0.7.5)
+    websocket (1.2.9)
+    websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     xpath (3.2.0)
@@ -257,7 +263,8 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  anycable-rails (~> 1.3)
+  anycable-rack-server (~> 0.5)
+  anycable-rails
   bootsnap (>= 1.4.2)
   capybara
   cssbundling-rails

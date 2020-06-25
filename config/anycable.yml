@@ -31,6 +31,7 @@ development:
 
 test:
   <<: *default
+  http_broadcast_url: "http://localhost:3023/_anycable_rack_broadcast"
 
 production:
   <<: *default

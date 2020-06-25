@@ -11,6 +11,9 @@ Capybara.default_normalize_ws = true
 # Where to store artifacts (e.g. screenshots, downloaded files, etc.)
 Capybara.save_path = ENV.fetch("CAPYBARA_ARTIFACTS", "./tmp/capybara")
 
+# Use fixed server port to configure AnyCable broadcast url
+Capybara.server_port = 3023
+
 Capybara.singleton_class.prepend(Module.new do
   attr_accessor :last_used_session
 

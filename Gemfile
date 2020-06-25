@@ -8,7 +8,7 @@ gem 'sqlite3', '~> 1.4'
 gem 'puma', '~> 6.0'
 gem 'redis', '~> 5.0'
 gem 'grpc', '~> 1.37'
-gem 'anycable-rails', '~> 1.3'
+gem 'anycable-rails'
 gem 'daemons', '~> 1.3', require: false
 
 gem 'bootsnap', '>= 1.4.2', require: false
@@ -32,6 +32,9 @@ end
 group :test do
   gem 'capybara'
   gem 'cuprite'
+
+  # Rack-based AnyCable server implementation
+  gem 'anycable-rack-server', '~> 0.5'
 
   gem 'test-prof'
 end
