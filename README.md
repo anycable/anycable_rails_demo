@@ -1,6 +1,11 @@
-# AnyCable Rails Demos
+![Unit Tests](https://github.com/anycable/anycable_rails_demo/workflows/Unit%20Tests/badge.svg)
+![System Tests](https://github.com/anycable/anycable_rails_demo/workflows/System%20Tests/badge.svg)
 
-This repository contains the code for AnyCable Rails demo application and its different variations (in a separate branches).
+# AnyCable Rails Demo
+
+This repository contains the code for AnyCable Rails demo application and its different variations.
+
+[List of all demonstration PRs](https://github.com/anycable/anycable_rails_demo/pulls?q=is%3Apr++label%3Ademo+)
 
 <img align="center" width="1416"
      title="AnWork screenshot" src="./public/demo.png">
