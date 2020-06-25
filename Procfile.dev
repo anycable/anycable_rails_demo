@@ -1,0 +1,4 @@
+server: bundle exec rails s
+assets: bundle exec bin/webpack-dev-server
+anycable: bundle exec anycable
+ws: anycable-go --port=8080 --broadcast_adapter=http

@@ -10,7 +10,7 @@ RSpec.configure do |config|
   require "anycable/cli"
 
   cli = AnyCable::CLI.new(embedded: true)
-  cli.run
+  cli.run(["--server-command", "anycable-go --broadcast_adapter=http"])
 
   config.after(:suite) do
     cli&.shutdown
