@@ -53,7 +53,5 @@ jobs:
       - name: Run RSpec
         run: |
           bundle exec rails db:prepare
-          sudo bundle exec rails g anycable:download --bin-path=./bin
           bundle exec rails webpacker:compile
-          sudo cp ./bin/anycable-go /usr/local/bin/
           bundle exec rspec --tag type:system

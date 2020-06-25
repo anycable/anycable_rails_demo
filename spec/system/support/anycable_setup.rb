@@ -4,17 +4,11 @@ require "action_cable/subscription_adapter/any_cable"
 
 # Run AnyCable RPC server
 RSpec.configure do |config|
-  # Skip assets precompilcation if we exclude system specs.
+  # Only start RPC server if system tests are included into the run
   next if config.filter.opposite.rules[:type] == "system" || config.exclude_pattern.match?(%r{spec/system})
 
   require "anycable/cli"
-
-  cli = AnyCable::CLI.new(embedded: true)
-  cli.run(["--server-command", "anycable-go --broadcast_adapter=http"])
-
-  config.after(:suite) do
-    cli&.shutdown
-  end
+  AnyCable::CLI.embed!
 
   config.before(:each, type: :system) do
     next if ActionCable.server.pubsub.is_a?(ActionCable::SubscriptionAdapter::AnyCable)

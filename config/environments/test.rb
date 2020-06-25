@@ -8,13 +8,12 @@
 Rails.application.configure do
   # Enforce AnyCable patches to make it possible to use any_cable adapter for system tests
   require "anycable/rails/actioncable/connection"
-
   # Specify AnyCable WebSocket server URL to use by JS client
-  config.after_initialize do
-    config.action_cable.url = ActionCable.server.config.url = ENV.fetch("CABLE_URL", "ws://127.0.0.1:8080/cable")
-  end
-
+  config.action_cable.url = "/rack_cable"
+  # Disable built-in Action Cable
   config.action_cable.mount_path = nil
+  # Run AnyCable Rack server at a custom path
+  config.any_cable_rack.mount_path = "/rack_cable"
 
   # Settings specified here will take precedence over those in config/application.rb.
   config.cache_classes = true
