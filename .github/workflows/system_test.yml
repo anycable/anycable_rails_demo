@@ -41,7 +41,6 @@ jobs:
       - name: Run RSpec
         run: |
           bundle exec rails db:test:prepare
-          export CABLE_URL="ws://$(hostname):8080/cable"
           bundle exec rspec --tag type:system --force-color
 
   wsdirector:
