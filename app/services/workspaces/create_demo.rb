@@ -14,7 +14,7 @@ module Workspaces
             list.items.completed.create(desc: "Run rails g anycable:setup")
             list.items.create(desc: "Run compatibility checks")
             list.items.create(desc: "Make system tests pass")
-            list.items.create(desc: "Push on staging")
+            list.items.create(desc: "Deploy on staging")
             list.items.create(desc: "Promote to production")
           end
 
