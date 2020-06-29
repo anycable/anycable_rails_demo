@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 Rails.application.configure do
+  # Configure session cookie to be stored for all subdomains
+  config.session_store :cookie_store, key: "_anycable_demo_sid", domain: :all
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # Code is not reloaded between requests.
