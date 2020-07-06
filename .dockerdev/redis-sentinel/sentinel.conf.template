@@ -1,0 +1,10 @@
+port 26379
+
+dir /tmp
+
+requirepass "any_secret"
+
+sentinel monitor $SENTINEL_MASTER redis 6379 $SENTINEL_QUORUM
+sentinel down-after-milliseconds $SENTINEL_MASTER $SENTINEL_DOWN_AFTER
+sentinel parallel-syncs $SENTINEL_MASTER 1
+sentinel failover-timeout $SENTINEL_MASTER $SENTINEL_FAILOVER
