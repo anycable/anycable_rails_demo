@@ -62,13 +62,13 @@ GEM
       memoizable (~> 0.4.0)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
-    anycable (1.0.0.rc2)
+    anycable (1.0.1)
       anyway_config (>= 1.4.2)
       grpc (~> 1.17)
-    anycable-rails (1.0.0.rc4)
-      anycable (= 1.0.0.rc2)
+    anycable-rails (1.0.1)
+      anycable (>= 1.0.0)
       rails (>= 5)
-    anyway_config (2.0.5)
+    anyway_config (2.0.6)
       ruby-next-core (>= 0.8.0)
     ast (2.4.1)
     bootsnap (1.4.6)
@@ -108,8 +108,8 @@ GEM
     google-protobuf (3.12.2)
     googleapis-common-protos-types (1.0.5)
       google-protobuf (~> 3.11)
-    grpc (1.28.0)
-      google-protobuf (~> 3.11)
+    grpc (1.30.0)
+      google-protobuf (~> 3.12)
       googleapis-common-protos-types (~> 1.0)
     i18n (1.8.3)
       concurrent-ruby (~> 1.0)
@@ -279,7 +279,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  anycable-rails (= 1.0.0.rc4)
+  anycable-rails (~> 1.0.0)
   bootsnap (>= 1.4.2)
   capybara
   cuprite

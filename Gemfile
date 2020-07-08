@@ -8,7 +8,7 @@ gem 'webpacker', '~> 4.0'
 gem 'pg', '~> 1.0'
 gem 'puma', '~> 4.1'
 gem 'redis', '~> 4.0'
-gem 'anycable-rails', '1.0.0.rc4'
+gem 'anycable-rails', '~> 1.0.0'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'ruby-next', '>= 0.9.2', require: false
