@@ -19,7 +19,7 @@ describe "Workspaces -> List -> Items" do
       within("#list_#{empty_list.id}_new_item") do
         within "form" do
           fill_in "item[desc]", with: "Pass the tests"
-          current_scope.send_keys :enter
+          find('[name="item[desc]"]').native.send_keys :enter
         end
       end
 
@@ -42,7 +42,7 @@ describe "Workspaces -> List -> Items" do
         within("#list_#{empty_list.id}_new_item") do
           within "form" do
             fill_in "item[desc]", with: "Multi test"
-            current_scope.send_keys :enter
+            find('[name="item[desc]"]').native.send_keys :enter
           end
         end
 

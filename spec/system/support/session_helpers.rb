@@ -6,7 +6,8 @@ module SessionHelpers
   end
 
   def mark_all_banners_as_read!
-    page.driver.set_cookie "show_banners", "N"
+    visit "/" unless current_path == "/"
+    page.driver.browser.manage.add_cookie(name: "show_banners", value: "N")
   end
 end
 
