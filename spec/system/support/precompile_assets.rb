@@ -3,10 +3,16 @@
 # Precompile assets before running tests to avoid timeouts.
 # Do not precompile if webpack-dev-server is running (NOTE: MUST be launched with RAILS_ENV=test)
 RSpec.configure do |config|
-  # Skip assets precompilcation if we exclude system specs.
-  next if config.filter.opposite.rules[:type] == "system" || config.exclude_pattern.match?(%r{spec/system})
 
   config.before(:suite) do
+    
+    examples = RSpec.world.filtered_examples.values.flatten
+    has_no_system_tests = examples.none? { |example| example.metadata[:type] == :system }
+    if has_no_system_tests
+      $stdout.puts "\n🚀️️  No system test selected. Skip assets compilation.\n"
+      next
+    end
+    
     if Webpacker.dev_server.running?
       $stdout.puts "\n⚙️  Webpack dev server is running! Skip assets compilation.\n"
       next
