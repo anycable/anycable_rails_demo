@@ -12,11 +12,12 @@ class ChatChannel < ApplicationCable::Channel
 
   def speak(data)
     message = data.fetch("message")
+    name = user.name
 
     broadcast_to(
       workspace,
       action: "newMessage",
-      html: html("chats/message", message: message, name: user.name),
+      html: html("chats/message", **{message, name}),
       author_id: user.id
     )
   end

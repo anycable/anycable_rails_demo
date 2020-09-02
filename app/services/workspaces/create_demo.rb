@@ -3,10 +3,10 @@
 module Workspaces
   module CreateDemo
     class << self
-      def call(name: "Demo Workspace", id: nil, workspace: nil)
+      def call(name: "Demo Workspace", public_id: nil, workspace: nil)
         ActiveRecord::Base.transaction do
           # We can use the existing workspace to populate demo data
-          demo = workspace || Workspace.create!(name: name, public_id: id)
+          demo = workspace || Workspace.create!({name, public_id})
 
           # First list
           demo.lists.create(name: "Migrate to AnyCable").tap do |list|

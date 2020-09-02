@@ -44,7 +44,7 @@ class ListsController < ApplicationController
 
   def broadcast_new_list
     return if list.errors.any?
-    WorkspaceChannel.broadcast_to workspace, type: "newList", html: render_to_string(partial: "lists/list", layout: false, locals: {list: list})
+    WorkspaceChannel.broadcast_to workspace, type: "newList", html: render_to_string(partial: "lists/list", layout: false, locals: {list})
   end
 
   def broadcast_changes
