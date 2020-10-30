@@ -13,7 +13,7 @@
     <% end %>
     <%= action_cable_meta_tag %>
     <%= stylesheet_pack_tag "application", data: {turbolinks: {track: "reload"}} %>
-    <%= javascript_pack_tag "application", data: {turbolinks: {track: "reload"}} %>
+    <%= javascript_pack_tag "application", data: {turbolinks: {track: "reload"}}, defer: true %>
   </head>
   <body class="h-screen relative">
     <%= render "shared/alerts" %>
