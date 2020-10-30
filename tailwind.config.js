@@ -1,5 +1,13 @@
 module.exports = {
-  purge: [],
+  future: {
+    purgeLayersByDefault: true,
+  },
+  purge: {
+    content: [
+      './frontend/javascript/**/*_controller.js',
+      './app/**/*.html.erb',
+    ],
+  },
   theme: {
     extend: {
       colors: {

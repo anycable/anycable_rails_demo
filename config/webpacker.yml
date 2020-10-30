@@ -16,6 +16,10 @@ default: &default
   # Reload manifest.json on all requests so we reload latest compiled packs
   cache_manifest: false
 
+  additional_paths: [
+    'tailwind.config.js'
+  ]
+
   # Extract and emit a css file
   extract_css: false
 
