@@ -11,12 +11,12 @@ describe "Workspaces -> Chat" do
   end
 
   it "I can send a message" do
-    within "#chat" do
+    within ".chat" do
       fill_in :message, with: "Hi there"
 
       click_on "Send"
 
-      within "#chat--messages" do
+      within ".chat .messages" do
         expect(page).to have_text "Hi there"
         expect(page).to have_text "Any"
       end
@@ -38,13 +38,13 @@ describe "Workspaces -> Chat" do
 
       click_on "Send"
 
-      within "#chat--messages" do
+      within ".chat .messages" do
         expect(page).to have_text "Hi John"
         expect(page).to have_text "Any"
       end
 
       within_session :john do
-        within "#chat--messages" do
+        within ".chat .messages" do
           expect(page).to have_text "Hi John"
           expect(page).to have_text "Any"
         end
@@ -54,7 +54,7 @@ describe "Workspaces -> Chat" do
         click_on "Send"
       end
 
-      within "#chat--messages" do
+      within ".chat .messages" do
         expect(page).to have_text "What's up, Any?"
       end
     end
