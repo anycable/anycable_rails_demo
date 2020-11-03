@@ -26,7 +26,7 @@ class ItemsController < ApplicationController
     item.update!(item_params)
     respond_to do |format|
       format.json do
-        render json: item.as_json(only: [:id, :desc, :completed])
+        head :ok
       end
 
       format.html do
@@ -41,7 +41,7 @@ class ItemsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: {deletedId: item.id}
+        head :no_content
       end
 
       format.html do
@@ -71,15 +71,28 @@ class ItemsController < ApplicationController
 
   def broadcast_new_item
     return if item.errors.any?
-    ListChannel.broadcast_to list, type: "created", html: render_to_string(partial: "items/item", layout: false, locals: {item})
+
+    broadcaster.insert_adjacent_html(
+      selector: dom_id(list, :items),
+      html: render_partial("items/item", {item})
+    )
+    cable_ready.broadcast
   end
 
   def broadcast_changes
     return if item.errors.any?
     if item.destroyed?
-      ListChannel.broadcast_to list, type: "deleted", id: item.id
+      broadcaster.remove(selector: dom_id(item))
     else
-      ListChannel.broadcast_to list, type: "updated", id: item.id, desc: item.desc, completed: item.completed
+      broadcaster.outer_html(
+        selector: dom_id(item),
+        html: render_partial("items/item", {item})
+      )
     end
+    cable_ready.broadcast
+  end
+
+  def broadcaster
+    cable_ready[ListChannel.broadcasting_for(list)]
   end
 end

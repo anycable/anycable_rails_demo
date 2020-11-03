@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   include Authenticated
+  include CableReady::Broadcaster
 
   before_action :authenticate_user!, unless: :logged_in?
 
@@ -12,5 +13,9 @@ class ApplicationController < ActionController::Base
   def authenticate_user!
     session[:redirect_after_login] = request.url
     redirect_to(login_path)
+  end
+
+  def render_partial(path, locals = {})
+    render_to_string(partial: path, formats: [:html], layout: false, locals: locals)
   end
 end

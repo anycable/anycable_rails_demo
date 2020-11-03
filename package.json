@@ -4,6 +4,7 @@
     "@rails/actioncable": "6.0.2",
     "@rails/ujs": "^6.0.3-4",
     "@rails/webpacker": "4.2.2",
+    "cable_ready": "^4.4.0-pre2",
     "js-cookie": "^2.2.1",
     "linkifyjs": "^2.1.9",
     "stimulus": "^1.1.1",

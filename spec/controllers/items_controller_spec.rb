@@ -20,9 +20,9 @@ describe ItemsController do
       expect { subject }.to change(list.items, :count).by(1)
     end
 
-    it "broadcasts a created message" do
+    it "broadcasts a cable ready insertAdjacentHtml operation" do
       expect { subject }.to have_broadcasted_to(ListChannel.broadcasting_for(list))
-        .with(a_hash_including(type: "created"))
+        .with(a_hash_including("cableReady": true, "operations": a_hash_including("insertAdjacentHtml": anything)))
     end
   end
 
@@ -35,9 +35,9 @@ describe ItemsController do
       expect { subject }.to change(list.items, :count).by(-1)
     end
 
-    it "broadcasts a deleted message" do
+    it "broadcasts a cable ready remove operation" do
       expect { subject }.to have_broadcasted_to(ListChannel.broadcasting_for(list))
-        .with(type: "deleted", id: item.id)
+        .with(a_hash_including("cableReady": true, "operations": a_hash_including("remove": anything)))
     end
   end
 
@@ -48,9 +48,9 @@ describe ItemsController do
 
     subject { patch :update, params: {workspace_id: workspace.to_param, list_id: list.id, id: item.id, item: form_params} }
 
-    it "broadcasts an updated message" do
+    it "broadcasts a cable ready outerHtml operation" do
       expect { subject }.to have_broadcasted_to(ListChannel.broadcasting_for(list))
-        .with(type: "updated", id: item.id, completed: true, desc: item.desc)
+        .with(a_hash_including("cableReady": true, "operations": a_hash_including("outerHtml": anything)))
     end
   end
 end

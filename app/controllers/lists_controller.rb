@@ -44,13 +44,26 @@ class ListsController < ApplicationController
 
   def broadcast_new_list
     return if list.errors.any?
-    WorkspaceChannel.broadcast_to workspace, type: "newList", html: render_to_string(partial: "lists/list", layout: false, locals: {list})
+
+    broadcaster.insert_adjacent_html(
+      selector: dom_id(workspace, :new_list),
+      position: "beforebegin",
+      html: render_partial("lists/list", {list})
+    )
+    cable_ready.broadcast
   end
 
   def broadcast_changes
     return if list.errors.any?
+
     if list.destroyed?
-      WorkspaceChannel.broadcast_to workspace, type: "deletedList", id: list.id
+      broadcaster.remove(selector: dom_id(list))
     end
+
+    cable_ready.broadcast
+  end
+
+  def broadcaster
+    cable_ready[WorkspaceChannel.broadcasting_for(workspace)]
   end
 end
