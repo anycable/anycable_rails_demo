@@ -14,7 +14,7 @@ describe "Workspaces -> List -> Delete" do
   end
 
   it "I delete a list" do
-    within "#list_#{list.id}_header" do
+    within dom_id(list, :header) do
       accept_confirm do
         find(".delete-btn").click
       end
@@ -22,7 +22,7 @@ describe "Workspaces -> List -> Delete" do
 
     expect(page).to have_text "#{list.name} has been deleted"
 
-    within "#lists" do
+    within dom_id(workspace, :lists) do
       expect(page).to have_no_text list.name
     end
   end
@@ -39,12 +39,12 @@ describe "Workspaces -> List -> Delete" do
 
     it "list is deleted for all users" do
       within_session :john do
-        within "#lists" do
+        within dom_id(workspace, :lists) do
           expect(page).to have_text list.name
         end
       end
 
-      within "#list_#{list.id}_header" do
+      within dom_id(list, :header) do
         accept_confirm do
           find(".delete-btn").click
         end
@@ -53,7 +53,7 @@ describe "Workspaces -> List -> Delete" do
       expect(page).to have_text "#{list.name} has been deleted"
 
       within_session :john do
-        within "#lists" do
+        within dom_id(workspace, :lists) do
           expect(page).to have_no_text list.name
         end
       end

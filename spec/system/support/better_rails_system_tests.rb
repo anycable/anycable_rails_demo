@@ -18,9 +18,16 @@ module BetterRailsSystemTests
     return super unless Capybara.last_used_session
     Capybara.using_session(Capybara.last_used_session) { super }
   end
+
+  # Convert dom_id to selector
+  def dom_id(*args)
+    "##{super}"
+  end
 end
 
 RSpec.configure do |config|
+  # Add #dom_id support
+  config.include ActionView::RecordIdentifier, type: :system
   config.include BetterRailsSystemTests, type: :system
 
   # Make urls in mailers contain the correct server host
