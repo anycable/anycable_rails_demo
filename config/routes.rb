@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   resources :workspaces, only: [:index, :new, :create, :destroy, :show] do
     resources :lists, only: [:create, :destroy] do
-      resources :items, only: [:create, :destroy, :update]
+      resources :items, only: [:create]
     end
   end
 

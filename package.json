@@ -8,6 +8,7 @@
     "js-cookie": "^2.2.1",
     "linkifyjs": "^2.1.9",
     "stimulus": "^1.1.1",
+    "stimulus_reflex": "^3.3.0",
     "tailwindcss": "^1.4.0"
   },
   "devDependencies": {

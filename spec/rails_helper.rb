@@ -30,6 +30,7 @@ TestProf.activate("LOG", "all") do
 end
 
 require "rspec/rails"
+require "stimulus_reflex_testing/rspec"
 
 # support/ files contain framework configurations and helpers
 Dir[File.join(__dir__, "support/**/*.rb")].sort.each { |file| require file }
