@@ -11,7 +11,6 @@ ARG BUNDLER_VERSION=2.1.2
 COPY .dockerdev/Aptfile /tmp/Aptfile
 
 RUN apt-get update -qq \
-  && apt-get dist-upgrade -y \
   && apt-get install -yq --no-install-recommends \
   curl \
   git \
