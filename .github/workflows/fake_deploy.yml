@@ -17,7 +17,7 @@ jobs:
           echo ::set-output name=tag::${TAG}
       - name: Set up Docker Buildx
         id: buildx
-        uses: docker/setup-buildx-action@v1
+        uses: docker/setup-buildx-action@master
         with:
           install: true
 
