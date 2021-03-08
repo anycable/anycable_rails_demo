@@ -35,13 +35,9 @@ jobs:
           file: .dockerdev/Dockerfile.multi
           target: deploy
           push: false
-          load: true 
           tags: ${{ steps.prep.outputs.tagged_image }}
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
-      
-      - name: Docker History
-        run: docker history ${{ steps.prep.outputs.tagged_image }}
 
   # This job builds an image from scratch every time without cache
   fake_deploy_no_cache:
@@ -66,6 +62,3 @@ jobs:
           target: deploy
           push: false
           tags: ${{ steps.prep.outputs.tagged_image }}
-
-      - name: Docker History
-        run: docker history ${{ steps.prep.outputs.tagged_image }}
