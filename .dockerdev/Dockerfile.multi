@@ -98,7 +98,6 @@ COPY --chown=nonroot:nonroot ./Gemfile /app/Gemfile
 COPY --chown=nonroot:nonroot ./Gemfile.lock /app/Gemfile.lock
 COPY --chown=nonroot:nonroot package.json /app/
 COPY --chown=nonroot:nonroot yarn.lock /app/
-COPY --chown=nonroot:nonroot . /app
 
 
 RUN bundle config set --local without 'development test' \
@@ -110,6 +109,8 @@ RUN yarn install \
 # Faking it so the image can build
 ENV RAILS_ENV=production
 ENV CABLE_URL=fake
+
+COPY --chown=nonroot:nonroot . /app
 
 ARG RAILS_MASTER_KEY=1
 RUN bundle exec rails assets:precompile \
