@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# Try a comment here to check Docker layer cache on CI
 Rails.application.routes.draw do
   get "/login", to: "sessions#new", as: :login
   post "/login", to: "sessions#create"
