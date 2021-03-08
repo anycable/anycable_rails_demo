@@ -102,8 +102,7 @@ COPY --chown=nonroot:nonroot yarn.lock /app/
 COPY --chown=nonroot:nonroot . /app
 
 
-RUN bundle config set --local clean 'true' \
-  && bundle config set --local without 'development test' \
+RUN bundle config set --local without 'development test' \
   && bundle install
 
 RUN yarn install \
