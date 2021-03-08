@@ -47,8 +47,8 @@ RUN gem update --system && \
   rm -f /usr/local/bin/ruby/gems/*/specifications/default/bundler-*.gemspec && \
   gem install bundler -v $BUNDLER_VERSION
 
-# # to chown this dir even before it will be brought by COPY
-# # to be able to write into it during yarn install
+# to chown this dir even before it will be brought by COPY
+# to be able to write into it during yarn install
 RUN mkdir /app \
   && chown -R nonroot:nonroot /app
 
@@ -70,7 +70,7 @@ RUN apt-get update -qq \
   curl \
   libpq-dev \
   && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /var/tmp/* \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
   && truncate -s 0 /var/log/*log
 
 # Add NodeJS to sources list
@@ -86,7 +86,7 @@ RUN apt-get update -qq \
   nodejs \
   yarn=$YARN_VERSION-1 \
   && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /var/tmp/* \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
   && truncate -s 0 /var/log/*log
 
 ########################################################
@@ -100,43 +100,43 @@ COPY --chown=nonroot:nonroot package.json /app/
 COPY --chown=nonroot:nonroot yarn.lock /app/
 
 
+ENV RAILS_ENV=production
+ENV NODE_ENV=production
+# Faking it so the image can build
+ENV CABLE_URL=fake
+ARG RAILS_MASTER_KEY=1
+
 RUN bundle config set --local without 'development test' \
   && bundle install
 
-RUN yarn install --frozen-lockfile
+RUN yarn install \
+  && (rm -rf /tmp/* || true)
+
+COPY --chown=nonroot:nonroot . /app
+
+RUN bundle exec rails assets:precompile \
+  && yarn cache clean \
+  && (rm -rf /tmp/* || true) \
+  # Cleanup
+  && rm -rf $BUNDLE_PATH/*.gem \
+  && find $BUNDLE_PATH/ruby -name "*.c" -delete \
+  && find $BUNDLE_PATH/ruby -name "*.o" -delete \
+  # TODO: ADD COMMENT
+  && find $BUNDLE_PATH/ruby -name ".git"  -type d -prune -execdir rm -rf {} +
+
+# https://github.com/rubygems/rubygems/issues/3225
+RUN rm -rf /usr/local/bundle/ruby/*/cache
 
 ################################################################
 # Deployable image
 ################################################################
 FROM base as deploy
-RUN echo "THE CURRENT DIR IS!" && pwd
-
 # Copy prebuilt gems
 COPY --chown=nonroot:nonroot --from=prod_gems_and_assets $BUNDLE_PATH $BUNDLE_PATH
 
-# Copy JS packages
-COPY --chown=nonroot:nonroot --from=prod_gems_and_assets /app/node_modules /app/node_modules
-
-# Faking it so the image can build
-ENV RAILS_ENV=production
-ENV CABLE_URL=fake
-
-COPY --chown=nonroot:nonroot . .
-
-RUN echo "LISTING APP...." && ls -lisa
-
-ARG RAILS_MASTER_KEY=1
-RUN bin/rails assets:precompile
-# && (rm -rf /tmp/* || true) \
-# # Cleanup
-# && rm -rf $BUNDLE_PATH/*.gem \
-# && find $BUNDLE_PATH/ruby -name "*.c" -delete \
-# && find $BUNDLE_PATH/ruby -name "*.o" -delete \
-# # TODO: ADD COMMENT
-# && find $BUNDLE_PATH/ruby -name ".git"  -type d -prune -execdir rm -rf {} +
-
-# https://github.com/rubygems/rubygems/issues/3225
-RUN rm -rf /usr/local/bundle/ruby/*/cache
+COPY --chown=nonroot:nonroot . /app
+# Copy prebuilt assets
+COPY --chown=nonroot:nonroot --from=prod_gems_and_assets /app/public/packs /app/public/packs
 
 USER nonroot
 
