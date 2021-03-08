@@ -109,6 +109,8 @@ RUN yarn install --frozen-lockfile
 # Deployable image
 ################################################################
 FROM base as deploy
+RUN echo "THE CURRENT DIR IS!" && pwd
+
 # Copy prebuilt gems
 COPY --chown=nonroot:nonroot --from=prod_gems_and_assets $BUNDLE_PATH $BUNDLE_PATH
 
@@ -122,14 +124,14 @@ ENV CABLE_URL=fake
 COPY --chown=nonroot:nonroot . /app
 
 ARG RAILS_MASTER_KEY=1
-RUN bundle exec rails assets:precompile \
-  && (rm -rf /tmp/* || true) \
-  # Cleanup
-  && rm -rf $BUNDLE_PATH/*.gem \
-  && find $BUNDLE_PATH/ruby -name "*.c" -delete \
-  && find $BUNDLE_PATH/ruby -name "*.o" -delete \
-  # TODO: ADD COMMENT
-  && find $BUNDLE_PATH/ruby -name ".git"  -type d -prune -execdir rm -rf {} +
+RUN bin/rails assets:precompile
+# && (rm -rf /tmp/* || true) \
+# # Cleanup
+# && rm -rf $BUNDLE_PATH/*.gem \
+# && find $BUNDLE_PATH/ruby -name "*.c" -delete \
+# && find $BUNDLE_PATH/ruby -name "*.o" -delete \
+# # TODO: ADD COMMENT
+# && find $BUNDLE_PATH/ruby -name ".git"  -type d -prune -execdir rm -rf {} +
 
 # https://github.com/rubygems/rubygems/issues/3225
 RUN rm -rf /usr/local/bundle/ruby/*/cache
