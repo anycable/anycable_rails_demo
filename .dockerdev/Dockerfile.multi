@@ -105,6 +105,16 @@ RUN bundle config set --local without 'development test' \
 
 RUN yarn install
 
+################################################################
+# Deployable image
+################################################################
+FROM base as deploy
+# Copy prebuilt gems
+COPY --chown=nonroot:nonroot --from=prod_gems_and_assets $BUNDLE_PATH $BUNDLE_PATH
+
+# Copy JS packages
+COPY --chown=nonroot:nonroot --from=prod_gems_and_assets /app/node_modules /app/node_modules
+
 # Faking it so the image can build
 ENV RAILS_ENV=production
 ENV CABLE_URL=fake
@@ -124,19 +134,6 @@ RUN bundle exec rails assets:precompile \
 
 # https://github.com/rubygems/rubygems/issues/3225
 RUN rm -rf /usr/local/bundle/ruby/*/cache
-
-################################################################
-# Deployable image
-################################################################
-FROM base as deploy
-# Copy prebuilt gems
-COPY --chown=nonroot:nonroot --from=prod_gems_and_assets $BUNDLE_PATH $BUNDLE_PATH
-
-# Copy prebuilt assets
-COPY --chown=nonroot:nonroot --from=prod_gems_and_assets /app/public/packs /app/public/packs
-
-# Copy the full app
-COPY --chown=nonroot:nonroot . /app
 
 USER nonroot
 
