@@ -1,4 +1,4 @@
-name: Fake deploy to benchmark image build speeds
+name: Fake deploy with no cache
 on: [push]
 
 jobs:
