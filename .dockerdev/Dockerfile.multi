@@ -26,7 +26,7 @@ RUN apt-get update -qq \
   && apt-get purge -y curl \
   && apt-get clean \
   && rm -rf /var/cache/apt/archives/* \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+  && rm -rf /var/lib/apt/lists/* /var/tmp/* \
   && truncate -s 0 /var/log/*log
 
 ENV GEM_HOME=/usr/local/bundle
@@ -71,7 +71,7 @@ RUN apt-get update -qq \
   curl \
   libpq-dev \
   && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+  && rm -rf /var/lib/apt/lists/* /var/tmp/* \
   && truncate -s 0 /var/log/*log
 
 # Add NodeJS to sources list
@@ -87,7 +87,7 @@ RUN apt-get update -qq \
   nodejs \
   yarn=$YARN_VERSION-1 \
   && apt-get clean \
-  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+  && rm -rf /var/lib/apt/lists/* /var/tmp/* \
   && truncate -s 0 /var/log/*log
 
 ########################################################
@@ -105,8 +105,7 @@ COPY --chown=nonroot:nonroot . /app
 RUN bundle config set --local without 'development test' \
   && bundle install
 
-RUN yarn install \
-  && (rm -rf /tmp/* || true)
+RUN yarn install 
 
 # Faking it so the image can build
 ENV RAILS_ENV=production
@@ -115,7 +114,6 @@ ENV CABLE_URL=fake
 ARG RAILS_MASTER_KEY=1
 RUN bundle exec rails assets:precompile \
   && yarn cache clean \
-  && (rm -rf /tmp/* || true) \
   # Cleanup
   && rm -rf $BUNDLE_PATH/*.gem \
   && find $BUNDLE_PATH/ruby -name "*.c" -delete \
@@ -138,6 +136,8 @@ COPY --chown=nonroot:nonroot . /app
 COPY --chown=nonroot:nonroot --from=prod_gems_and_assets /app/public/packs /app/public/packs
 
 USER nonroot
+
+RUN rm -rf /tmp/*
 
 ENV RAILS_ENV=production
 ENV RACK_ENV=production
