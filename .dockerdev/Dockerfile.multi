@@ -121,7 +121,9 @@ COPY --chown=nonroot:nonroot --from=prod_gems_and_assets /app/node_modules /app/
 ENV RAILS_ENV=production
 ENV CABLE_URL=fake
 
-COPY --chown=nonroot:nonroot . /app
+COPY --chown=nonroot:nonroot . .
+
+RUN echo "LISTING APP...." && ls -lisa
 
 ARG RAILS_MASTER_KEY=1
 RUN bin/rails assets:precompile
