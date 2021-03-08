@@ -103,8 +103,7 @@ COPY --chown=nonroot:nonroot yarn.lock /app/
 RUN bundle config set --local without 'development test' \
   && bundle install
 
-RUN yarn install \
-  && (rm -rf /tmp/* || true)
+RUN yarn install
 
 # Faking it so the image can build
 ENV RAILS_ENV=production
@@ -133,9 +132,11 @@ FROM base as deploy
 # Copy prebuilt gems
 COPY --chown=nonroot:nonroot --from=prod_gems_and_assets $BUNDLE_PATH $BUNDLE_PATH
 
-COPY --chown=nonroot:nonroot . /app
 # Copy prebuilt assets
 COPY --chown=nonroot:nonroot --from=prod_gems_and_assets /app/public/packs /app/public/packs
+
+# Copy the full app
+COPY --chown=nonroot:nonroot . /app
 
 USER nonroot
 
