@@ -1,0 +1,147 @@
+############################################
+### Base image ###
+############################################
+# Image which will be used for all environments: production, testing & development
+ARG RUBY_VERSION=2.6.5
+FROM ruby:$RUBY_VERSION-slim-buster as base
+ARG PG_MAJOR=11
+ARG DEBIAN_FRONTEND=noninteractive
+ARG BUNDLER_VERSION=2.1.2
+
+COPY .dockerdev/Aptfile /tmp/Aptfile
+
+RUN apt-get update -qq \
+  && apt-get dist-upgrade -y \
+  && apt-get install -yq --no-install-recommends \
+  curl \
+  git \
+  gnupg2 \
+  && curl -sSL https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - \
+  && echo 'deb http://apt.postgresql.org/pub/repos/apt/ stretch-pgdg main' $PG_MAJOR > /etc/apt/sources.list.d/pgdg.list \
+  && apt-get update -qq \
+  && apt-get install -yq --no-install-recommends \
+  libpq5 \
+  postgresql-client-$PG_MAJOR \
+  $(cat /tmp/Aptfile | xargs) \
+  && apt-get purge -y curl \
+  && apt-get clean \
+  && rm -rf /var/cache/apt/archives/* \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+  && truncate -s 0 /var/log/*log
+
+ENV GEM_HOME=/usr/local/bundle
+ENV BUNDLE_PATH=$GEM_HOME
+ENV BUNDLE_APP_CONFIG=$BUNDLE_PATH
+ENV BUNDLE_BIN=/usr/local/bin
+ENV BUNDLE_JOBS=4
+ENV BUNDLE_RETRY=3
+
+ENV LANG=C.UTF-8
+
+ENV PATH /app/bin:$PATH
+
+RUN groupadd --gid 1001 nonroot \
+  && useradd --uid 1001 --gid nonroot --shell /bin/bash --create-home nonroot
+
+# Upgrade RubyGems and install required Bundler version
+RUN gem update --system && \
+  rm -f /usr/local/bin/ruby/gems/*/specifications/default/bundler-*.gemspec && \
+  gem install bundler -v $BUNDLER_VERSION
+
+# to chown this dir even before it will be brought by COPY
+# to be able to write into it during yarn install
+RUN mkdir /app \
+  && chown -R nonroot:nonroot /app
+
+WORKDIR /app
+
+################################################################################
+### Builder. Adds node and Yarn. Not necessary in production. ###
+###############################################################################
+# Image which has all development dependencies and which will build the production bundle
+
+FROM base as builder
+ARG NODE_MAJOR=12
+ARG YARN_VERSION=1.13.0
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update -qq \
+  && apt-get install -yq --no-install-recommends \
+  build-essential \
+  curl \
+  libpq-dev \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+  && truncate -s 0 /var/log/*log
+
+# Add NodeJS to sources list
+RUN curl -sL https://deb.nodesource.com/setup_$NODE_MAJOR.x | bash -
+
+# Add Yarn to the sources list
+RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
+  && echo 'deb http://dl.yarnpkg.com/debian/ stable main' > /etc/apt/sources.list.d/yarn.list
+
+# Install Nodejs & Yarn
+RUN apt-get update -qq \
+  && apt-get install -yq --no-install-recommends \
+  nodejs \
+  yarn=$YARN_VERSION-1 \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+  && truncate -s 0 /var/log/*log
+
+########################################################
+# Node and Bundle for production
+######################################################## 
+FROM builder as prod_gems_and_assets
+
+COPY --chown=nonroot:nonroot ./Gemfile /app/Gemfile
+COPY --chown=nonroot:nonroot ./Gemfile.lock /app/Gemfile.lock
+COPY --chown=nonroot:nonroot package.json /app/
+COPY --chown=nonroot:nonroot yarn.lock /app/
+COPY --chown=nonroot:nonroot . /app
+
+
+RUN bundle config set --local clean 'true' \
+  && bundle config set --local without 'development test' \
+  && bundle install
+
+RUN yarn install \
+  && (rm -rf /tmp/* || true)
+
+# Faking it so the image can build
+ENV RAILS_ENV=production
+ENV CABLE_URL=fake
+
+ARG RAILS_MASTER_KEY=1
+RUN bundle exec rails assets:precompile \
+  && yarn cache clean \
+  && (rm -rf /tmp/* || true) \
+  # Cleanup
+  && rm -rf $BUNDLE_PATH/*.gem \
+  && find $BUNDLE_PATH/ruby -name "*.c" -delete \
+  && find $BUNDLE_PATH/ruby -name "*.o" -delete \
+  # TODO: ADD COMMENT
+  && find $BUNDLE_PATH/ruby -name ".git"  -type d -prune -execdir rm -rf {} +
+
+# https://github.com/rubygems/rubygems/issues/3225
+RUN rm -rf /usr/local/bundle/ruby/*/cache
+
+################################################################
+# Deployable image
+################################################################
+FROM base as deploy
+# Copy prebuilt gems
+COPY --chown=nonroot:nonroot --from=prod_gems_and_assets $BUNDLE_PATH $BUNDLE_PATH
+
+COPY --chown=nonroot:nonroot . /app
+# Copy prebuilt assets
+COPY --chown=nonroot:nonroot --from=prod_gems_and_assets /app/public/packs /app/public/packs
+
+USER nonroot
+
+ENV RAILS_ENV=production
+ENV RACK_ENV=production
+ENV NODE_ENV=production
+ENV RAILS_LOG_TO_STDOUT=enabled
+ENV RAILS_SERVE_STATIC_FILES=enabled

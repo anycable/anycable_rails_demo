@@ -1,0 +1,70 @@
+name: Fake deploy to benchmark image build speeds
+on: [push]
+
+jobs:
+  # This job uses Buildx layer caching
+  fake_deploy_cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare
+        id: prep
+        run: |
+          TAG=$(echo $GITHUB_SHA | head -c7)
+          IMAGE="my.docker.registry/progapangist/anycable_demo"
+          echo ::set-output name=tagged_image::${IMAGE}:${TAG} 
+          echo ::set-output name=tag::${TAG}
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-prod-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-prod
+      
+      - name: Build production image
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: .dockerdev/Dockerfile.multi
+          target: deploy
+          push: false
+          tags: ${{ steps.prep.outputs.tagged_image }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
+      
+      - name: Docker History
+        run: docker history ${{ steps.prep.outputs.tagged_image }}
+
+  # This job builds an image from scratch every time without cache
+  fake_deploy_no_cache:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare
+        id: prep
+        run: |
+          TAG=$(echo $GITHUB_SHA | head -c7)
+          IMAGE="my.docker.registry/progapangist/anycable_demo"
+          echo ::set-output name=tagged_image::${IMAGE}:${TAG} 
+          echo ::set-output name=tag::${TAG}
+      
+      - name: Build production image
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: .dockerdev/Dockerfile.multi
+          target: deploy
+          push: false
+          tags: ${{ steps.prep.outputs.tagged_image }}
+
+      - name: Docker History
+        run: docker history ${{ steps.prep.outputs.tagged_image }}
