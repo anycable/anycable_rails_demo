@@ -137,8 +137,6 @@ COPY --chown=nonroot:nonroot --from=prod_gems_and_assets /app/public/packs /app/
 
 USER nonroot
 
-RUN rm -rf /tmp/*
-
 ENV RAILS_ENV=production
 ENV RACK_ENV=production
 ENV NODE_ENV=production
