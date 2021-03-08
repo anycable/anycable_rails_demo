@@ -47,10 +47,10 @@ RUN gem update --system && \
   rm -f /usr/local/bin/ruby/gems/*/specifications/default/bundler-*.gemspec && \
   gem install bundler -v $BUNDLER_VERSION
 
-# to chown this dir even before it will be brought by COPY
-# to be able to write into it during yarn install
-RUN mkdir /app \
-  && chown -R nonroot:nonroot /app
+# # to chown this dir even before it will be brought by COPY
+# # to be able to write into it during yarn install
+# RUN mkdir /app \
+#   && chown -R nonroot:nonroot /app
 
 WORKDIR /app
 
