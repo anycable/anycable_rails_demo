@@ -32,7 +32,6 @@ jobs:
         with:
           context: .
           file: .dockerdev/Dockerfile.multi
-          target: deploy
           push: false
           tags: ${{ steps.prep.outputs.tagged_image }}
           cache-from: type=local,src=/tmp/.buildx-cache
