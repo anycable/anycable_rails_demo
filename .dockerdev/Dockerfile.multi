@@ -133,7 +133,7 @@ RUN rm -rf /usr/local/bundle/ruby/*/cache
 FROM base as deploy
 # Copy prebuilt gems
 COPY --chown=nonroot:nonroot --from=prod_gems_and_assets $BUNDLE_PATH $BUNDLE_PATH
-
+# Copy app code
 COPY --chown=nonroot:nonroot . /app
 # Copy prebuilt assets
 COPY --chown=nonroot:nonroot --from=prod_gems_and_assets /app/public/packs /app/public/packs
