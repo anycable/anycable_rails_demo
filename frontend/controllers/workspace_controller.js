@@ -5,13 +5,13 @@ import { isPreview as isTurboPreview } from '../utils/turbo';
 export default class extends Controller {
   static targets = ["lists", "form"];
 
-  connect() {
+  async connect() {
     if (isTurboPreview()) return;
 
     const channel = "WorkspaceChannel";
     const id = this.data.get("id");
 
-    this.channel = createChannel(
+    this.channel = await createChannel(
       {channel, id},
       {
         received: (data) => {
