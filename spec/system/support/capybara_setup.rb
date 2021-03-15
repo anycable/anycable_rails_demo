@@ -8,7 +8,7 @@ Capybara.server_host = "0.0.0.0"
 # NOTE: Rails overrides Capybara.app_host in Rails <6.1, so we have
 # to store it differently
 CAPYBARA_APP_HOST = "http://#{ENV.fetch("APP_HOST", `hostname`.strip&.downcase || "0.0.0.0")}"
-# Capybara.app_host = "http://#{`hostname`.strip&.downcase || "0.0.0.0"}"
+Capybara.app_host = CAPYBARA_APP_HOST
 
 # Which domain to use when setting cookies directly in tests.
 CAPYBARA_COOKIE_DOMAIN = URI.parse(CAPYBARA_APP_HOST).host.then do |host|

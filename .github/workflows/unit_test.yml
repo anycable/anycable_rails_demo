@@ -19,6 +19,8 @@ jobs:
       postgres:
         image: postgres:11.1
         ports: ["5432:5432"]
+        env:
+          POSTGRES_PASSWORD: postgres
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       redis:
         image: redis:5.0-alpine
@@ -34,8 +36,8 @@ jobs:
             bundle-
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.6.5
-      - name: Install PostgreSQL 11 client
+          ruby-version: 2.7.2
+      - name: Install PostgreSQL client
         run: |
           sudo apt-get -yqq install libpq-dev
       - name: Bundle install

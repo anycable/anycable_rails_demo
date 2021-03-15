@@ -5,7 +5,7 @@ x-app: &app
     context: .
     dockerfile: ./.dockerdev/Dockerfile
     args:
-      RUBY_VERSION: '2.6.5'
+      RUBY_VERSION: '2.7.2'
       PG_MAJOR: '13'
       NODE_MAJOR: '12'
       YARN_VERSION: '1.13.0'
@@ -13,7 +13,7 @@ x-app: &app
   environment: &env
     NODE_ENV: development
     RAILS_ENV: ${RAILS_ENV:-development}
-  image: anycable-rails-demo-dev:1.1.0
+  image: anycable-rails-demo-dev:1.2.0
   tmpfs:
     - /tmp
 

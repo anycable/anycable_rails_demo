@@ -41,8 +41,8 @@ jobs:
             bundle-
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.6.5
-      - name: Install PostgreSQL 11 client
+          ruby-version: 2.7.2
+      - name: Install PostgreSQL client
         run: |
           sudo apt-get -yqq install libpq-dev
       - name: Bundle install

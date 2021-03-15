@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '2.6.5'
+ruby '2.7.2'
 
-gem 'rails', '~> 6.0.2', '>= 6.0.2.2'
+gem 'rails', '~> 6.1'
 gem 'webpacker', '~> 4.0'
 gem 'pg', '~> 1.0'
 gem 'puma', '~> 4.1'
@@ -32,9 +32,6 @@ end
 
 group :test do
   gem 'capybara'
-  # Rails system tests couldn't run without it, event though we don't use it
-  # https://github.com/rails/rails/pull/39179
-  gem 'selenium-webdriver'
   gem 'cuprite'
 
   gem 'test-prof'
