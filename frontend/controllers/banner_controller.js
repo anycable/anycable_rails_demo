@@ -24,6 +24,6 @@ export default class extends Controller {
   }
 
   hide() {
-    this.element.classList.add("hidden");
+    this.element.remove();
   }
 }

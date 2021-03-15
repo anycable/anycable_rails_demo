@@ -2,10 +2,8 @@
 
 class ItemsController < ApplicationController
   before_action :set_workspace, :set_list
-  before_action :set_item, only: [:destroy, :update]
 
   after_action :broadcast_new_item, only: [:create]
-  after_action :broadcast_changes, only: [:update, :destroy]
 
   attr_reader :workspace, :list, :item
 
@@ -22,35 +20,6 @@ class ItemsController < ApplicationController
     redirect_to workspace, status: :see_other
   end
 
-  def update
-    item.update!(item_params)
-    respond_to do |format|
-      format.json do
-        render json: item.as_json(only: [:id, :desc, :completed])
-      end
-
-      format.html do
-        flash[:notice] = "Item has been updated"
-        redirect_to workspace
-      end
-    end
-  end
-
-  def destroy
-    item.destroy!
-
-    respond_to do |format|
-      format.json do
-        render json: {deletedId: item.id}
-      end
-
-      format.html do
-        flash[:notice] = "Item has been deleted"
-        redirect_to workspace
-      end
-    end
-  end
-
   private
 
   def item_params
@@ -65,21 +34,17 @@ class ItemsController < ApplicationController
     @list = @workspace.lists.find(params[:list_id])
   end
 
-  def set_item
-    @item = @list.items.find(params[:id])
-  end
-
   def broadcast_new_item
     return if item.errors.any?
-    ListChannel.broadcast_to list, type: "created", html: render_to_string(partial: "items/item", layout: false, locals: {item})
+
+    broadcaster.insert_adjacent_html(
+      selector: dom_id(list, :items),
+      html: render_partial("items/item", {item})
+    )
+    cable_ready.broadcast
   end
 
-  def broadcast_changes
-    return if item.errors.any?
-    if item.destroyed?
-      ListChannel.broadcast_to list, type: "deleted", id: item.id
-    else
-      ListChannel.broadcast_to list, type: "updated", id: item.id, desc: item.desc, completed: item.completed
-    end
+  def broadcaster
+    cable_ready[ListChannel.broadcasting_for(list)]
   end
 end

@@ -19,9 +19,9 @@ describe ListsController do
       expect { subject }.to change(workspace.lists, :count).by(1)
     end
 
-    it "broadcasts a newList message" do
+    it "broadcasts a cable ready insertAdjacentHtml operation" do
       expect { subject }.to have_broadcasted_to(WorkspaceChannel.broadcasting_for(workspace))
-        .with(a_hash_including(type: "newList"))
+        .with(a_hash_including("cableReady": true, "operations": a_hash_including("insertAdjacentHtml": anything)))
     end
   end
 
@@ -34,9 +34,9 @@ describe ListsController do
       expect { subject }.to change(workspace.lists, :count).by(-1)
     end
 
-    it "broadcasts a deletedList message" do
+    it "broadcasts a cable ready remove operation" do
       expect { subject }.to have_broadcasted_to(WorkspaceChannel.broadcasting_for(workspace))
-        .with(type: "deletedList", id: list.id)
+        .with(a_hash_including("cableReady": true, "operations": a_hash_including("remove": anything)))
     end
   end
 end
