@@ -24,31 +24,16 @@ class ItemsController < ApplicationController
 
   def update
     item.update!(item_params)
-    respond_to do |format|
-      format.json do
-        render json: item.as_json(only: [:id, :desc, :completed])
-      end
 
-      format.html do
-        flash[:notice] = "Item has been updated"
-        redirect_to workspace
-      end
-    end
+    flash.now[:notice] = "Item has been updated"
+    render partial: "update", locals: {item}, content_type: "text/vnd.turbo-stream.html"
   end
 
   def destroy
     item.destroy!
 
-    respond_to do |format|
-      format.json do
-        render json: {deletedId: item.id}
-      end
-
-      format.html do
-        flash[:notice] = "Item has been deleted"
-        redirect_to workspace
-      end
-    end
+    flash.now[:notice] = "Item has been deleted"
+    render partial: "update", locals: {item: nil}, content_type: "text/vnd.turbo-stream.html"
   end
 
   private

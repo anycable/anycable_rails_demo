@@ -1,7 +1,6 @@
 import { Controller } from "stimulus";
 import { createChannel } from "../utils/cable";
 import { isPreview as isTurboPreview } from '../utils/turbo';
-import { DELETE, PATCH } from "../utils/api";
 
 export default class extends Controller {
   static targets = ["items"];
@@ -38,32 +37,6 @@ export default class extends Controller {
     } else if (data.type == "created") {
       this.itemsTarget.insertAdjacentHTML("beforeend", data.html);
     }
-  }
-
-  deleteItem(e) {
-    const url = e.currentTarget.dataset["url"];
-    if (!url) {
-      console.error("URL not set for button", e.currentTarget);
-      return;
-    }
-
-    DELETE(url).then((data) => {
-      this.removeItem(data.deletedId);
-    });
-  }
-
-  toggleCompleted(e) {
-    const checkbox = e.currentTarget;
-    const url = checkbox.dataset["url"];
-
-    if (!url) {
-      console.error("URL not set for button", e.currentTarget);
-      return;
-    }
-
-    PATCH(url, {item: {completed: checkbox.checked}}).then((data) => {
-      this.updateCompleted(data.id, data.completed);
-    });
   }
 
   removeItem(id) {
