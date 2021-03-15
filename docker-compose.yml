@@ -6,14 +6,14 @@ x-app: &app
     dockerfile: ./.dockerdev/Dockerfile
     args:
       RUBY_VERSION: '2.6.5'
-      PG_MAJOR: '11'
+      PG_MAJOR: '13'
       NODE_MAJOR: '12'
       YARN_VERSION: '1.13.0'
       BUNDLER_VERSION: '2.1.2'
   environment: &env
     NODE_ENV: development
     RAILS_ENV: ${RAILS_ENV:-development}
-  image: anycable-rails-demo-dev:1.0.0
+  image: anycable-rails-demo-dev:1.1.0
   tmpfs:
     - /tmp
 
@@ -123,12 +123,13 @@ services:
         condition: service_started
 
   postgres:
-    image: postgres:11.1
+    image: postgres:13.0
     volumes:
       - .dockerdev/.psqlrc:/root/.psqlrc:ro
       - postgres:/var/lib/postgresql/data
       - ./log:/root/log:cached
     environment:
+      POSTGRES_PASSWORD: postgres
       PSQL_HISTFILE: /root/log/.psql_history
     ports:
       - 5432
@@ -150,7 +151,7 @@ services:
 
   webpacker:
     <<: *app
-    command: ./bin/webpack-dev-server
+    command: bundle exec ./bin/webpack-dev-server
     ports:
       - '3035:3035'
       - 3036
