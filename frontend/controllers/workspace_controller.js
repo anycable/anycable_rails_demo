@@ -1,12 +1,12 @@
 import { Controller } from "stimulus";
 import { createChannel } from "../utils/cable";
-import { isPreview as isTurbolinksPreview } from '../utils/turbolinks';
+import { isPreview as isTurboPreview } from '../utils/turbo';
 
 export default class extends Controller {
   static targets = ["lists", "form"];
 
   connect() {
-    if (isTurbolinksPreview()) return;
+    if (isTurboPreview()) return;
 
     const channel = "WorkspaceChannel";
     const id = this.data.get("id");

@@ -1,13 +1,13 @@
 import { Controller } from "stimulus";
 import { createChannel } from "../utils/cable";
-import { isPreview as isTurbolinksPreview } from '../utils/turbolinks';
+import { isPreview as isTurboPreview } from '../utils/turbo';
 import { DELETE, PATCH } from "../utils/api";
 
 export default class extends Controller {
   static targets = ["items"];
 
   connect() {
-    if (isTurbolinksPreview()) return;
+    if (isTurboPreview()) return;
 
     const channel = "ListChannel";
     const id = this.data.get("id");

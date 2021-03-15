@@ -1,10 +1,10 @@
 import { Controller } from "stimulus";
 import { visitedWorkspaces } from "../../utils/workspaces";
-import { isPreview as isTurbolinksPreview } from "../../utils/turbolinks";
+import { isPreview as isTurboPreview } from "../../utils/turbo";
 
 export default class extends Controller {
   connect() {
-    if (isTurbolinksPreview()) return;
+    if (isTurboPreview()) return;
 
     // remove stale data first
     this.element.innerHTML = '';

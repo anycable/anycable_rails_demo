@@ -1,13 +1,13 @@
 {
   "dependencies": {
+    "@hotwired/turbo-rails": "^7.0.0-beta.5",
     "@rails/actioncable": "6.0.2",
     "@rails/ujs": "^6.0.3-4",
     "@rails/webpacker": "4.2.2",
     "js-cookie": "^2.2.1",
     "linkifyjs": "^2.1.9",
     "stimulus": "^1.1.1",
-    "tailwindcss": "^1.4.0",
-    "turbolinks": "^5.2.0"
+    "tailwindcss": "^1.4.0"
   },
   "devDependencies": {
     "webpack-dev-server": "^3.10.3"

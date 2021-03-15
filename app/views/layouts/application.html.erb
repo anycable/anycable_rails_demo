@@ -8,12 +8,12 @@
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
     <% if logged_in? %>
-      <meta name="current-user-name" content="<%= current_user.name %>" data-turbolinks-track="reload">
-      <meta name="current-user-id" content="<%= current_user.id %>" data-turbolinks-track="reload">
+      <meta name="current-user-name" content="<%= current_user.name %>" data-turbo-track="reload">
+      <meta name="current-user-id" content="<%= current_user.id %>" data-turbo-track="reload">
     <% end %>
     <%= action_cable_meta_tag %>
-    <%= stylesheet_pack_tag "application", data: {turbolinks: {track: "reload"}} %>
-    <%= javascript_pack_tag "application", data: {turbolinks: {track: "reload"}}, defer: true %>
+    <%= stylesheet_pack_tag "application", data: {turbo: {track: "reload"}} %>
+    <%= javascript_pack_tag "application", data: {turbo: {track: "reload"}}, defer: true %>
   </head>
   <body class="h-screen relative">
     <%= render "shared/alerts" %>

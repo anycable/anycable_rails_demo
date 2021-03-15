@@ -19,7 +19,7 @@ class ListsController < ApplicationController
       flash[:alert] = "Failed to create a list: #{list.errors.full_messages.join(";")}"
     end
 
-    redirect_to workspace
+    redirect_to workspace, status: :see_other
   end
 
   def destroy

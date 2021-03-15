@@ -13,7 +13,7 @@
     <%= render list.items %>
   </div>
   <div class="bg-white py-2" id="<%= dom_id(list, :new_item) %>">
-    <%= form_for [list.workspace, list, list.items.new], remote: true, html: {class: "flex items-center border-b border-b-2 border-teal-500 mb-4 pb-1"} do |f| %>
+    <%= form_for [list.workspace, list, list.items.new], html: {class: "flex items-center border-b border-b-2 border-teal-500 mb-4 pb-1"} do |f| %>
       <%= f.text_field :desc, class: "any-text-input", placeholder: "New item", autocomplete: "off" %>
     <% end %>
   </div>

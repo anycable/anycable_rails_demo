@@ -14,8 +14,7 @@ gem 'bootsnap', '>= 1.4.2', require: false
 gem 'ruby-next', '>= 0.10.0', require: false
 
 gem 'nanoid'
-# We only need controllers integration
-gem 'turbolinks', require: 'turbolinks/redirection'
+gem 'turbo-rails'
 
 group :development, :test do
   gem 'pry-byebug'

@@ -261,9 +261,8 @@ GEM
     test-prof (0.12.1)
     thor (1.0.1)
     thread_safe (0.3.6)
-    turbolinks (5.2.1)
-      turbolinks-source (~> 5.2)
-    turbolinks-source (5.2.0)
+    turbo-rails (0.5.9)
+      rails (>= 6.0.0)
     tzinfo (1.2.7)
       thread_safe (~> 0.1)
     unicode-display_width (1.6.1)
@@ -311,7 +310,7 @@ DEPENDENCIES
   selenium-webdriver
   standard (~> 0.2.0)
   test-prof
-  turbolinks
+  turbo-rails
   webpacker (~> 4.0)
 
 RUBY VERSION
