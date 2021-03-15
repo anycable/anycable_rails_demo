@@ -10,6 +10,8 @@ require "action_view/railtie"
 require "action_cable/engine"
 require "active_job/railtie"
 
+require "active_support/core_ext/integer/time"
+
 Bundler.require(*Rails.groups)
 
 module AnycableRailsDemo
