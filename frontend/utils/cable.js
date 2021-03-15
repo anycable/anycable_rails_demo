@@ -1,16 +1,10 @@
-import { createConsumer } from "@rails/actioncable";
+import { cable } from "@hotwired/turbo-rails";
 
-let consumer;
-
-export const createCable = () => {
-  if (!consumer) {
-    consumer = createConsumer();
-  }
-
-  return consumer;
+export async function createCable(){
+  return cable.getConsumer();
 }
 
-export const createChannel = (...args) => {
-  const consumer = createCable();
+export async function createChannel(...args) {
+  const consumer = await createCable();
   return consumer.subscriptions.create(...args);
 };

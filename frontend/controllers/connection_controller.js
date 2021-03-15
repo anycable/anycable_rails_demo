@@ -10,10 +10,10 @@ export default class extends Controller {
     this.handleClose = this.handleClose.bind(this);
   }
 
-  connect() {
+  async connect() {
     if (isTurboPreview()) return;
 
-    this.connection = createCable().connection;
+    this.connection = (await createCable()).connection;
 
     if (!this.connection.webSocket) {
       // Action Cable initializes a WebSocket connection lazily,

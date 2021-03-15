@@ -1,4 +1,4 @@
-<div class="any-list--panel" id="<%= dom_id(list) %>" data-controller="list" data-list-id="<%= list.id %>" data-list-workspace="<%= list.workspace.to_param %>">
+<div class="any-list--panel" id="<%= dom_id(list) %>">
   <div id="<%= dom_id(list, :header) %>">
     <%= form_for [list.workspace, list], method: :delete, html: {data: {confirm: "Are you sure you want to delete #{list.name} list?"}, class: "sticky top-0 bg-white pt-6 flex justify-between"} do |f|%>
       <h3 class="truncate"><%= list.name %></h3>
@@ -9,7 +9,7 @@
     <% end %>
   </div>
   <hr class="mt-1">
-  <div class="pt-2" id="<%= dom_id(list, :items) %>" data-target="list.items">
+  <div class="pt-2" id="<%= dom_id(list, :items) %>">
     <%= render list.items %>
   </div>
   <div class="bg-white py-2" id="<%= dom_id(list, :new_item) %>">

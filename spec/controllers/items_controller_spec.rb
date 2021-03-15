@@ -21,8 +21,9 @@ describe ItemsController do
     end
 
     it "broadcasts a created message" do
-      expect { subject }.to have_broadcasted_to(ListChannel.broadcasting_for(list))
-        .with(a_hash_including(type: "created"))
+      expect { subject }.to have_broadcasted_turbo_stream_to(
+        workspace, action: :append, target: ActionView::RecordIdentifier.dom_id(list, :items)
+      )
     end
   end
 
@@ -36,8 +37,9 @@ describe ItemsController do
     end
 
     it "broadcasts a deleted message" do
-      expect { subject }.to have_broadcasted_to(ListChannel.broadcasting_for(list))
-        .with(type: "deleted", id: item.id)
+      expect { subject }.to have_broadcasted_turbo_stream_to(
+        workspace, action: :remove, target: item
+      )
     end
   end
 
@@ -49,8 +51,9 @@ describe ItemsController do
     subject { patch :update, params: {workspace_id: workspace.to_param, list_id: list.id, id: item.id, item: form_params} }
 
     it "broadcasts an updated message" do
-      expect { subject }.to have_broadcasted_to(ListChannel.broadcasting_for(list))
-        .with(type: "updated", id: item.id, completed: true, desc: item.desc)
+      expect { subject }.to have_broadcasted_turbo_stream_to(
+        workspace, action: :replace, target: item
+      )
     end
   end
 end
