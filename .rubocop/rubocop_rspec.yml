@@ -40,11 +40,11 @@ RSpec/MissingExampleGroupArgument:
 RSpec/ReceiveCounts:
   Enabled: true
 
-Capybara/CurrentPathExpectation:
+RSpec/Capybara/CurrentPathExpectation:
   Enabled: true
 
-FactoryBot/AttributeDefinedStatically:
+RSpec/FactoryBot/AttributeDefinedStatically:
   Enabled: true
 
-FactoryBot/CreateList:
+RSpec/FactoryBot/CreateList:
   Enabled: true

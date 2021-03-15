@@ -1,6 +1,6 @@
 require:
   - ruby-next/rubocop
-  - standard/cop/semantic_blocks
+  - standard/cop/block_single_line_braces
 
 inherit_mode:
   merge:
@@ -24,7 +24,7 @@ AllCops:
   DisplayCopNames: true
   TargetRubyVersion: next
 
-Standard/SemanticBlocks:
+Standard/BlockSingleLineBraces:
   Enabled: false
 
 Style/FrozenStringLiteralComment:

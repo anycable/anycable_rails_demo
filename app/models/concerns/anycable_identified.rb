@@ -13,7 +13,7 @@ module AnycableIdentified
     super(attributes.merge!(options).merge!(app: :anycable))
   end
 
-  alias to_gid to_global_id
+  alias_method :to_gid, :to_global_id
 end
 
 # Setup GlobalID to correctly resolve our custom identification
