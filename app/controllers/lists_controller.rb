@@ -25,7 +25,8 @@ class ListsController < ApplicationController
   def destroy
     list.destroy!
     flash[:notice] = "#{list.name} has been deleted!"
-    redirect_to workspace
+
+    redirect_to workspace, status: :see_other
   end
 
   private
@@ -44,13 +45,13 @@ class ListsController < ApplicationController
 
   def broadcast_new_list
     return if list.errors.any?
-    WorkspaceChannel.broadcast_to workspace, type: "newList", html: render_to_string(partial: "lists/list", layout: false, locals: {list})
+    Turbo::StreamsChannel.broadcast_append_to workspace, target: ActionView::RecordIdentifier.dom_id(workspace, :lists), partial: "lists/list", locals: {list}
   end
 
   def broadcast_changes
     return if list.errors.any?
     if list.destroyed?
-      WorkspaceChannel.broadcast_to workspace, type: "deletedList", id: list.id
+      Turbo::StreamsChannel.broadcast_remove_to workspace, target: list
     end
   end
 end

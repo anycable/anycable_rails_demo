@@ -20,8 +20,9 @@ describe ListsController do
     end
 
     it "broadcasts a newList message" do
-      expect { subject }.to have_broadcasted_to(WorkspaceChannel.broadcasting_for(workspace))
-        .with(a_hash_including(type: "newList"))
+      expect { subject }.to have_broadcasted_turbo_stream_to(
+        workspace, action: :append, target: ActionView::RecordIdentifier.dom_id(workspace, :lists)
+      )
     end
   end
 
@@ -34,9 +35,10 @@ describe ListsController do
       expect { subject }.to change(workspace.lists, :count).by(-1)
     end
 
-    it "broadcasts a deletedList message" do
-      expect { subject }.to have_broadcasted_to(WorkspaceChannel.broadcasting_for(workspace))
-        .with(type: "deletedList", id: list.id)
+    it "broadcasts a remove message" do
+      expect { subject }.to have_broadcasted_turbo_stream_to(
+        workspace, action: :remove, target: list
+      )
     end
   end
 end

@@ -1,6 +1,6 @@
 <div class="px-6" data-controller="workspaces--remember" data-workspaces--remember-url="<%= workspace_path(workspace) %>" data-workspaces--remember-name="<%= workspace.name %>">
   <%= turbo_stream_from workspace %>
-  <div class="grid grid-cols-1 lg:grid-cols-chat gap-4" data-controller="workspace" data-workspace-id="<%= workspace.to_param %>">
+  <div class="grid grid-cols-1 lg:grid-cols-chat gap-4" data-controller="workspace">
     <%= render "chats/chat", workspace: workspace %>
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4" id="<%= dom_id(workspace, :lists) %>" data-target="workspace.lists">
       <div class="any-banner mb-4" role="alert" data-controller="banner" data-banner-id="todo">

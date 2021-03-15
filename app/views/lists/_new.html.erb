@@ -1,4 +1,4 @@
-<div class="px-8 pb-8 relative" data-target="workspace.form" id="<%= dom_id(workspace, :new_list) %>">
+<div class="px-8 pb-8 relative" id="<%= dom_id(workspace, :new_list) %>" data-target="workspace.newForm">
   <%= form_for [workspace, workspace.lists.new], html: {class: "flex items-center border-b border-b-2 border-teal-500 mb-4 pb-1"} do |f| %>
     <%= f.text_field :name, autocomplete: "off", class: "any-text-input", placeholder: "List name" %>
     <%= f.button "Create", type: "submit", class: "flex-shrink-0 any-button" %>
