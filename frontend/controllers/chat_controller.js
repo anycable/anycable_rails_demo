@@ -45,6 +45,12 @@ export default class extends Controller {
   appendMessage(html, mine) {
     this.messagesTarget.insertAdjacentHTML("beforeend", html);
     this.messagesTarget.lastElementChild.classList.add(mine ? "mine" : "theirs");
+
+    if (mine) {
+      const authorElement = this.messagesTarget.lastElementChild.querySelector('[data-role="author"]');
+      if (authorElement) authorElement.innerText = "You";
+    }
+
     this.element.scrollTop = this.element.scrollHeight;
   }
 

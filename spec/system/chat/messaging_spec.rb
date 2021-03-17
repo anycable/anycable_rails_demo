@@ -12,14 +12,18 @@ describe "Workspaces -> Chat" do
 
   it "I can send a message" do
     within ".chat" do
+      expect(page).to have_text "You will receive new messages as they come"
+
       fill_in :message, with: "Hi there"
 
       click_on "Send"
 
-      within ".chat .messages" do
+      within ".chat .messages div:last-child" do
         expect(page).to have_text "Hi there"
-        expect(page).to have_text "Any"
+        expect(page).to have_text "You"
       end
+
+      expect(page).to have_no_text "You will receive new messages as they come"
     end
   end
 
@@ -38,13 +42,13 @@ describe "Workspaces -> Chat" do
 
       click_on "Send"
 
-      within ".chat .messages" do
+      within ".chat .messages div:last-child" do
         expect(page).to have_text "Hi John"
-        expect(page).to have_text "Any"
+        expect(page).to have_text "You"
       end
 
       within_session :john do
-        within ".chat .messages" do
+        within ".chat .messages div:last-child" do
           expect(page).to have_text "Hi John"
           expect(page).to have_text "Any"
         end
@@ -52,10 +56,16 @@ describe "Workspaces -> Chat" do
         fill_in :message, with: "What's up, Any?"
 
         click_on "Send"
+
+        within ".chat .messages div:last-child" do
+          expect(page).to have_text "What's up, Any?"
+          expect(page).to have_text "You"
+        end
       end
 
-      within ".chat .messages" do
+      within ".chat .messages div:last-child" do
         expect(page).to have_text "What's up, Any?"
+        expect(page).to have_text "John"
       end
     end
   end

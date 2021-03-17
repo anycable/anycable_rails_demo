@@ -11,7 +11,9 @@ describe "Log in" do
 
       expect(page).to have_text "Sign out"
       click_on "Sign out"
+    end
 
+    within "nav" do
       expect(page).to have_link "Sign in"
     end
   end
