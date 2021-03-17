@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   delete "/logout", to: "sessions#destroy", as: :logout
 
   resources :workspaces, only: [:index, :new, :create, :destroy, :show] do
+    namespace :chat do
+      resource :message, only: [:create]
+    end
+
     resources :lists, only: [:create, :destroy] do
       resources :items, only: [:create, :destroy, :update]
     end
