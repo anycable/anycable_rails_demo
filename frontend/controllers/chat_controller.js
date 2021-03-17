@@ -1,5 +1,5 @@
 import { Controller } from "stimulus";
-import { currentUser } from "../utils/current_user";
+import "../elements/chat_message";
 import { useMutation } from "stimulus-use";
 
 export default class extends Controller {

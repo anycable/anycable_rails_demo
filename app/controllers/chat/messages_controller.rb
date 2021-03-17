@@ -11,7 +11,7 @@ module Chat
         workspace,
         target: ActionView::RecordIdentifier.dom_id(workspace, :chat_messages),
         partial: "chats/message",
-        locals: {message: params[:message], name: current_user.name}
+        locals: {message: params[:message], name: current_user.name, user_id: current_user.id}
       )
 
       render partial: "chats/form", locals: {workspace}
