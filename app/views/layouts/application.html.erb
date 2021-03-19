@@ -12,8 +12,8 @@
       <meta name="current-user-id" content="<%= current_user.id %>" data-turbo-track="reload">
     <% end %>
     <%= action_cable_meta_tag %>
-    <%= stylesheet_pack_tag "application", data: {turbo: {track: "reload"}} %>
-    <%= javascript_pack_tag "application", data: {turbo: {track: "reload"}}, defer: true %>
+    <%= vite_client_tag %>
+    <%= vite_javascript_tag "application", data: {turbo: {track: "reload"}}, defer: true %>
   </head>
   <body class="h-screen relative">
     <%= render "shared/alerts" %>

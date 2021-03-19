@@ -1,0 +1,20 @@
+{
+  "all": {
+    "sourceCodeDir": "frontend",
+    "entrypointsDir": "packs",
+    "watchAdditionalPaths": [
+      "tailwind.config.js",
+      "postcss.config.js"
+    ],
+    "publicOutputDir": "packs"
+  },
+  "development": {
+    "autoBuild": true,
+    "publicOutputDir": "packs",
+    "port": 3035
+  },
+  "test": {
+    "autoBuild": true,
+    "publicOutputDir": "packs-test"
+  }
+}

@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.7.2'
 
 gem 'rails', '~> 6.1'
-gem 'webpacker', '6.0.0.beta.6'
+gem 'vite_rails', '~> 2.0'
 gem 'pg', '~> 1.0'
 gem 'puma', '~> 4.1'
 gem 'redis', '~> 4.0'

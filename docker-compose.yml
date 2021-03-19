@@ -37,7 +37,7 @@ x-backend: &backend
     DATABASE_URL: postgres://postgres:postgres@postgres:5432
     CHROME_URL: http://chrome:3333
     BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
-    WEBPACKER_DEV_SERVER_HOST: webpacker
+    VITE_RUBY_HOST: vite-dev
     WEB_CONCURRENCY: 1
     HISTFILE: /app/log/.bash_history
     PSQL_HISTFILE: /app/log/.psql_history
@@ -149,12 +149,11 @@ services:
       timeout: 3s
       retries: 30
 
-  webpacker:
+  vite-dev:
     <<: *app
-    command: bundle exec ./bin/webpack-dev-server
+    command: bundle exec ./bin/vite dev
     ports:
       - '3035:3035'
-      - 3036
     volumes:
       - .:/app:cached
       - bundle:/usr/local/bundle
@@ -163,7 +162,7 @@ services:
       - packs-test:/app/public/packs-test
     environment:
       <<: *env
-      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
+      VITE_RUBY_HOST: 0.0.0.0
 
   chrome:
     image: browserless/chrome:1.31-chrome-stable

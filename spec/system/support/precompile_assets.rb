@@ -12,8 +12,8 @@ RSpec.configure do |config|
       next
     end
 
-    if Webpacker.dev_server.running?
-      $stdout.puts "\n⚙️  Webpack dev server is running! Skip assets compilation.\n"
+    if ViteRuby.instance.dev_server_running?
+      $stdout.puts "\n⚙️  Vite dev server is running! Skip assets compilation.\n"
       next
     else
       $stdout.puts "\n🐢  Precompiling assets.\n"
@@ -21,12 +21,12 @@ RSpec.configure do |config|
       # Use test-prof now 'cause it couldn't be monkey-patched (e.g., by Timecop or similar)
       start = Time.current
       begin
-        # Silence Webpacker output
+        # Silence Vite output
         $stdout.reopen(File.new("/dev/null", "w"))
-        # next 3 lines to compile webpacker before running our test suite
+        # next 3 lines to compile assets before running our test suite
         require "rake"
         Rails.application.load_tasks
-        Rake::Task["webpacker:compile"].execute
+        Rake::Task["assets:precompile"].execute
       ensure
         $stdout.reopen(original_stdout)
         $stdout.puts "Finished in #{(Time.current - start).round(2)} seconds"

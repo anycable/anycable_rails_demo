@@ -48,6 +48,9 @@ dip rails s
 
 # for AnyCable
 dip anycable
+
+# for Vite server
+dip up vite-dev
 ```
 
 ## Testing
@@ -81,6 +84,7 @@ Built and tested with the help of these awesome technologies:
 - [Tailwind CSS](https://tailwindcss.com)
 - [StimulusJS](https://stimulusjs.org)
 - [Cuprite](https://github.com/rubycdp/cuprite) & [Browserless](https://www.browserless.io)
+- [Vite Ruby](https://vite-ruby.netlify.app)
 
 ## Contributing
 
