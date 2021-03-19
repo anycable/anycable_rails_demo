@@ -31,7 +31,7 @@ h3 {
 }
 
 .any-button-outlined {
-  @apply border-4 border border-red text-red text-sm py-1 px-2 rounded;
+  @apply border border-red text-red text-sm py-1 px-2 rounded;
 
   &:hover {
     @apply bg-red text-white;
@@ -64,13 +64,13 @@ h3 {
 
 @responsive {
   .any-panel-wide {
-    @apply w-9/12 mx-auto any-panel;
+    @apply w-9/12 mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4;
   }
 }
 
 @responsive {
   .any-panel-small {
-    @apply w-1/3 mx-auto any-panel;
+    @apply w-1/3 mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4;
   }
 }
 

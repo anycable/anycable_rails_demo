@@ -1,6 +1,6 @@
 .any-list {
   &--panel {
-    @apply any-panel-p-0 px-8 pb-8 relative;
+    @apply bg-white shadow-md rounded mb-4 px-8 pb-8 relative;
   }
 
   &--item.checked &--item--text {
