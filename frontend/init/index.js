@@ -1,4 +1,5 @@
 import '../styles';
-import '../controllers';
+import './stimulus';
 import './turbo';
 import './ujs';
+import '../components';

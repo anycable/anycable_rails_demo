@@ -30,11 +30,20 @@ TestProf.activate("LOG", "all") do
 end
 
 require "rspec/rails"
+require "capybara/rspec"
+require "view_component/test_helpers"
 
 # support/ files contain framework configurations and helpers
 Dir[File.join(__dir__, "support/**/*.rb")].sort.each { |file| require file }
 
 RSpec.configure do |config|
+  config.include ViewComponent::TestHelpers, type: :view_component
+  config.include Capybara::RSpecMatchers, type: :view_component
+
+  config.define_derived_metadata(file_path: %r{/frontend/components}) do |metadata|
+    metadata[:type] = :view_component
+  end
+
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
   # Wrap each example into a transaction to avoid DB state leak

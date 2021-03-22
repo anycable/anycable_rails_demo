@@ -1,4 +1,5 @@
-import { Controller } from "stimulus";
+import "./index.css"
+import { Controller as BaseController } from "stimulus";
 import Cookies from "js-cookie";
 
 const PREFIX = "any_banner_";
@@ -6,7 +7,7 @@ const PREFIX = "any_banner_";
 // (we use it only in tests for now)
 const COOKIE = "show_banners";
 
-export default class extends Controller {
+export class Controller extends BaseController {
   initialize() {
     this.bannerId = `${PREFIX}_${this.data.get("id")}`;
     this.hiddenByCookie = Cookies.get(COOKIE) == "N";

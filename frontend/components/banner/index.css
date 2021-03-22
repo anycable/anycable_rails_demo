@@ -1,0 +1,8 @@
+/* Use component-local class names and add them to HTML via #class_for(name) helper */
+.container {
+  @apply relative bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4;
+}
+
+.close-btn {
+  @apply cursor-pointer absolute top-0 pt-2 right-0 pr-2 fill-current w-8 h-8;
+}

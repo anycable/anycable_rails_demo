@@ -3,6 +3,5 @@
 @import "tailwindcss/utilities";
 
 @import "core";
-@import "banner";
 @import "chat";
 @import "lists";

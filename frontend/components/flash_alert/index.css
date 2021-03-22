@@ -1,0 +1,7 @@
+.container {
+  @apply max-w-sm bg-white border-t-4 rounded-b text-teal-900 px-4 py-3 shadow-md;
+}
+
+.body {
+  @apply text-sm;
+}

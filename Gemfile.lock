@@ -283,6 +283,8 @@ GEM
       mprelude (~> 0.1.0)
       parser (>= 3.0.0)
       procto (~> 0.0.2)
+    view_component (2.28.0)
+      activesupport (>= 5.0.0, < 7.0)
     webpacker (6.0.0.beta.6)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
@@ -318,10 +320,11 @@ DEPENDENCIES
   standard (~> 1.0)
   test-prof
   turbo-rails
+  view_component
   webpacker (= 6.0.0.beta.6)
 
 RUBY VERSION
    ruby 2.7.2p137
 
 BUNDLED WITH
-   2.1.2
+   2.2.15

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AnyCable Rails Demo</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+    <% if logged_in? %>
+      <meta name="current-user-name" content="<%= current_user.name %>" data-turbo-track="reload">
+      <meta name="current-user-id" content="<%= current_user.id %>" data-turbo-track="reload">
+    <% end %>
+    <%= action_cable_meta_tag %>
+    <%= stylesheet_pack_tag "application", data: {turbo: {track: "reload"}} %>
+    <%= javascript_pack_tag "application", data: {turbo: {track: "reload"}}, defer: true %>
+    <nav class="px-4 flex items-center h-10 bg-gray-200 border-bottom border-gray-300">
+      <%= link_to "↫ back to all previews", "/rails/view_components", data: {turbo: "false"} %>
+    </nav>
+    <div class="container h-full mt-4">
+      <%= yield %>

@@ -13,6 +13,7 @@
     "postcss": "^8.2.8",
     "postcss-import": "^14.0.0",
     "postcss-loader": "^5.2.0",
+    "postcss-modules": "^4.0.0",
     "postcss-nested": "^5.0.5",
     "stimulus": "^1.1.1",
     "tailwindcss": "^2.0.0",

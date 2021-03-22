@@ -9,6 +9,7 @@ require "action_controller/railtie"
 require "action_view/railtie"
 require "action_cable/engine"
 require "active_job/railtie"
+require "view_component/engine"
 
 require "active_support/core_ext/integer/time"
 
@@ -17,6 +18,9 @@ Bundler.require(*Rails.groups)
 module AnycableRailsDemo
   class Application < Rails::Application
     config.load_defaults 6.0
+
+    config.autoload_paths << Rails.root.join("frontend", "components")
+    config.view_component.preview_paths << Rails.root.join("frontend", "components")
 
     config.generators do |g|
       g.assets false

@@ -1,0 +1,6 @@
+<%= render Banner::Component.new(id: "preview") do %>
+  <h2>Banner title</h2>
+  <p>Banner <strong>text</strong></p>
+<% end %>
+
+<%= button_tag "Clear", class: "any-button mt-2 ml-2", onclick: "javascript:localStorage.removeItem('any_banner__preview');window.location.reload();" %>
