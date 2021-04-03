@@ -32,7 +32,7 @@ describe "Workspaces -> Chat" do
       within_session :john do
         login_user "John"
 
-        visit workspace_path(workspaces(:demo))
+        visit workspace_url(workspaces(:demo))
         expect(page).to have_text "Demo Workspace"
       end
     end
