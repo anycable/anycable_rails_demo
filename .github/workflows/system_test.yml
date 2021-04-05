@@ -48,7 +48,8 @@ jobs:
       - name: Bundle install
         run: |
           bundle config path /home/runner/bundle
-          bundle install --frozen
+          bundle config set frozen 'true'
+          bundle install
       - uses: actions/setup-node@v1
         with:
           node-version: '12.x'
