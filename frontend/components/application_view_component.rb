@@ -1,25 +1,17 @@
 # frozen_string_literal: true
 
-class ApplicationViewComponent < ViewComponent::Base
-  include ApplicationHelper
-
-  attr_reader :virtual_path
-
-  def initialize(*)
-    # define @virtual_path for I18n.t shortcuts to work
-    @virtual_path = [
-      "components",
-      self.class.name.sub("::Component", "").underscore.split("/")
-    ].join(".")
-  end
+class ApplicationViewComponent < ViewComponentContrib::Base
+  extend Dry::Initializer
 
   private
 
-  def component_name
-    @component_name ||= self.class.name.sub("::Component", "").underscore.split("/").join("--")
+  def identifier
+    @identifier ||= self.class.name.sub("::Component", "").underscore.split("/").join("--")
   end
 
-  def class_for(name)
-    "c-#{component_name}-#{name}"
+  alias_method :component_name, :identifier
+
+  def class_for(name, from: identifier)
+    "c-#{from}-#{name}"
   end
 end

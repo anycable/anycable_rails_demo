@@ -1,18 +1,13 @@
 # frozen_string_literal: true
 
 class FlashAlert::Component < ApplicationViewComponent
-  attr_reader :type, :body
+  option :type, default: proc { "notice" }
+  option :body, optional: true
 
   TYPE_TO_CLASS = {
     "notice" => "border-teal-500",
     "alert" => "border-red"
   }.freeze
-
-  def initialize(type: "notice", body: nil)
-    super
-    @type = type
-    @body = body
-  end
 
   def render?
     body.present?

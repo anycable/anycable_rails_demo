@@ -2,8 +2,6 @@
 
 class <%= class_name %>::Component < <%= parent_class %>
 <%- if initialize_signature -%>
-  def initialize(<%= initialize_signature %>)
-    <%= initialize_body %>
-  end
+  <%= initialize_signature %>
 <%- end -%>
 end

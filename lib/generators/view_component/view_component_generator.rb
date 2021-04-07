@@ -56,10 +56,6 @@ class ViewComponentGenerator < Rails::Generators::NamedBase
   def initialize_signature
     return if attributes.blank?
 
-    attributes.map { |attr| "#{attr.name}:" }.join(", ")
-  end
-
-  def initialize_body
-    attributes.map { |attr| "@#{attr.name} = #{attr.name}" }.join("\n    ")
+    attributes.map { |attr| "option :#{attr.name}" }.join("\n  ")
   end
 end

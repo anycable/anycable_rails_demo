@@ -9,8 +9,8 @@ Example:
 
     creates a Profile component and test:
         Component:    frontend/components/profile/component.rb
-        Template:     frontend/components/profile/component.html.slim
+        Template:     frontend/components/profile/component.html.erb
         Test:         frontend/components/profile_component_spec.rb
-        Preview:      frontend/components/profile/preview.rb
+        Preview:      frontend/components/profile/component_preview.rb
         JS:           frontend/components/profile/component.js
         CSS:          frontend/components/profile/component.css

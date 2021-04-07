@@ -10,6 +10,8 @@ gem 'puma', '~> 4.1'
 gem 'redis', '~> 4.0'
 gem 'anycable-rails', '~> 1.0.0'
 gem 'view_component'
+gem 'view_component-contrib', '~> 0.1'
+gem 'dry-initializer', '~> 3.0'
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'ruby-next', '>= 0.10.0', require: false
