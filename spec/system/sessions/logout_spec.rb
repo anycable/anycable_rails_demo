@@ -13,8 +13,6 @@ describe "Log in" do
       click_on "Sign out"
     end
 
-    within "nav" do
-      expect(page).to have_link "Sign in"
-    end
+    expect(page).to have_link "Sign in"
   end
 end
