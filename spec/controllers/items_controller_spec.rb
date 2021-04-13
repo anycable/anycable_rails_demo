@@ -30,7 +30,7 @@ describe ItemsController do
   describe "DELETE #destroy" do
     let!(:item) { items(:demo_anycable) }
 
-    subject { delete :destroy, params: {workspace_id: workspace.to_param, list_id: list.id, id: item.id} }
+    subject { delete :destroy, params: {workspace_id: workspace.to_param, list_id: list.id, id: item.id}, format: :turbo_stream }
 
     it "destroyes the item" do
       expect { subject }.to change(list.items, :count).by(-1)
@@ -48,7 +48,7 @@ describe ItemsController do
 
     let(:form_params) { {completed: true} }
 
-    subject { patch :update, params: {workspace_id: workspace.to_param, list_id: list.id, id: item.id, item: form_params} }
+    subject { patch :update, params: {workspace_id: workspace.to_param, list_id: list.id, id: item.id, item: form_params}, format: :turbo_stream }
 
     it "broadcasts an updated message" do
       expect { subject }.to have_broadcasted_turbo_stream_to(

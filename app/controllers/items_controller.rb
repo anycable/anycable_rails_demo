@@ -26,14 +26,13 @@ class ItemsController < ApplicationController
     item.update!(item_params)
 
     flash.now[:notice] = "Item has been updated"
-    render partial: "update", locals: {item}, content_type: "text/vnd.turbo-stream.html"
   end
 
   def destroy
     item.destroy!
 
     flash.now[:notice] = "Item has been deleted"
-    render partial: "update", locals: {item}, content_type: "text/vnd.turbo-stream.html"
+    render action: :update
   end
 
   private
