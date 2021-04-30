@@ -88,3 +88,4 @@ provision:
   - dip bundle install
   - dip yarn install
   - dip rails db:prepare
+  - dip rails db:test:prepare

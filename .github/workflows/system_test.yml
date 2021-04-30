@@ -41,7 +41,7 @@ jobs:
             bundle-
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.7.2
+          ruby-version: 3.0.1
       - name: Install PostgreSQL client
         run: |
           sudo apt-get -yqq install libpq-dev
