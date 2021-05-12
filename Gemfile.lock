@@ -76,7 +76,7 @@ GEM
     anycable-core (1.1.0.rc1)
       anyway_config (>= 2.1.0)
       google-protobuf (>= 3.13)
-    anycable-rails (1.1.0.rc1)
+    anycable-rails (1.1.0.rc1.1)
       actioncable (>= 6)
       anycable-core (> 1.0.99, < 2.0)
       globalid
