@@ -34,6 +34,7 @@ x-backend: &backend
   environment: &backend_environment
     <<: *env
     REDIS_URL: redis://redis:6379/
+    ANYCABLE_REDIS_SENTINELS: :any_secret@redis-sentinel:26379
     DATABASE_URL: postgres://postgres:postgres@postgres:5432
     CHROME_URL: http://chrome:3333
     BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
@@ -66,6 +67,8 @@ services:
       <<: *backend_environment
       APP_HOST: anycable.test
       ANYCABLE_RPC_HOST: 0.0.0.0:50051
+      # Do not use sentinels in tests
+      ANYCABLE_REDIS_SENTINELS: ""
       CABLE_URL: "ws://ws.anycable.test:8080/cable"
     depends_on:
       <<: *backend_depends_on
@@ -83,12 +86,14 @@ services:
     command: bundle exec sidekiq -C config/sidekiq.yml
 
   ws: &ws
-    image: anycable/anycable-go:1.0
+    image: anycable/anycable-go:edge
     ports:
       - '8080:8080'
     environment: &ws_environment
       ANYCABLE_HOST: "0.0.0.0"
       ANYCABLE_REDIS_URL: redis://redis:6379/0
+      ANYCABLE_REDIS_SENTINELS: :any_secret@redis-sentinel:26379
+      ANYCABLE_REDIS_SENTINEL_DISCOVERY_INTERVAL: 2
       ANYCABLE_RPC_HOST: anycable:50051
       ANYCABLE_DEBUG: 1
     depends_on:
@@ -148,6 +153,34 @@ services:
       interval: 1s
       timeout: 3s
       retries: 30
+
+  redis-slave:
+    image: redis:5.0-alpine
+    command: redis-server --slaveof redis 6379
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - redis:/data
+
+  redis-sentinel:
+    image: redis:5.0-alpine
+    volumes:
+      - ./.dockerdev/redis-sentinel:/redis
+    working_dir: /redis
+    entrypoint: ./entrypoint.sh
+    environment:
+      SENTINEL_QUORUM: 2
+      SENTINEL_DOWN_AFTER: 1000
+      SENTINEL_FAILOVER: 1000
+      SENTINEL_MASTER: redis
+    ports:
+      - 26379
+    depends_on:
+      redis:
+        condition: service_started
+      redis-slave:
+        condition: service_started
 
   webpacker:
     <<: *app
