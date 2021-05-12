@@ -70,12 +70,15 @@ GEM
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2)
       equalizer (~> 0.0.11)
-    anycable (1.0.3)
-      anyway_config (>= 1.4.2)
-      grpc (~> 1.17)
-    anycable-rails (1.0.7)
-      actioncable (>= 5)
-      anycable (>= 1.0.0)
+    anycable (1.1.0.rc1)
+      anycable-core (= 1.1.0.rc1)
+      grpc (~> 1.37)
+    anycable-core (1.1.0.rc1)
+      anyway_config (>= 2.1.0)
+      google-protobuf (>= 3.13)
+    anycable-rails (1.1.0.rc1)
+      actioncable (>= 6)
+      anycable-core (> 1.0.99, < 2.0)
       globalid
     anyway_config (2.1.0)
       ruby-next-core (>= 0.11.0)
@@ -113,11 +116,11 @@ GEM
     ffi (1.15.0)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
-    google-protobuf (3.15.6)
+    google-protobuf (3.16.0)
     googleapis-common-protos-types (1.0.6)
       google-protobuf (~> 3.14)
-    grpc (1.36.0)
-      google-protobuf (~> 3.14)
+    grpc (1.37.1)
+      google-protobuf (~> 3.15)
       googleapis-common-protos-types (~> 1.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
@@ -297,7 +300,8 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  anycable-rails (~> 1.0.0)
+  anycable (> 1.0.99)
+  anycable-rails (> 1.0.99)
   bootsnap (>= 1.4.2)
   capybara
   cuprite

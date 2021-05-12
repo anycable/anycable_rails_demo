@@ -60,10 +60,6 @@ dip rspec
 
 # only system tests
 dip rspec system
-
-# NOTE: if you encounter random multi-session tests failures,
-# try stopping AnyCable WebSocket server
-dip stop ws_test
 ```
 
 ## Resources
