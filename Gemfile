@@ -35,7 +35,8 @@ group :test do
   gem 'cuprite'
 
   # Rack-based AnyCable server implementation
-  gem 'anycable-rack-server', '~> 0.3.0'
+  gem 'anycable-rack-server', '~> 0.4.0'
+  gem 'msgpack', '~> 1.4'
 
   gem 'test-prof'
 end

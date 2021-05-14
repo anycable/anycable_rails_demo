@@ -14,6 +14,8 @@ Rails.application.configure do
   config.action_cable.mount_path = nil
   # Run AnyCable Rack server at a custom path
   config.any_cable_rack.mount_path = "/rack_cable"
+  # Use Msgpack coder
+  config.any_cable_rack.coder = :msgpack
 
   # Settings specified here will take precedence over those in config/application.rb.
   config.cache_classes = true

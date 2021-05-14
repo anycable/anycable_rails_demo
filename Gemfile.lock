@@ -76,7 +76,7 @@ GEM
     anycable-core (1.1.0.rc1)
       anyway_config (>= 2.1.0)
       google-protobuf (>= 3.13)
-    anycable-rack-server (0.3.0)
+    anycable-rack-server (0.4.0)
       anycable (> 1.0.99, < 2.0)
       anyway_config (>= 2.1.0)
       connection_pool (~> 2.2)
@@ -307,12 +307,13 @@ PLATFORMS
 
 DEPENDENCIES
   anycable (> 1.0.99)
-  anycable-rack-server (~> 0.3.0)
+  anycable-rack-server (~> 0.4.0)
   anycable-rails (> 1.0.99)
   bootsnap (>= 1.4.2)
   capybara
   cuprite
   listen
+  msgpack (~> 1.4)
   nanoid
   pry-byebug
   pry-rails
