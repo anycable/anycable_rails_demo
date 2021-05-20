@@ -29,6 +29,7 @@ default: &default
 development:
   <<: *default
   embedded: true
+  http_broadcast_url: "http://localhost:3000/_anycable_rack_broadcast"
 
 test:
   <<: *default
