@@ -2,9 +2,14 @@
 
 Rails.application.configure do
   # Specify AnyCable WebSocket server URL to use by JS client
-  config.after_initialize do
-    config.action_cable.url = ActionCable.server.config.url = ENV.fetch("CABLE_URL", "ws://localhost:8080/cable") if AnyCable::Rails.enabled?
-  end
+  config.action_cable.url = ENV.fetch("CABLE_URL", "/rack_cable")
+  # Disable built-in Action Cable
+  config.action_cable.mount_path = nil
+  # Run AnyCable Rack server at a custom path
+  config.any_cable_rack.mount_path = "/rack_cable"
+  # Use Msgpack coder
+  config.any_cable_rack.coder = :msgpack
+
   # Settings specified here will take precedence over those in config/application.rb.
 
   # In the development environment your application's code is reloaded on

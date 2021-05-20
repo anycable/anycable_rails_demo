@@ -20,6 +20,10 @@ group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rails'
   gem 'rspec-rails', '~> 4.0.0'
+
+  # Rack-based AnyCable server implementation
+  gem 'anycable-rack-server', '~> 0.4.0'
+  gem 'msgpack', '~> 1.4'
 end
 
 group :development do
@@ -33,10 +37,6 @@ end
 group :test do
   gem 'capybara'
   gem 'cuprite'
-
-  # Rack-based AnyCable server implementation
-  gem 'anycable-rack-server', '~> 0.4.0'
-  gem 'msgpack', '~> 1.4'
 
   gem 'test-prof'
 end
