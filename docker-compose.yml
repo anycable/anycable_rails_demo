@@ -83,7 +83,7 @@ services:
     command: bundle exec sidekiq -C config/sidekiq.yml
 
   ws: &ws
-    image: anycable/anycable-go:1.1.0.rc1
+    image: anycable/anycable-go:1.1
     ports:
       - '8080:8080'
     environment: &ws_environment
