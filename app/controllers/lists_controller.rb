@@ -6,6 +6,7 @@ class ListsController < ApplicationController
 
   after_action :broadcast_new_list, only: [:create]
   after_action :broadcast_changes, only: [:destroy]
+  after_action :trigger_gql_subscription, only: [:create, :destroy]
 
   attr_reader :workspace, :list
 
@@ -52,5 +53,9 @@ class ListsController < ApplicationController
     if list.destroyed?
       WorkspaceChannel.broadcast_to workspace, type: "deletedList", id: list.id
     end
+  end
+
+  def trigger_gql_subscription
+    ApplicationSchema.subscriptions.trigger("workspace_updated", {id: workspace.public_id}, workspace)
   end
 end

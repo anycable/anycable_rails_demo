@@ -22,6 +22,13 @@ module AnycableRailsDemo
     # (which makes bin/webpack to hang forever)
     Webpacker::Compiler.env["TAILWIND_MODE"] = "build"
 
+    config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins "*"
+        resource "*", headers: :any, methods: [:get, :post, :patch, :put]
+      end
+    end
+
     config.generators do |g|
       g.assets false
       g.helper false

@@ -11,5 +11,7 @@ Rails.application.routes.draw do
     end
   end
 
+  post "/graphql", to: "graphql#execute", as: :graphql
+
   root to: "workspaces#index"
 end

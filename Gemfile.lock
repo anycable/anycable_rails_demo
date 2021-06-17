@@ -70,6 +70,9 @@ GEM
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2)
       equalizer (~> 0.0.11)
+    anycable (1.1.0)
+      anycable-core (= 1.1.0)
+      grpc (~> 1.37)
     anycable-core (1.1.0)
       anyway_config (>= 2.1.0)
       google-protobuf (>= 3.13)
@@ -116,6 +119,12 @@ GEM
     google-protobuf (3.17.1)
     googleapis-common-protos-types (1.0.6)
       google-protobuf (~> 3.14)
+    graphql (1.12.12)
+    graphql-anycable (1.0.1)
+      anycable (~> 1.0)
+      anyway_config (>= 1.3, < 3)
+      graphql (~> 1.11)
+      redis (>= 4.2.0)
     grpc (1.38.0)
       google-protobuf (~> 3.15)
       googleapis-common-protos-types (~> 1.0)
@@ -168,6 +177,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
@@ -301,6 +312,8 @@ DEPENDENCIES
   bootsnap (>= 1.4.2)
   capybara
   cuprite
+  graphql
+  graphql-anycable
   grpc (~> 1.37)
   listen
   nanoid
@@ -308,6 +321,7 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   puma (~> 4.1)
+  rack-cors
   rails (~> 6.1)
   redis (~> 4.0)
   rspec-rails (~> 4.0.0)
