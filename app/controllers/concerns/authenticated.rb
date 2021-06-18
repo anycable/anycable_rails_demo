@@ -14,7 +14,7 @@ module Authenticated
   def current_user
     return @current_user if instance_variable_defined?(:@current_user)
 
-    @current_user = login_from_session || login_from_cookie
+    @current_user = login_from_session || login_from_cookie || login_from_apollo
   end
 
   def logged_in?() = !current_user.nil?
@@ -30,6 +30,21 @@ module Authenticated
     return unless cookies[:uid]
 
     name, id = cookies[:uid].split("/")
+    User.new({name, id}).tap do |user|
+      # store in session
+      commit_user_to_session! user
+    end
+  end
+
+  def login_from_apollo
+    header = request.headers["x-apollo-connection"]
+    return unless header
+
+    payload = JSON.parse(header)
+
+    return unless payload["user_token"]
+
+    name, id = payload["user_token"].split("/")
     User.new({name, id}).tap do |user|
       # store in session
       commit_user_to_session! user
