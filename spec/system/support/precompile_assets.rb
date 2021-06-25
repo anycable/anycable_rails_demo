@@ -12,6 +12,14 @@ RSpec.configure do |config|
       next
     end
 
+    webpacker_dev_server_running = Webpacker::DevServer.new(
+      Webpacker::Configuration.new(
+        root_path: (root = Rails.root),
+        config_path: root.join('config', 'webpacker.yml'),
+        env: 'development'
+      )
+    ).running?
+
     if Webpacker.dev_server.running?
       $stdout.puts "\n⚙️  Webpack dev server is running! Skip assets compilation.\n"
       next
