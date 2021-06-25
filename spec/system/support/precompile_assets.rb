@@ -14,8 +14,8 @@ RSpec.configure do |config|
 
     webpacker_dev_server_running = Webpacker::DevServer.new(
       Webpacker::Configuration.new(
-        root_path: (root = Rails.root),
-        config_path: root.join('config', 'webpacker.yml'),
+        root_path: (webpacker_cfg = Webpacker.config).root_path,
+        config_path: webpacker_cfg.config_path,
         env: 'development'
       )
     ).running?
