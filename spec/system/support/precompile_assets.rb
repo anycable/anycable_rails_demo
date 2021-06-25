@@ -20,7 +20,7 @@ RSpec.configure do |config|
       )
     ).running?
 
-    if Webpacker.dev_server.running?
+    if webpacker_dev_server_running
       $stdout.puts "\n⚙️  Webpack dev server is running! Skip assets compilation.\n"
       next
     else
