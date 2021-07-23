@@ -2,6 +2,7 @@ version: '5.0'
 
 environment:
   RAILS_ENV: development
+  ANYCABLE_CLIENT_PATH: "./vendor/anycable-client" # use `dip.override.yml` to change the location
 
 compose:
   files:

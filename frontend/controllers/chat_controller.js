@@ -1,7 +1,16 @@
 import { Controller } from "stimulus";
-import { createChannel } from "../utils/cable";
+import cable from "../utils/cable";
+import { Channel } from "@anycable/web";
 import { currentUser } from "../utils/current_user";
 import { isPreview as isTurboPreview } from '../utils/turbo';
+
+class ChatChannel extends Channel {
+  static identifier = "ChatChannel";
+
+  speak(message) {
+    this.perform("speak", { message });
+  }
+}
 
 export default class extends Controller {
   static targets = ["input", "messages", "placeholder"];
@@ -9,16 +18,12 @@ export default class extends Controller {
   connect() {
     if (isTurboPreview()) return;
 
-    const channel = "ChatChannel";
     const id = this.data.get("id");
-    this.channel = createChannel(
-      {channel, id},
-      {
-        received: (data) => {
-          this.handleMessage(data);
-        },
-      }
-    );
+
+    this.channel = new ChatChannel({ id });
+    this.channel.on("message", (data) => this.handleMessage(data));
+
+    cable.subscribe(this.channel);
   }
 
   disconnect() {
@@ -61,6 +66,6 @@ export default class extends Controller {
 
     if (!message) return;
 
-    this.channel.perform("speak", {message});
+    this.channel.speak(message);
   }
 }

@@ -1,16 +1,5 @@
-import { createConsumer } from "@rails/actioncable";
+import { createCable } from "@anycable/web";
 
-let consumer;
+let consumer = createCable({ logLevel: "debug" });
 
-export const createCable = () => {
-  if (!consumer) {
-    consumer = createConsumer();
-  }
-
-  return consumer;
-}
-
-export const createChannel = (...args) => {
-  const consumer = createCable();
-  return consumer.subscriptions.create(...args);
-};
+export default consumer;
