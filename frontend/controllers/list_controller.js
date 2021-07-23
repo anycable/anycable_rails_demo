@@ -1,7 +1,12 @@
 import { Controller } from "stimulus";
-import { createChannel } from "../utils/cable";
+import cable from "../utils/cable";
+import { Channel } from "@anycable/web";
 import { isPreview as isTurboPreview } from '../utils/turbo';
 import { DELETE, PATCH } from "../utils/api";
+
+class ListChannel extends Channel {
+  static identifier = "ListChannel";
+}
 
 export default class extends Controller {
   static targets = ["items"];
@@ -9,18 +14,13 @@ export default class extends Controller {
   connect() {
     if (isTurboPreview()) return;
 
-    const channel = "ListChannel";
     const id = this.data.get("id");
     const workspace = this.data.get("workspace");
 
-    this.channel = createChannel(
-      {channel, id, workspace},
-      {
-        received: (data) => {
-          this.handleUpdate(data);
-        },
-      }
-    );
+    this.channel = new ListChannel({ id, workspace });
+    this.channel.on("message", (data) => this.handleUpdate(data));
+
+    cable.subscribe(this.channel);
   }
 
   disconnect() {

@@ -23,6 +23,7 @@ x-backend: &backend
   tty: true
   volumes:
     - .:/app:cached
+    - ${ANYCABLE_CLIENT_PATH}:/app/vendor/anycable-client
     - rails_cache:/app/tmp/cache
     - bundle:/usr/local/bundle
     - node_modules:/app/node_modules

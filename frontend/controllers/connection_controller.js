@@ -1,5 +1,5 @@
 import { Controller } from "stimulus";
-import { createCable } from "../utils/cable";
+import cable from "../utils/cable";
 import { isPreview as isTurboPreview } from '../utils/turbo';
 
 export default class extends Controller {
@@ -13,47 +13,25 @@ export default class extends Controller {
   connect() {
     if (isTurboPreview()) return;
 
-    this.connection = createCable().connection;
+    this.unbind = [];
 
-    if (!this.connection.webSocket) {
-      // Action Cable initializes a WebSocket connection lazily,
-      // let's "append" the open method to know when a socket becomes available
-      const origOpen = this.connection.open.bind(this.connection);
-      this.connection.open = () => {
-        origOpen.call();
-        this.monitor(this.connection.webSocket);
-      }
-    } else if (this.connection.isActive()) {
-      return this.handleOpen();
-    }
+    this.unbind.push(cable.on("connect", this.handleOpen));
+    this.unbind.push(cable.on("disconnect", this.handleClose));
+    this.unbind.push(cable.on("close", this.handleClose));
 
-    this.handleClose();
+    if (cable.state !== "connected") this.handleClose();
   }
 
   connectCable() {
-    if (!this.connection.webSocket) return this.connection.open();
+    if (cable.state !== "disconnected") return;
 
-    this.connection.monitor.reconnectAttempts = 2;
-    this.connection.monitor.start();
-    this.connection.open();
+    cable.connect();
   }
 
   disconnectCable() {
-    if (!this.connection.isActive()) return;
+    if (cable.state !== "connected") return;
 
-    this.connection.monitor.stop();
-    this.connection.close();
-  }
-
-  monitor(socket) {
-    if (this.socket) {
-      this.socket.removeEventListener("open", this.handleOpen);
-      this.socket.removeEventListener("close", this.handleClose);
-    }
-
-    this.socket = socket;
-    this.socket.addEventListener("open", this.handleOpen);
-    this.socket.addEventListener("close", this.handleClose);
+    cable.close();
   }
 
   toggleState(e) {
@@ -76,5 +54,6 @@ export default class extends Controller {
 
   disconnect() {
     this.active = false;
+    if (this.unbind) this.unbind.forEach((clbk) => clbk());
   }
 }

@@ -2,6 +2,20 @@
 # yarn lockfile v1
 
 
+"@anycable/core@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@anycable/core/-/core-0.0.4.tgz#4accb9a74a5a5fd5430d55ce770b2ecbd281f1f6"
+  integrity sha512-+mgeeaQYZVE0AKG2P8mp98UuB+T0GlY5vyc+OC3+Ote+/VWYpxf+XzEPiXZs2SuwGHYr2czZiLolLlO7C96ixA==
+  dependencies:
+    nanoevents "^6.0.0"
+
+"@anycable/web@^0.0.4":
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/@anycable/web/-/web-0.0.4.tgz#48c493b8feccde9f82a323876d039af18085e5d2"
+  integrity sha512-MUKTtX6AxJKakio5I2IeHGDl2XoEmLbgtuHiEhJJtG+hpGBWyjeudQbI/mxd/62Ui1BKt3Umx/o0wmu698cYrg==
+  dependencies:
+    "@anycable/core" "^0.0.4"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13":
   version "7.12.13"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.12.13.tgz#dcfc826beef65e75c50e21d3837d7d95798dd658"
@@ -889,11 +903,6 @@
   dependencies:
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
-
-"@rails/actioncable@6.0.2":
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.0.2.tgz#bcba9bcd6ee09a47c6628336e07399a68ca87814"
-  integrity sha512-vN78gohsXPlC5jxBHlmiwkUI9bv6SulcZaE72kAIg/G4ou+wTdiMWPJK1bf2IxUNf+sfOjhl+tbRmY4AzJcgrw==
 
 "@rails/actioncable@^6.1.0":
   version "6.1.3"
@@ -3961,6 +3970,11 @@ nan@^2.12.1:
   version "2.14.2"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.14.2.tgz#f5376400695168f4cc694ac9393d0c9585eeea19"
   integrity sha512-M2ufzIiINKCuDfBSAUr1vWQ+vuVcA9kqx8JJUsbQi6yf1uGRyb7HfpdfUr5qLXf3B/t8dPvcjhKMmlfnP47EzQ==
+
+nanoevents@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/nanoevents/-/nanoevents-6.0.0.tgz#82454023f448a1eab0df103df59d5813ac16035b"
+  integrity sha512-0ASElaiZR21yBjhmBiRboCXeNirfIVuiKIxikn6a3H/9zUL+q2HBq+4B3Cb2UdCctoGx5YSwxTXypslD/olJKA==
 
 nanoid@^3.1.20, nanoid@^3.1.22:
   version "3.1.22"
