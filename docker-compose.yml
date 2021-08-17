@@ -43,6 +43,7 @@ x-backend: &backend
     PSQL_HISTFILE: /app/log/.psql_history
     EDITOR: vi
     LOG: ${LOG:-0}
+    ACTION_CABLE_ADAPTER: ${ACTION_CABLE_ADAPTER:-anycable}
   depends_on: &backend_depends_on
     postgres:
       condition: service_healthy
