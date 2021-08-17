@@ -31,3 +31,5 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
+
+etc/k6/k6

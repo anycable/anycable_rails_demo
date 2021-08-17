@@ -38,7 +38,7 @@ x-backend: &backend
     CHROME_URL: http://chrome:3333
     BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
     WEBPACKER_DEV_SERVER_HOST: webpacker
-    WEB_CONCURRENCY: 1
+    WEB_CONCURRENCY: ${WEB_CONCURRENCY:-1}
     HISTFILE: /app/log/.bash_history
     PSQL_HISTFILE: /app/log/.psql_history
     EDITOR: vi
@@ -93,7 +93,7 @@ services:
       ANYCABLE_HOST: "0.0.0.0"
       ANYCABLE_REDIS_URL: redis://redis:6379/0
       ANYCABLE_RPC_HOST: anycable:50051
-      ANYCABLE_DEBUG: 1
+      ANYCABLE_DEBUG: ${ANYCABLE_DEBUG:-1}
       ANYCABLE_METRICS_HOST: "0.0.0.0"
       ANYCABLE_METRICS_PORT: 5100
       ANYCABLE_METRICS_HTTP: /metrics
@@ -120,7 +120,6 @@ services:
       <<: *backend_environment
       ANYCABLE_REDIS_URL: redis://redis:6379/0
       ANYCABLE_RPC_HOST: 0.0.0.0:50051
-      ANYCABLE_DEBUG: 1
     ports:
       - '50051'
     depends_on:
