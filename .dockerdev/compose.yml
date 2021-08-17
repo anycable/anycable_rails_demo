@@ -33,10 +33,12 @@ x-backend: &backend
     DATABASE_URL: postgres://postgres:postgres@postgres:5432
     BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
     WEBPACKER_DEV_SERVER_HOST: webpacker
-    WEB_CONCURRENCY: 1
-    HISTFILE: /usr/local/hist/.bash_history
-    PSQL_HISTFILE: /usr/local/hist/.psql_history
-    IRB_HISTFILE: /usr/local/hist/.irb_history
+    WEB_CONCURRENCY: ${WEB_CONCURRENCY:-1}
+    HISTFILE: /app/log/.bash_history
+    PSQL_HISTFILE: /app/log/.psql_history
+    EDITOR: vi
+    LOG: ${LOG:-0}
+    ANYCABLE_DEBUG: ${ANYCABLE_DEBUG:-1}
     ACTION_CABLE_ADAPTER: ${ACTION_CABLE_ADAPTER:-anycable}
     ANYCABLE_RPC_HOST: 0.0.0.0:50051
     ANYCABLE_BROADCAST_ADAPTER: redis
