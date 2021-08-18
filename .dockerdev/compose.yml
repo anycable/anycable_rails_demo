@@ -40,6 +40,7 @@ x-backend: &backend
     ACTION_CABLE_ADAPTER: ${ACTION_CABLE_ADAPTER:-anycable}
     ANYCABLE_RPC_HOST: 0.0.0.0:50051
     ANYCABLE_BROADCAST_ADAPTER: redis
+    PROMETHEUS_EXPORTER_PORT: 5100
     CHROME_URL: http://chrome:3333
     EDITOR: vi
     LOG: ${LOG:-0}
@@ -102,6 +103,9 @@ services:
       ANYCABLE_REDIS_URL: redis://redis:6379/0
       ANYCABLE_RPC_HOST: anycable:50051
       ANYCABLE_DEBUG: ${ANYCABLE_DEBUG:-1}
+      ANYCABLE_METRICS_HOST: "0.0.0.0"
+      ANYCABLE_METRICS_PORT: 5100
+      ANYCABLE_METRICS_HTTP: /metrics
     depends_on:
       redis:
         condition: service_healthy
@@ -179,6 +183,42 @@ services:
       # https://docs.browserless.io/docs/docker.html#connection-timeout
       CONNECTION_TIMEOUT: 600000
 
+  prometheus:
+    image: prom/prometheus:v2.29.1
+    volumes:
+      - ./etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+
+  grafana:
+    image: grafana/grafana:8.1.1
+    ports:
+      - "5000:3000"
+    volumes:
+      - ./etc/grafana/provisioning:/etc/grafana/provisioning
+      - ./etc/grafana/dashboards:/var/lib/grafana/dashboards
+      - grafana:/var/lib/grafana
+    user: "472"
+    depends_on:
+      prometheus:
+        condition: service_started
+      cadvisor:
+        condition: service_started
+
+  # Collects runtime metrics from Docker containers (CPU, RAM, etc)
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:latest
+    ports:
+      - 8082:8080
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
 volumes:
   postgres:
   redis:
@@ -188,3 +228,4 @@ volumes:
   history:
   assets:
   assets_builds:
+  grafana:

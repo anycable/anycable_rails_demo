@@ -1,0 +1,29 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: 'rails'
+    scheme: http
+    metrics_path: '/metrics'
+    static_configs:
+      - targets:
+          - 'rails:5100'
+  - job_name: 'anycable-rpc'
+    scheme: http
+    metrics_path: '/metrics'
+    static_configs:
+      - targets:
+          - 'anycable:5100'
+  - job_name: 'anycable-go'
+    scheme: http
+    metrics_path: '/metrics'
+    static_configs:
+      - targets:
+          - 'ws:5100'
+  - job_name: 'cadvisor'
+    scheme: http
+    metrics_path: '/metrics'
+    static_configs:
+      - targets:
+          - cadvisor:8080
