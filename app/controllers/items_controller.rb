@@ -24,31 +24,15 @@ class ItemsController < ApplicationController
 
   def update
     item.update!(item_params)
-    respond_to do |format|
-      format.json do
-        render json: item.as_json(only: [:id, :desc, :completed])
-      end
 
-      format.html do
-        flash[:notice] = "Item has been updated"
-        redirect_to workspace
-      end
-    end
+    flash.now[:notice] = "Item has been updated"
   end
 
   def destroy
     item.destroy!
 
-    respond_to do |format|
-      format.json do
-        render json: {deletedId: item.id}
-      end
-
-      format.html do
-        flash[:notice] = "Item has been deleted"
-        redirect_to workspace
-      end
-    end
+    flash.now[:notice] = "Item has been deleted"
+    render action: :update
   end
 
   private
@@ -71,15 +55,15 @@ class ItemsController < ApplicationController
 
   def broadcast_new_item
     return if item.errors.any?
-    ListChannel.broadcast_to list, type: "created", html: render_to_string(partial: "items/item", layout: false, locals: {item})
+    Turbo::StreamsChannel.broadcast_append_to workspace, target: ActionView::RecordIdentifier.dom_id(list, :items), partial: "items/item", locals: {item}
   end
 
   def broadcast_changes
     return if item.errors.any?
     if item.destroyed?
-      ListChannel.broadcast_to list, type: "deleted", id: item.id
+      Turbo::StreamsChannel.broadcast_remove_to workspace, target: item
     else
-      ListChannel.broadcast_to list, type: "updated", id: item.id, desc: item.desc, completed: item.completed
+      Turbo::StreamsChannel.broadcast_replace_to workspace, target: item, partial: "items/item", locals: {item}
     end
   end
 end

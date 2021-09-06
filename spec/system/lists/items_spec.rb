@@ -103,10 +103,10 @@ describe "Workspaces -> List -> Items" do
           find(".any-check").click
         end
 
-        expect(page).to have_css "#{dom_id(item)}.checked"
+        expect(page).to have_css "#{dom_id(item)} .any-list--item.checked"
 
         within_session :john do
-          expect(page).to have_css "#{dom_id(item)}.checked"
+          expect(page).to have_css "#{dom_id(item)} .any-list--item.checked"
         end
       end
     end

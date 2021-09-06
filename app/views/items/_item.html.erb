@@ -1,11 +1,17 @@
-<div class="flex mb-2 items-center any-list--item <%=  item.completed? ? "checked" : "" %>" id="<%= dom_id(item) %>">
-  <label class="any-check mr-4">
-    <input data-action="list#toggleCompleted" data-url="<%= workspace_list_item_path(item.list.workspace, item.list, item) %>" type="checkbox" class="hidden" <%= item.completed? ? "checked" : "" %>>
-    <svg class="hidden w-4 h-4 text-green-600 pointer-events-none" viewBox="0 0 172 172"><g fill="none" stroke-width="none" stroke-miterlimit="10" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode:normal"><path d="M0 172V0h172v172z"/><path d="M145.433 37.933L64.5 118.8658 33.7337 88.0996l-10.134 10.1341L64.5 139.1341l91.067-91.067z" fill="currentColor" stroke-width="1"/></g></svg>
-  </label>
-  <p data-controller="linkify" class="any-list--item--text break-words pr-1 w-full text-sm"><%= item.desc %></p>
-  <button data-action="list#deleteItem" data-url="<%= workspace_list_item_path(item.list.workspace, item.list, item) %>" class="focus:outline-none outline-none hover:text-red py-2 rounded inline-flex items-center delete-btn">
-    <svg class="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M8 6V4c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2h5a1 1 0 0 1 0 2h-1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8H3a1 1 0 1 1 0-2h5zM6 8v12h12V8H6zm8-2V4h-4v2h4zm-4 4a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z"/>
-    </svg>
-  </button>
-</div>
+<%= turbo_frame_tag dom_id(item) do %>
+  <% unless item.destroyed? %>
+    <div class="flex mb-2 items-center any-list--item<%= item.completed? ? " checked" : ""%>">
+      <%= form_for [item.list.workspace, item.list, item] do |f| %>
+        <label class="any-check mr-4">
+          <%= f.check_box :completed, class: item.completed? ? "hidden checked" : "hidden", onchange: "this.form.requestSubmit();" %>
+          <svg class="hidden w-4 h-4 text-green-600 pointer-events-none" viewBox="0 0 172 172"><g fill="none" stroke-width="none" stroke-miterlimit="10" font-family="none" font-weight="none" font-size="none" text-anchor="none" style="mix-blend-mode:normal"><path d="M0 172V0h172v172z"/><path d="M145.433 37.933L64.5 118.8658 33.7337 88.0996l-10.134 10.1341L64.5 139.1341l91.067-91.067z" fill="currentColor" stroke-width="1"/></g></svg>
+        </label>
+      <% end %>
+      <p data-controller="linkify" class="any-list--item--text break-words pr-1 w-full text-sm"><%= item.desc %></p>
+      <%= button_to workspace_list_item_path(item.list.workspace, item.list, item), method: :delete, class: "focus:outline-none outline-none hover:text-red py-2 rounded inline-flex items-center delete-btn" do %>
+        <svg class="fill-current w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 22"><path d="M8 6V4c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2h5a1 1 0 0 1 0 2h-1v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8H3a1 1 0 1 1 0-2h5zM6 8v12h12V8H6zm8-2V4h-4v2h4zm-4 4a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1zm4 0a1 1 0 0 1 1 1v6a1 1 0 0 1-2 0v-6a1 1 0 0 1 1-1z"/>
+        </svg>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

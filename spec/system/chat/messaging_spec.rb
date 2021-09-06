@@ -18,7 +18,7 @@ describe "Workspaces -> Chat" do
 
       click_on "Send"
 
-      within ".chat .messages div:last-child" do
+      within ".chat .messages any-chat-message:last-child" do
         expect(page).to have_text "Hi there"
         expect(page).to have_text "You"
       end
@@ -42,13 +42,13 @@ describe "Workspaces -> Chat" do
 
       click_on "Send"
 
-      within ".chat .messages div:last-child" do
+      within ".chat .messages any-chat-message:last-child" do
         expect(page).to have_text "Hi John"
         expect(page).to have_text "You"
       end
 
       within_session :john do
-        within ".chat .messages div:last-child" do
+        within ".chat .messages any-chat-message:last-child" do
           expect(page).to have_text "Hi John"
           expect(page).to have_text "Any"
         end
@@ -57,13 +57,13 @@ describe "Workspaces -> Chat" do
 
         click_on "Send"
 
-        within ".chat .messages div:last-child" do
+        within ".chat .messages any-chat-message:last-child" do
           expect(page).to have_text "What's up, Any?"
           expect(page).to have_text "You"
         end
       end
 
-      within ".chat .messages div:last-child" do
+      within ".chat .messages any-chat-message:last-child" do
         expect(page).to have_text "What's up, Any?"
         expect(page).to have_text "John"
       end
