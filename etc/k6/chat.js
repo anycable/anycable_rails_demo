@@ -1,4 +1,5 @@
 import { check, sleep, fail } from "k6";
+import http from "k6/http";
 import cable from "k6/x/cable";
 import { randomIntBetween } from "https://jslib.k6.io/k6-utils/1.1.0/index.js";
 
@@ -9,7 +10,7 @@ let rttTrend = new Trend("rtt", true);
 let userId = `100${__VU}`;
 let userName = `Kay${userId}`;
 
-const URL = __ENV.CABLE_URL || "ws://localhost:8080/cable";
+const URL = __ENV.URL || "http://localhost:3000";
 const WORKSPACE = __ENV.WORKSPACE || "demo";
 
 // The number of messages each VU sends during an iteration
@@ -36,8 +37,43 @@ export let options = {
   },
 };
 
+function cableUrl(doc) {
+  let el = doc.find('meta[name="action-cable-url"]');
+  if (!el) return;
+
+  return el.attr("content");
+}
+
+function turboStreamName(doc) {
+  let el = doc.find("turbo-cable-stream-source");
+  if (!el) return;
+
+  return el.attr("signed-stream-name");
+}
+
 export default function () {
-  let client = cable.connect(URL, {
+  // Manually set authentication cookies
+  let jar = http.cookieJar();
+  jar.set(URL, "uid", `${userName}/${userId}`);
+
+  let res = http.get(URL + "/workspaces/" + WORKSPACE);
+
+  if (
+    !check(res, {
+      "is status 200": (r) => r.status === 200,
+    })
+  ) {
+    fail("couldn't open dashboard");
+  }
+
+  const html = res.html();
+  const wsUrl = cableUrl(html);
+
+  if (!wsUrl) {
+    fail("couldn't find cable url on the page");
+  }
+
+  let client = cable.connect(wsUrl, {
     cookies: `uid=${userName}/${userId}`,
     receiveTimeoutMS: 30000,
   });
@@ -50,7 +86,15 @@ export default function () {
     fail("connection failed");
   }
 
-  let channel = client.subscribe("ChatChannel", { id: WORKSPACE });
+  let streamName = turboStreamName(html);
+
+  if (!streamName) {
+    fail("couldn't find a turbo stream element");
+  }
+
+  let channel = client.subscribe("Turbo::StreamsChannel", {
+    signed_stream_name: streamName,
+  });
 
   if (
     !check(channel, {
@@ -62,9 +106,22 @@ export default function () {
 
   for (let i = 0; i < MESSAGES_NUM; i++) {
     let startMessage = Date.now();
-    channel.perform("speak", { message: `hello from ${userName}` });
+    let formRes = res.submitForm({
+      formSelector: ".chat form",
+      fields: { message: `hello from ${userName}` },
+    });
 
-    let message = channel.receive({ author_id: userId });
+    if (
+      !check(formRes, {
+        "is status 200": (r) => r.status === 200,
+      })
+    ) {
+      fail("couldn't submit message form");
+    }
+
+    let message = channel.receive((msg) => {
+      return msg.includes(`data-author-id="${userId}"`);
+    });
 
     if (
       !check(message, {
