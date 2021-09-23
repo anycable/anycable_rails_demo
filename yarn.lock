@@ -2,19 +2,19 @@
 # yarn lockfile v1
 
 
-"@anycable/core@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@anycable/core/-/core-0.0.4.tgz#4accb9a74a5a5fd5430d55ce770b2ecbd281f1f6"
-  integrity sha512-+mgeeaQYZVE0AKG2P8mp98UuB+T0GlY5vyc+OC3+Ote+/VWYpxf+XzEPiXZs2SuwGHYr2czZiLolLlO7C96ixA==
+"@anycable/core@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@anycable/core/-/core-0.1.0.tgz#480a742219002a03028df771a1047981a349cc11"
+  integrity sha512-zjMJdNrJPvxXOukmIuEDGdE86IehHILij4kDQ150fmkYeyinvx3Ri30tKP8UxGUCnC9gvCSdxn+fe9iSfwNeAA==
   dependencies:
     nanoevents "^6.0.0"
 
-"@anycable/web@^0.0.4":
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/@anycable/web/-/web-0.0.4.tgz#48c493b8feccde9f82a323876d039af18085e5d2"
-  integrity sha512-MUKTtX6AxJKakio5I2IeHGDl2XoEmLbgtuHiEhJJtG+hpGBWyjeudQbI/mxd/62Ui1BKt3Umx/o0wmu698cYrg==
+"@anycable/web@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@anycable/web/-/web-0.1.0.tgz#80535f66e5aa77fdfa90e4726a8ace3500f55249"
+  integrity sha512-qm5BLWKv6u/eA4t/621hz8QawcD4jiVc149Fn6uQNhUm5AoW+QON+QXYMW0iDauhnlK+CoI5kbdLPpY55ARh5w==
   dependencies:
-    "@anycable/core" "^0.0.4"
+    "@anycable/core" "^0.1.0"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13":
   version "7.12.13"

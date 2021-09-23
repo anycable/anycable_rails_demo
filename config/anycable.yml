@@ -25,9 +25,15 @@ default: &default
   # Use the same channel name for WebSocket server, e.g.:
   #   $ anycable-go --redis-channel="__anycable__"
   redis_channel: "__anycable__"
+  # JWT settings
+  jwt_id_key: "s3KЯe+"
+  jwt_id_ttl: 60
 
 development:
   <<: *default
 
 production:
+  <<: *default
+
+test:
   <<: *default

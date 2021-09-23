@@ -84,7 +84,7 @@ services:
     command: bundle exec sidekiq -C config/sidekiq.yml
 
   ws: &ws
-    image: anycable/anycable-go:1.1
+    image: ghcr.io/anycable/anycable-go-pro:1.1.0-beta.2
     ports:
       - '8080:8080'
     environment: &ws_environment
@@ -92,6 +92,8 @@ services:
       ANYCABLE_REDIS_URL: redis://redis:6379/0
       ANYCABLE_RPC_HOST: anycable:50051
       ANYCABLE_DEBUG: 1
+      ANYCABLE_JWT_ID_KEY: s3KЯe+
+      ANYCABLE_HEADERS: "x-jid"
     depends_on:
       redis:
         condition: service_healthy

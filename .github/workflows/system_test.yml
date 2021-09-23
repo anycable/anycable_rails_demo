@@ -16,6 +16,7 @@ jobs:
       DATABASE_URL: postgres://postgres:postgres@localhost:5432
       CHROME_URL: http://localhost:3000
       RAILS_ENV: test
+      ANYCABLE_RPC_HOST: 0.0.0.0:50051
     services:
       postgres:
         image: postgres:13.0
@@ -31,6 +32,19 @@ jobs:
         image: browserless/chrome:1.31-chrome-stable
         ports: ["3000:3000"]
         options: -e CONNECTION_TIMEOUT=600000
+      anycable:
+        image: ghcr.io/anycable/anycable-go-pro:1.1.0-beta.2
+        credentials:
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.ghcr_password }}
+        ports: ["8080:8080"]
+        options: --add-host=host.docker.internal:host-gateway
+        env:
+          ANYCABLE_HOST: "0.0.0.0"
+          ANYCABLE_REDIS_URL: redis://redis:6379/0
+          ANYCABLE_RPC_HOST: host.docker.internal:50051
+          ANYCABLE_JWT_ID_KEY: s3KЯe+
+          ANYCABLE_HEADERS: x-jid
     steps:
       - uses: actions/checkout@v2
       - uses: actions/cache@v1
@@ -69,8 +83,6 @@ jobs:
       - name: Run RSpec
         run: |
           bundle exec rails db:prepare
-          bundle exec rails g anycable:download --bin-path=./bin
           bundle exec rails webpacker:compile
-          ./bin/anycable-go --host "0.0.0.0" &
           export CABLE_URL="ws://$(hostname):8080/cable"
           bundle exec rspec --tag type:system

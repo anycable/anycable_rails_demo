@@ -10,8 +10,8 @@
     <% if logged_in? %>
       <meta name="current-user-name" content="<%= current_user.name %>" data-turbo-track="reload">
       <meta name="current-user-id" content="<%= current_user.id %>" data-turbo-track="reload">
+      <%= action_cable_with_jwt_meta_tag(user: current_user) %>
     <% end %>
-    <%= action_cable_meta_tag %>
     <%= stylesheet_pack_tag "application", data: {turbo: {track: "reload"}} %>
     <%= javascript_pack_tag "application", data: {turbo: {track: "reload"}}, defer: true %>
   </head>

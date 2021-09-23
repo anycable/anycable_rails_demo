@@ -1,5 +1,8 @@
-import { createCable } from "@anycable/web";
+import { createCable, fetchTokenFromHTML } from "@anycable/web";
 
-let consumer = createCable({ logLevel: "debug" });
+let consumer = createCable({
+  logLevel: "debug",
+  tokenRefresher: fetchTokenFromHTML(),
+});
 
 export default consumer;
