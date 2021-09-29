@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "@anycable/protobuf-encoder": "^0.1.1",
     "@anycable/web": "^0.1.0",
     "@hotwired/turbo-rails": "^7.0.0-beta.5",
     "@rails/ujs": "^6.0.3-4",
