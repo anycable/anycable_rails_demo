@@ -11,6 +11,11 @@ gem 'redis', '~> 4.0'
 gem 'grpc', '~> 1.37'
 gem 'anycable-rails', '~> 1.1.0'
 
+gem 'graphql'
+gem 'graphql-anycable'
+
+gem 'rack-cors'
+
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'ruby-next', '>= 0.10.0', require: false
 

@@ -6,6 +6,7 @@ class ItemsController < ApplicationController
 
   after_action :broadcast_new_item, only: [:create]
   after_action :broadcast_changes, only: [:update, :destroy]
+  after_action :trigger_gql_subscription, only: [:create, :update, :destroy]
 
   attr_reader :workspace, :list, :item
 
@@ -81,5 +82,9 @@ class ItemsController < ApplicationController
     else
       ListChannel.broadcast_to list, type: "updated", id: item.id, desc: item.desc, completed: item.completed
     end
+  end
+
+  def trigger_gql_subscription
+    ApplicationSchema.subscriptions.trigger("workspace_updated", {id: workspace.public_id}, workspace)
   end
 end
