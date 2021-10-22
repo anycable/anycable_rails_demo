@@ -6,6 +6,9 @@ require "active_support/encrypted_configuration"
 require "kuby"
 require "kuby/digitalocean"
 
+$LOAD_PATH << "./lib"
+require "kuby/prometheus_service_monitor"
+
 METRICS_PORT = 5100
 
 Kuby.define("anycable-rails-demo") do
@@ -35,8 +38,6 @@ Kuby.define("anycable-rails-demo") do
       add_plugin :rails_app do
         hostname "kuby-demo.anycable.io"
         manage_database false
-
-        metrics_port = 5100
 
         service do
           spec do
@@ -73,7 +74,39 @@ Kuby.define("anycable-rails-demo") do
             add "DATABASE_URL", app_creds[:database_url]
             add "REDIS_URL", app_creds[:redis_url]
             add "ACTION_CABLE_ADAPTER", "redis"
-            add "PROMETHEUS_EXPORTER_PORT", metrics_port.to_s
+            add "PROMETHEUS_EXPORTER_PORT", METRICS_PORT.to_s
+          end
+        end
+      end
+
+      context = self
+
+      add_plugin :prometheus_service_monitor do
+        monitor do
+          metadata do
+            name "#{context.selector_app}-sm"
+            namespace "kube-prometheus-stack"
+
+            labels do
+              add :app, context.selector_app
+              add :release, "kube-prometheus-stack"
+            end
+          end
+
+          spec do
+            selector do
+              match_labels do
+                add :app, context.selector_app
+              end
+            end
+
+            namespace_selector do
+              match_names context.namespace.metadata.name
+            end
+
+            endpoint do
+              port "metrics"
+            end
           end
         end
       end
