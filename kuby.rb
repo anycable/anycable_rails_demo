@@ -8,6 +8,7 @@ require "kuby/digitalocean"
 
 $LOAD_PATH << "./lib"
 require "kuby/prometheus_service_monitor"
+require "kuby/anycable"
 
 METRICS_PORT = 5100
 
@@ -77,6 +78,11 @@ Kuby.define("anycable-rails-demo") do
             add "PROMETHEUS_EXPORTER_PORT", METRICS_PORT.to_s
           end
         end
+      end
+
+      add_plugin :anycable do
+        metrics_port METRICS_PORT
+        replicas 2
       end
 
       context = self
