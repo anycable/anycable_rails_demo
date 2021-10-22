@@ -20,6 +20,12 @@ gem 'turbo-rails'
 gem 'kuby-core', '< 1.0'
 gem 'kuby-digitalocean', '< 1.0'
 
+gem 'yabeda-anycable'
+gem 'yabeda-rails'
+gem 'yabeda-puma-plugin'
+gem 'yabeda-prometheus-mmap'
+gem 'webrick' # For exporting metrics from AnyCable RPC
+
 group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rails'
