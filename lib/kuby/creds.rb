@@ -10,8 +10,10 @@ module Kuby
         config_path: "./config/credentials/#{environment}.yml.enc",
         key_path: "./config/credentials/#{environment}.key",
         env_key: "RAILS_MASTER_KEY",
-        raise_if_missing_key: true
-      )
+        # Temp: do not raise on a missing key to allow assets image to copy assets
+        # See: https://github.com/getkuby/kuby-core/pull/63
+        raise_if_missing_key: false
+      ) || {}
     end
   end
 end
