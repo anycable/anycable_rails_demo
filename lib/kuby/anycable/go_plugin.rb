@@ -2,50 +2,47 @@
 
 module Kuby
   module AnyCable
-    class Plugin < ::Kuby::Plugin
+    class GoPlugin < ::Kuby::Plugin
       extend ::KubeDSL::ValueFields
 
-      ROLE = "rpc"
+      ROLE = "ws"
 
       value_fields :replicas
       value_fields :redis_url
       value_fields :metrics_port
-      value_fields :max_connection_age
-      value_fields :rpc_pool_size
+      value_fields :rpc_host
+      value_fields :ws_path
+      value_fields :image
+      value_fields :hostname
+
+      DEFAULT_IMAGE = "anycable/anycable-go:1.1"
+
+      attr_reader :port
 
       def after_initialize
         @replicas = 1
         @metrics_port = nil
-        @max_connection_age = 300000
-        @rpc_pool_size = nil
+        @rpc_host = nil
+        @redis_url = nil
+        @ws_path = "/cable"
+        @port = 8081
+        @hostname = nil
+        @image = DEFAULT_IMAGE
       end
 
       def after_configuration
-        return unless rails_app
+        if rpc_spec && rpc_host.nil?
+          config_map.data.add("ANYCABLE_RPC_HOST", "dns:///#{rpc_spec.service.metadata.name}:50051")
+        end
 
-        deployment.spec.template.spec.container(:rpc).merge!(
-          rails_app.deployment.spec.template.spec.container(:web), fields: [:env_from]
-        )
+        if rails_spec
+          @hostname ||= rails_spec.hostname
+          configure_ingress(rails_spec.ingress, hostname)
+        end
       end
 
       def configure(&block)
         instance_eval(&block) if block
-      end
-
-      def before_deploy(manifest)
-        image_with_tag = "#{docker.image.image_url}:#{kubernetes.tag || Kuby::Docker::LATEST_TAG}"
-
-        deployment do
-          spec do
-            template do
-              spec do
-                container(:rpc) do
-                  image image_with_tag
-                end
-              end
-            end
-          end
-        end
       end
 
       def resources
@@ -55,6 +52,25 @@ module Kuby
           config_map,
           deployment
         ]
+      end
+
+      def configure_ingress(ingress, hostname)
+        spec = self
+
+        ingress.spec.rule do
+          host hostname
+
+          http do
+            path do
+              path spec.ws_path
+
+              backend do
+                service_name spec.service.metadata.name
+                service_port spec.service.spec.ports.first.port
+              end
+            end
+          end
+        end
       end
 
       def service_account(&block)
@@ -92,7 +108,6 @@ module Kuby
 
           spec do
             type "ClusterIP"
-            cluster_ip "None"
 
             selector do
               add :app, spec.selector_app
@@ -100,10 +115,10 @@ module Kuby
             end
 
             port do
-              name "rpc"
-              port 50051
+              name "http"
+              port spec.port
               protocol "TCP"
-              target_port "rpc"
+              target_port "http"
             end
 
             if spec.metrics_port
@@ -163,14 +178,14 @@ module Kuby
               end
 
               spec do
-                container(:rpc) do
+                container(:ws) do
                   name "#{context.selector_app}-#{ROLE}"
+                  image context.image
                   image_pull_policy "IfNotPresent"
-                  command %w[bundle exec anycable]
 
                   port do
-                    container_port 50051
-                    name "grpc"
+                    container_port context.port
+                    name "http"
                     protocol "TCP"
                   end
 
@@ -214,14 +229,15 @@ module Kuby
           end
 
           data do
-            add "ANYCABLE_RPC_HOST", "0.0.0.0:50051"
-            if spec.redis_url
-              add "ANYCABLE_REDIS_URL", "0.0.0.0:50051"
+            if spec.rpc_host
+              add "ANYCABLE_RPC_HOST", spec.rpc_host
             end
-            add "ANYCABLE_RPC_SERVER_ARGS__MAX_CONNECTION_AGE_MS", spec.max_connection_age.to_s
-
-            if spec.rpc_pool_size
-              add "ANYCABLE_RPC_POOL_SIZE", spec.rpc_pool_size.to_s
+            add "ANYCABLE_REDIS_URL", spec.redis_url
+            add "ANYCABLE_HOST", "0.0.0.0"
+            add "ANYCABLE_PORT", spec.port.to_s
+            if spec.metrics_port
+              add "ANYCABLE_METRICS_PORT", spec.metrics_port.to_s
+              add "ANYCABLE_METRICS_HTTP", "/metrics"
             end
           end
         end
@@ -240,8 +256,12 @@ module Kuby
 
       delegate :namespace, to: :kubernetes
 
-      def rails_app
-        kubernetes.plugin(:rails_app)
+      def rpc_spec
+        @rpc_spec ||= kubernetes.plugin(:anycable_rpc)
+      end
+
+      def rails_spec
+        @rails_spec ||= kubernetes.plugin(:rails_app)
       end
     end
   end

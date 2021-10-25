@@ -69,15 +69,21 @@ Kuby.define("anycable-rails-demo") do
             add "RAILS_LOG_LEVEL", "debug"
             add "DATABASE_URL", app_creds[:database_url]
             add "REDIS_URL", app_creds[:redis_url]
-            add "ACTION_CABLE_ADAPTER", "redis"
+            add "ACTION_CABLE_ADAPTER", "any_cable"
             add "PROMETHEUS_EXPORTER_PORT", METRICS_PORT.to_s
           end
         end
       end
 
-      add_plugin :anycable do
+      add_plugin :anycable_rpc do
         metrics_port METRICS_PORT
         replicas 2
+      end
+
+      add_plugin :anycable_go do
+        metrics_port METRICS_PORT
+        replicas 2
+        redis_url app_creds[:redis_url]
       end
 
       provider :digitalocean do
