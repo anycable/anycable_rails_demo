@@ -1,0 +1,46 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - master
+  pull_request:
+
+jobs:
+  kuby:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: gemfiles/deploy.gemfile
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 3
+      BUNDLE_FROZEN: "true"
+      CI: true
+      RAILS_MASTER_KEY: ${{ secrets.master_key }}
+    if: contains(github.event.pull_request.body, '[Deploy]')
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.1
+          bundler-cache: true
+      - uses: docker/setup-buildx-action@v1
+      - uses: docker/login-action@v1
+        with:
+          registry: registry.digitalocean.com
+          username: ${{ secrets.do_token }}
+          password: ${{ secrets.do_token }}
+      - name: Build Docker image
+        run: |
+          bundle exec kuby -e production build
+      - name: Push Docker image
+        run: |
+          bundle exec kuby -e production push
+      - name: Deploy Rails app
+        timeout-minutes: 5
+        run: |
+          bundle exec kuby -e production deploy
+      - name: Deploy monitoring infra
+        timeout-minutes: 5
+        run: |
+          bundle exec kuby -e production deploy

@@ -11,3 +11,4 @@ public/assets
 .github/
 .rubocop/
 etc/
+config/credentials/*.key
