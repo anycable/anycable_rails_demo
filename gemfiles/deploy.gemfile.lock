@@ -220,8 +220,8 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 6.1)
-  kuby-core (< 1.0)
-  kuby-digitalocean (< 1.0)
+  kuby-core (~> 0.13.0)
+  kuby-digitalocean (~> 0.4.3)
   pry-byebug
 
 RUBY VERSION

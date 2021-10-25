@@ -453,13 +453,14 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport (~> 6.1)
   anycable-rails (~> 1.1.0)
   bootsnap (>= 1.4.2)
   capybara
   cuprite
   grpc (~> 1.37)
-  kuby-core (< 1.0)
-  kuby-digitalocean (< 1.0)
+  kuby-core (~> 0.13.0)
+  kuby-digitalocean (~> 0.4.3)
   listen
   nanoid
   pg (~> 1.0)
