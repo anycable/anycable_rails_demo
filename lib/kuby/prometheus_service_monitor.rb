@@ -79,8 +79,34 @@ module Kuby
     end
 
     def monitor(&block)
-      monitors << Kuby::PrometheusOperatorDSLV1::ServiceMonitor.new(&block)
+      context = self
+
+      monitor = Kuby::PrometheusOperatorDSLV1::ServiceMonitor.new do
+        metadata do
+          name "#{context.selector_app}-sm"
+          namespace context.namespace.metadata.name
+
+          labels do
+            add :app, context.selector_app
+            add :release, context.namespace.metadata.name
+          end
+        end
+      end
+
+      monitor.instance_eval(&block) if block
+
+      monitors << monitor
     end
+
+    private
+
+    delegate :kubernetes, to: :environment
+
+    delegate :docker, to: :environment
+
+    delegate :selector_app, to: :kubernetes
+
+    delegate :namespace, to: :kubernetes
   end
 end
 

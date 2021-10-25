@@ -1,25 +1,19 @@
 # frozen_string_literal: true
 
-require "active_support/core_ext"
-require "active_support/encrypted_configuration"
-
 require "kuby"
 require "kuby/digitalocean"
 
 $LOAD_PATH << "./lib"
 require "kuby/prometheus_service_monitor"
 require "kuby/anycable"
+require "kuby/appless"
+require "kuby/creds"
 
 METRICS_PORT = 5100
 
 Kuby.define("anycable-rails-demo") do
   environment(:production) do
-    app_creds = ActiveSupport::EncryptedConfiguration.new(
-      config_path: "./config/credentials/production.yml.enc",
-      key_path: "./config/credentials/production.key",
-      env_key: "RAILS_MASTER_KEY",
-      raise_if_missing_key: true
-    )
+    app_creds = read_creds(:production)
 
     docker do
       base_image "ruby:3.0.1"
@@ -85,29 +79,34 @@ Kuby.define("anycable-rails-demo") do
         replicas 2
       end
 
-      context = self
+      provider :digitalocean do
+        access_token app_creds[:do_token]
+        cluster_id app_creds[:do_cluster_id]
+      end
+    end
+  end
+
+  environment(:monitoring) do
+    app_creds = read_creds(:production)
+
+    kubernetes_appless do
+      namespace do
+        metadata do
+          name "kube-prometheus-stack"
+        end
+      end
 
       add_plugin :prometheus_service_monitor do
         monitor do
-          metadata do
-            name "#{context.selector_app}-sm"
-            namespace "kube-prometheus-stack"
-
-            labels do
-              add :app, context.selector_app
-              add :release, "kube-prometheus-stack"
-            end
-          end
-
           spec do
             selector do
               match_labels do
-                add :app, context.selector_app
+                add :app, "anycable-rails-demo"
               end
             end
 
             namespace_selector do
-              match_names context.namespace.metadata.name
+              match_names "anycable-rails-demo-production"
             end
 
             endpoint do
@@ -119,7 +118,7 @@ Kuby.define("anycable-rails-demo") do
 
       provider :digitalocean do
         access_token app_creds[:do_token]
-        cluster_id "80e27796-3b3b-4655-b346-41c06bc61ded"
+        cluster_id app_creds[:do_cluster_id]
       end
     end
   end
