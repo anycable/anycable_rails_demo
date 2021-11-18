@@ -9,12 +9,14 @@ module Kuby
 
       value_fields :replicas
       value_fields :redis_url
+      value_fields :port
       value_fields :metrics_port
       value_fields :max_connection_age
       value_fields :rpc_pool_size
 
       def after_initialize
         @replicas = 1
+        @port = 50051
         @metrics_port = nil
         @max_connection_age = 300000
         @rpc_pool_size = nil
@@ -101,7 +103,7 @@ module Kuby
 
             port do
               name "rpc"
-              port 50051
+              port spec.port
               protocol "TCP"
               target_port "rpc"
             end
@@ -169,7 +171,7 @@ module Kuby
                   command %w[bundle exec anycable]
 
                   port do
-                    container_port 50051
+                    container_port context.port
                     name "grpc"
                     protocol "TCP"
                   end
@@ -185,6 +187,30 @@ module Kuby
                   env_from do
                     config_map_ref do
                       name context.config_map.metadata.name
+                    end
+                  end
+
+                  readiness_probe do
+                    success_threshold 1
+                    failure_threshold 3
+                    initial_delay_seconds 15
+                    period_seconds 10
+                    timeout_seconds 3
+
+                    tcp_socket do
+                      port "grpc"
+                    end
+                  end
+
+                  liveness_probe do
+                    success_threshold 1
+                    failure_threshold 3
+                    initial_delay_seconds 90
+                    period_seconds 10
+                    timeout_seconds 3
+
+                    tcp_socket do
+                      port "grpc"
                     end
                   end
                 end

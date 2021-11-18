@@ -9,6 +9,7 @@ module Kuby
 
       value_fields :replicas
       value_fields :redis_url
+      value_fields :port
       value_fields :metrics_port
       value_fields :rpc_host
       value_fields :ws_path
@@ -17,11 +18,9 @@ module Kuby
 
       DEFAULT_IMAGE = "anycable/anycable-go:1.1"
 
-      attr_reader :port
-
       def after_initialize
         @replicas = 1
-        @metrics_port = nil
+        @metrics_port = 5001
         @rpc_host = nil
         @redis_url = nil
         @ws_path = "/cable"
@@ -31,9 +30,8 @@ module Kuby
       end
 
       def after_configuration
-        if rpc_spec && rpc_host.nil?
-          config_map.data.add("ANYCABLE_RPC_HOST", "dns:///#{rpc_spec.service.metadata.name}:50051")
-        end
+        configure_rpc_host
+        configure_redis_url
 
         if rails_spec
           @hostname ||= rails_spec.hostname
@@ -202,6 +200,30 @@ module Kuby
                       name context.config_map.metadata.name
                     end
                   end
+
+                  readiness_probe do
+                    success_threshold 1
+                    failure_threshold 3
+                    initial_delay_seconds 15
+                    period_seconds 10
+                    timeout_seconds 3
+
+                    tcp_socket do
+                      port "http"
+                    end
+                  end
+
+                  liveness_probe do
+                    success_threshold 1
+                    failure_threshold 3
+                    initial_delay_seconds 90
+                    period_seconds 10
+                    timeout_seconds 3
+
+                    tcp_socket do
+                      port "http"
+                    end
+                  end
                 end
 
                 image_pull_secret do
@@ -232,9 +254,14 @@ module Kuby
             if spec.rpc_host
               add "ANYCABLE_RPC_HOST", spec.rpc_host
             end
-            add "ANYCABLE_REDIS_URL", spec.redis_url
+
+            if spec.redis_url
+              add "ANYCABLE_REDIS_URL", spec.redis_url
+            end
+
             add "ANYCABLE_HOST", "0.0.0.0"
             add "ANYCABLE_PORT", spec.port.to_s
+
             if spec.metrics_port
               add "ANYCABLE_METRICS_PORT", spec.metrics_port.to_s
               add "ANYCABLE_METRICS_HTTP", "/metrics"
@@ -262,6 +289,33 @@ module Kuby
 
       def rails_spec
         @rails_spec ||= kubernetes.plugin(:rails_app)
+      end
+
+      def configure_rpc_host
+        return if config_map.data.get("ANYCABLE_RPC_HOST")
+        # Make it possible to avoid setting RPC host at all
+        return if rpc_host == false
+
+        return unless rpc_spec
+
+        config_map.data.add("ANYCABLE_RPC_HOST", "dns:///#{rpc_spec.service.metadata.name}:50051")
+      end
+
+      def configure_redis_url
+        return if config_map.data.get("REDIS_URL") || config_map.data.get("ANYCABLE_REDIS_URL")
+        # Make it possible to avoid setting Redis url at all
+        return if redis_url == false
+
+        # Try to lookup Redis url from the RPC and Web app specs
+        [rpc_spec, rails_spec].compact.detect do |spec|
+          %w[ANYCABLE_REDIS_URL REDIS_URL].detect do |env_key|
+            url = spec.config_map.data.get(env_key)
+            next unless url
+
+            config_map.data.add("ANYCABLE_REDIS_URL", url)
+            true
+          end
+        end
       end
     end
   end

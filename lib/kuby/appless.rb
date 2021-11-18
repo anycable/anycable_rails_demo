@@ -34,6 +34,12 @@ module Kuby
           provider.deployer = Deployer.new(environment)
           super(tag || @tag)
         end
+
+        def before_deploy
+          super
+          # Original #before_deploy resets the tag to nil
+          @tag = "none"
+        end
       end
     end
   end

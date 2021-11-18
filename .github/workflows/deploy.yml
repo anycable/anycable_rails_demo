@@ -43,4 +43,4 @@ jobs:
       - name: Deploy monitoring infra
         timeout-minutes: 5
         run: |
-          bundle exec kuby -e production deploy
+          bundle exec kuby -e production -c ./deploy/kuby_monitoring.rb deploy
