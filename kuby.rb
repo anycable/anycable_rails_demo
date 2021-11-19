@@ -23,7 +23,16 @@ Kuby.define("anycable-rails-demo") do
     ) || {}
 
     docker do
-      base_image "ruby:3.0.1"
+      base_image "ruby:3.0.1-alpine"
+      distro :alpine
+
+      %w[postgresql-dev].each do |pckg|
+        Kuby.register_package(pckg)
+        package_phase.add(pckg)
+      end
+
+      package_phase.add("anycable-build")
+
       gemfile "./Gemfile"
 
       webserver_phase.webserver = :puma
