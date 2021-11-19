@@ -17,10 +17,6 @@ gem 'ruby-next', '>= 0.10.0', require: false
 gem 'nanoid'
 gem 'turbo-rails'
 
-group :development, :production do
-  eval_gemfile "gemfiles/kuby.gemfile"
-end
-
 gem 'yabeda-anycable'
 gem 'yabeda-rails'
 gem 'yabeda-puma-plugin'

@@ -27,7 +27,6 @@ Kuby.define("anycable-rails-demo") do
       gemfile "./Gemfile"
 
       webserver_phase.webserver = :puma
-      bundler_phase.gemfiles "./gemfiles/kuby.gemfile"
 
       credentials do
         username app_creds[:do_token]
