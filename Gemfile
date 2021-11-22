@@ -23,6 +23,8 @@ gem 'yabeda-puma-plugin'
 gem 'yabeda-prometheus-mmap'
 gem 'webrick' # For exporting metrics from AnyCable RPC
 
+gem 'rack-health'
+
 group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rails'

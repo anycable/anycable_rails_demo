@@ -4,4 +4,5 @@
 
 require_relative "config/environment"
 
+use Rack::Health, path: "/healthz"
 run Rails.application
