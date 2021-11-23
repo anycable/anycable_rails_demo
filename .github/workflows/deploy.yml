@@ -24,18 +24,30 @@ jobs:
         with:
           ruby-version: 3.0.1
           bundler-cache: true
+      - uses: crazy-max/ghaction-github-runtime@v1
       - uses: docker/setup-buildx-action@v1
+        with:
+          install: true
       - uses: docker/login-action@v1
         with:
           registry: registry.digitalocean.com
           username: ${{ secrets.do_token }}
           password: ${{ secrets.do_token }}
-      - name: Build Docker image
+      - name: Cache Docker layers
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: buildx-cache-${{ github.sha }}
+          restore-keys: |
+            buildx-cache-
+      - name: Build and push Docker images
         run: |
-          bundle exec kuby -e production build
-      - name: Push Docker image
+            bundle exec kuby -e production build --only app --    --cache-from=type=local,src=/tmp/.buildx-cache/app --cache-to=type=local,dest=/tmp/.buildx-cache-new/app --push
+            bundle exec kuby -e production build --only assets -- --cache-from=type=local,src=/tmp/.buildx-cache/assets --cache-to=type=local,dest=/tmp/.buildx-cache-new/assets --push
+      - name: Move cache
         run: |
-          bundle exec kuby -e production push
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
       - name: Deploy Rails app
         timeout-minutes: 5
         run: |

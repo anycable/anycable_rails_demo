@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/anycable/kuby-core.git
-  revision: 34a2d0caf1b1ddcbbc89b673ac6d2cf1afb2824a
+  revision: 14d38c877a58b56d1cd28826290b8421b73d4eef
   branch: feat/docker-build-custom
   specs:
     kuby-core (0.13.0)
@@ -146,19 +146,6 @@ GEM
     kuby-cert-manager (0.3.0)
       helm-cli (~> 0.1)
       kube-dsl (~> 0.1)
-    kuby-core (0.13.0)
-      colorize (~> 0.8)
-      docker-remote (~> 0.6)
-      gli (~> 2.0)
-      helm-cli (~> 0.3)
-      krane (>= 1.1.4, < 2.0)
-      kube-dsl (~> 0.4)
-      kubernetes-cli (~> 0.3)
-      kuby-cert-manager (>= 0.3)
-      kuby-kube-db (>= 0.6)
-      railties (>= 5.1)
-      rouge (~> 3.0)
-      sorbet-runtime-stub (~> 0.2)
     kuby-digitalocean (0.4.3)
       droplet_kit (~> 3.5)
       kube-dsl (~> 0.1)
@@ -171,9 +158,9 @@ GEM
       nokogiri (>= 1.5.9)
     memoist (0.16.2)
     method_source (1.0.0)
-    mime-types (3.3.1)
+    mime-types (3.4.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2021.0901)
+    mime-types-data (3.2021.1115)
     minitest (5.14.4)
     multi_json (1.15.0)
     multipart-post (2.1.1)
@@ -183,7 +170,7 @@ GEM
     nokogiri (1.12.5-x86_64-linux)
       racc (~> 1.4)
     oj (3.13.9)
-    os (1.1.1)
+    os (1.1.4)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
