@@ -72,6 +72,20 @@ Kuby.define("anycable-rails-demo") do
                     name "metrics"
                     protocol "TCP"
                   end
+
+                  liveness_probe do
+                    success_threshold 1
+                    failure_threshold 3
+                    initial_delay_seconds 90
+                    period_seconds 10
+                    timeout_seconds 3
+
+                    http_get do
+                      path "/i_feel_so_alive"
+                      port 3010
+                      scheme "HTTP"
+                    end
+                  end
                 end
               end
             end
@@ -85,6 +99,7 @@ Kuby.define("anycable-rails-demo") do
             add "REDIS_URL", app_creds[:redis_url]
             add "ACTION_CABLE_ADAPTER", "any_cable"
             add "PROMETHEUS_EXPORTER_PORT", METRICS_PORT.to_s
+            add "HTTP_LIVENESS_PORT", "3010"
           end
         end
       end

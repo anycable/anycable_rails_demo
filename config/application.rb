@@ -30,5 +30,33 @@ module AnycableRailsDemo
       g.javascripts false
       g.test_framework nil
     end
+
+    server do
+      next unless ENV["HTTP_LIVENESS_PORT"]
+
+      port = ENV.fetch("HTTP_LIVENESS_PORT").to_i
+      path = ENV.fetch("HTTP_LIVENESS_PATH", "/i_feel_so_alive")
+
+      # Liveness check server
+      require "webrick"
+
+      logger = Logger.new(ENV["LOG"] == "1" ? $stdout : IO::NULL)
+
+      WEBrick::HTTPServer.new(
+        Port: port,
+        Logger: logger,
+        AccessLog: []
+      ).tap do |http_server|
+        http_server.mount_proc path do |_, res|
+          res.status = 200
+          res.body = "Ready"
+        end
+      end.then do |http_server|
+        Thread.new { http_server.start }
+        logger.info(
+          "HTTP health server is listening on localhost:#{port} and mounted at \"#{path}\""
+        )
+      end
+    end
   end
 end
