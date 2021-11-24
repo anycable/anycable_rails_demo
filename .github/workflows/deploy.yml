@@ -33,21 +33,14 @@ jobs:
           registry: registry.digitalocean.com
           username: ${{ secrets.do_token }}
           password: ${{ secrets.do_token }}
-      - name: Cache Docker layers
-        uses: actions/cache@v2
-        with:
-          path: /tmp/.buildx-cache
-          key: buildx-cache-${{ github.sha }}
-          restore-keys: |
-            buildx-cache-
       - name: Build and push Docker images
         run: |
-            bundle exec kuby -e production build --only app --    --cache-from=type=local,src=/tmp/.buildx-cache/app --cache-to=type=local,dest=/tmp/.buildx-cache-new/app --push
-            bundle exec kuby -e production build --only assets -- --cache-from=type=local,src=/tmp/.buildx-cache/assets --cache-to=type=local,dest=/tmp/.buildx-cache-new/assets --push
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+            bundle exec kuby -e production build --only app -- \
+              --cache-from=type=gha,scope=app --cache-to=type=gha,scope=app,mode=max \
+              --push
+            bundle exec kuby -e production build --only assets -- \
+              --cache-from=type=gha,scope=assets --cache-to=type=gha,scope=assets,mode=max \
+              --push
       - name: Deploy Rails app
         timeout-minutes: 5
         run: |
