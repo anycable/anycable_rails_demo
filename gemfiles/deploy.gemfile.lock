@@ -1,3 +1,22 @@
+GIT
+  remote: https://github.com/anycable/kuby-core.git
+  revision: 34a2d0caf1b1ddcbbc89b673ac6d2cf1afb2824a
+  branch: feat/docker-build-custom
+  specs:
+    kuby-core (0.13.0)
+      colorize (~> 0.8)
+      docker-remote (~> 0.6)
+      gli (~> 2.0)
+      helm-cli (~> 0.3)
+      krane (>= 1.1.4, < 2.0)
+      kube-dsl (~> 0.4)
+      kubernetes-cli (~> 0.3)
+      kuby-cert-manager (>= 0.3)
+      kuby-kube-db (>= 0.6)
+      railties (>= 5.1)
+      rouge (~> 3.0)
+      sorbet-runtime-stub (~> 0.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -123,6 +142,7 @@ GEM
     kubectl-rb (0.2.1-x86_64-linux)
     kubernetes-cli (0.3.2)
       kubectl-rb (~> 0.1)
+    kuby-anycable (0.1.0)
     kuby-cert-manager (0.3.0)
       helm-cli (~> 0.1)
       kube-dsl (~> 0.1)
@@ -225,7 +245,8 @@ PLATFORMS
 
 DEPENDENCIES
   activesupport (~> 6.1)
-  kuby-core (~> 0.13.0)
+  kuby-anycable (~> 0.1)
+  kuby-core (~> 0.13.0)!
   kuby-digitalocean (~> 0.4.3)
   pry-byebug
 
