@@ -4,7 +4,6 @@ require "action_cable/subscription_adapter/any_cable"
 
 # Run AnyCable RPC server
 RSpec.configure do |config|
-  # Skip assets precompilcation if we exclude system specs.
   next if config.filter.opposite.rules[:type] == "system" || config.exclude_pattern.match?(%r{spec/system})
 
   require "anycable/cli"
