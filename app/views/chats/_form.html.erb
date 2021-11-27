@@ -1,0 +1,6 @@
+<%= turbo_frame_tag dom_id(workspace, :chat_form) do %>
+  <%= form_tag workspace_chat_message_path(workspace), method: :post, class: "flex items-center border-b-2 border-teal-500 mb-4 pb-1" do %>
+    <input autocomplete="off" name="message" class="any-text-input" type="text" placeholder="Type message">
+    <button type="submit" class="flex-shrink-0 any-button">Send</button>
+  <% end %>
+<% end %>

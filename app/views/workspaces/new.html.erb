@@ -1,7 +1,7 @@
 <div class="any-panel-wide" id="<%= dom_id(workspace, :new) %>">
   <div>
     <h2 class="mb-2">Create new workspace</h2>
-    <%= form_for workspace, html: {class: "flex items-center border-b border-b-2 border-red mb-4 pb-1", data: {controller: "forms--remote"}} do |f| %>
+    <%= form_for workspace, html: {class: "flex items-center border-b border-b-2 border-red mb-4 pb-1"} do |f| %>
       <%= f.text_field :name, class: "any-text-input", placeholder: "Enter name", autocomplete: "off" %>
       <%= f.button "Create", type: :submit, class: "flex-shrink-0 any-button" %>
     <% end %>
