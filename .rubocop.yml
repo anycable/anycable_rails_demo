@@ -29,3 +29,7 @@ Standard/BlockSingleLineBraces:
 
 Style/FrozenStringLiteralComment:
   Enabled: true
+
+# FIXME: Re-enable when ruby-next 0.14 is released
+Layout/SpaceAfterColon:
+  Enabled: false

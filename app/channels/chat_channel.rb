@@ -17,7 +17,7 @@ class ChatChannel < ApplicationCable::Channel
     broadcast_to(
       workspace,
       action: "newMessage",
-      html: html("chats/message", **{message, name}),
+      html: html("chats/message", message:, name:),
       author_id: user.id
     )
   end

@@ -5,18 +5,18 @@ class WorkspacesController < ApplicationController
 
   def new
     workspace = Workspace.new
-    render locals: {workspace: workspace}
+    render locals: {workspace:}
   end
 
   def create
     workspace = Workspace.new(workspace_params)
     if workspace.save
       # populate demo data
-      Workspaces::CreateDemo.call(**{workspace})
+      Workspaces::CreateDemo.call(workspace:)
       redirect_to workspace_path(workspace), notice: "Welcome to your new workspace!"
     else
       flash.now[:alert] = "Failed to create a workspace: #{workspace.errors.full_messages.join(";")}"
-      render :new, locals: {workspace}
+      render :new, locals: {workspace:}
     end
   end
 
@@ -25,7 +25,7 @@ class WorkspacesController < ApplicationController
 
   def show
     workspace = Workspace.find_by!(public_id: params[:id])
-    render locals: {workspace}
+    render locals: {workspace:}
   end
 
   private

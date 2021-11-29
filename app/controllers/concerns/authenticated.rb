@@ -30,7 +30,7 @@ module Authenticated
     return unless cookies[:uid]
 
     name, id = cookies[:uid].split("/")
-    User.new({name, id}).tap do |user|
+    User.new({name:, id:}).tap do |user|
       # store in session
       commit_user_to_session! user
     end
