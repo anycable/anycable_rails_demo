@@ -17,10 +17,8 @@ Kuby.define("anycable-rails-demo") do
       config_path: "./config/credentials/production.yml.enc",
       key_path: "./config/credentials/production.key",
       env_key: "RAILS_MASTER_KEY",
-      # Temp: do not raise on a missing key to allow assets image to copy assets
-      # See: https://github.com/getkuby/kuby-core/pull/63
-      raise_if_missing_key: false
-    ) || {}
+      raise_if_missing_key: true
+    )
 
     docker do
       base_image "ruby:3.0.1-alpine"
