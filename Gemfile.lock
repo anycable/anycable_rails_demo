@@ -92,6 +92,7 @@ GEM
       capybara (>= 2.1, < 4)
       ferrum (~> 0.11.0)
     diff-lcs (1.4.4)
+    dry-initializer (3.0.4)
     erubi (1.10.0)
     ferrum (0.11)
       addressable (~> 2.5)
@@ -102,13 +103,22 @@ GEM
     globalid (0.4.2)
       activesupport (>= 4.2.0)
     google-protobuf (3.17.1)
+    google-protobuf (3.17.1-universal-darwin)
+    google-protobuf (3.17.1-x86_64-linux)
     googleapis-common-protos-types (1.0.6)
       google-protobuf (~> 3.14)
     grpc (1.38.0)
       google-protobuf (~> 3.15)
       googleapis-common-protos-types (~> 1.0)
+    grpc (1.38.0-universal-darwin)
+      google-protobuf (~> 3.15)
+      googleapis-common-protos-types (~> 1.0)
+    grpc (1.38.0-x86_64-linux)
+      google-protobuf (~> 3.15)
+      googleapis-common-protos-types (~> 1.0)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
+    json (2.6.0)
     listen (3.4.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
@@ -128,10 +138,16 @@ GEM
     nokogiri (1.11.2)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
+    nokogiri (1.11.2-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.11.2-x86_64-linux)
+      racc (~> 1.4)
     parallel (1.20.1)
     parser (3.0.3.0)
       ast (~> 2.4.1)
     pg (1.2.3)
+    procto (0.0.3)
+    prometheus-client-mmap (0.15.0)
     pry (0.13.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -145,6 +161,8 @@ GEM
       nio4r (~> 2.0)
     racc (1.5.2)
     rack (2.2.3)
+    rack-health (0.1.2)
+      rack (>= 1.2.0)
     rack-proxy (0.6.5)
       rack
     rack-test (1.1.0)
@@ -250,20 +268,41 @@ GEM
     unparser (0.6.2)
       diff-lcs (~> 1.3)
       parser (>= 3.0.0)
+      procto (~> 0.0.2)
     webpacker (6.0.0.beta.6)
       activesupport (>= 5.2)
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
+    webrick (1.7.0)
     websocket-driver (0.7.3)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     xpath (3.2.0)
       nokogiri (~> 1.8)
+    yabeda (0.11.0)
+      anyway_config (>= 1.0, < 3)
+      concurrent-ruby
+      dry-initializer
+    yabeda-anycable (0.1.0)
+      anycable-core (~> 1.1)
+      yabeda (~> 0.10)
+    yabeda-prometheus-mmap (0.3.0)
+      prometheus-client-mmap
+      yabeda (~> 0.10)
+    yabeda-puma-plugin (0.6.0)
+      json
+      puma
+      yabeda (~> 0.5)
+    yabeda-rails (0.7.2)
+      rails
+      yabeda (~> 0.8)
     zeitwerk (2.4.2)
 
 PLATFORMS
   ruby
+  x86_64-darwin-18
+  x86_64-linux
 
 DEPENDENCIES
   anycable-rails (~> 1.1.0)
@@ -277,6 +316,7 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   puma (~> 4.1)
+  rack-health
   rails (~> 6.1)
   redis (~> 4.0)
   rspec-rails (~> 4.0.0)
@@ -287,6 +327,11 @@ DEPENDENCIES
   test-prof
   turbo-rails
   webpacker (= 6.0.0.beta.6)
+  webrick
+  yabeda-anycable
+  yabeda-prometheus-mmap
+  yabeda-puma-plugin
+  yabeda-rails
 
 RUBY VERSION
    ruby 3.0.1p64

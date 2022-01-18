@@ -17,6 +17,14 @@ gem 'ruby-next', '>= 0.10.0', require: false
 gem 'nanoid'
 gem 'turbo-rails'
 
+gem 'yabeda-anycable'
+gem 'yabeda-rails'
+gem 'yabeda-puma-plugin'
+gem 'yabeda-prometheus-mmap'
+gem 'webrick' # For exporting metrics from AnyCable RPC
+
+gem 'rack-health'
+
 group :development, :test do
   gem 'pry-byebug'
   gem 'pry-rails'

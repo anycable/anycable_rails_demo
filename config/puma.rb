@@ -33,8 +33,13 @@ pidfile ENV.fetch("PIDFILE", "tmp/pids/server.pid")
 # This directive tells Puma to first boot the application and load code
 # before forking the application. This takes advantage of Copy On Write
 # process behavior so workers use less memory.
-#
-# preload_app!
+# NOTE: This is important for Prometheus exporter to work correctly
+preload_app!
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
+
+activate_control_app
+
+plugin :yabeda
+plugin :yabeda_prometheus

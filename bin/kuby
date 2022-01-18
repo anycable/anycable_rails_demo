@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cd $(dirname $0)/..
+
+export BUNDLE_GEMFILE=./gemfiles/deploy.gemfile
+bundle check > /dev/null || bundle install
+
+kuby_env=${KUBY_ENV:-production}
+
+bundle exec kuby -e ${kuby_env} $@

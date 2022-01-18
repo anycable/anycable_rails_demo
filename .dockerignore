@@ -1,0 +1,14 @@
+.bundle/
+vendor/bundle
+node_modules/
+.node_modules/
+**/.git*
+tmp/
+log/
+engines/**/log/
+engines/**/tmp/
+public/assets
+.github/
+.rubocop/
+etc/
+config/credentials/*.key

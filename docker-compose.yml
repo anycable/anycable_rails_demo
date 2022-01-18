@@ -44,6 +44,7 @@ x-backend: &backend
     EDITOR: vi
     LOG: ${LOG:-0}
     ACTION_CABLE_ADAPTER: ${ACTION_CABLE_ADAPTER:-anycable}
+    HTTP_LIVENESS_PORT: "3012"
   depends_on: &backend_depends_on
     postgres:
       condition: service_healthy
@@ -56,6 +57,7 @@ services:
     command: bundle exec rails server -b 0.0.0.0
     ports:
       - '3000:3000'
+      - '3012:3012'
 
   # Separate definition for system tests to add Chrome as a dependency
   rspec_system:

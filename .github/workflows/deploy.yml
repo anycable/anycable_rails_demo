@@ -1,0 +1,51 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+    - master
+  pull_request:
+
+jobs:
+  kuby:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: gemfiles/deploy.gemfile
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 3
+      BUNDLE_FROZEN: "true"
+      CI: true
+      RAILS_MASTER_KEY: ${{ secrets.master_key }}
+    if: contains(github.event.pull_request.body, '[Deploy]')
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.1
+          bundler-cache: true
+      - uses: crazy-max/ghaction-github-runtime@v1
+      - uses: docker/setup-buildx-action@v1
+        with:
+          install: true
+      - uses: docker/login-action@v1
+        with:
+          registry: registry.digitalocean.com
+          username: ${{ secrets.do_token }}
+          password: ${{ secrets.do_token }}
+      - name: Build and push Docker images
+        run: |
+            bundle exec kuby -e production build --only app -- \
+              --cache-from=type=gha,scope=app --cache-to=type=gha,scope=app,mode=max \
+              --push
+            bundle exec kuby -e production build --only assets -- \
+              --cache-from=type=gha,scope=assets --cache-to=type=gha,scope=assets,mode=max \
+              --push
+      - name: Deploy Rails app
+        timeout-minutes: 5
+        run: |
+          bundle exec kuby -e production deploy
+      - name: Deploy monitoring infra
+        timeout-minutes: 5
+        run: |
+          bundle exec kuby -e production -c ./deploy/kuby_monitoring.rb deploy
