@@ -1,4 +1,3 @@
-import '../styles';
-import '../controllers';
-import './turbo';
-import './ujs';
+import "../controllers";
+import "./turbo";
+import "./ujs";

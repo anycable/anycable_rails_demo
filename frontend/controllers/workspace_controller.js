@@ -1,6 +1,6 @@
-import { Controller } from "stimulus";
+import { Controller } from "@hotwired/stimulus";
 import { createChannel } from "../utils/cable";
-import { isPreview as isTurboPreview } from '../utils/turbo';
+import { isPreview as isTurboPreview } from "../utils/turbo";
 
 export default class extends Controller {
   static targets = ["lists", "form"];
@@ -12,7 +12,7 @@ export default class extends Controller {
     const id = this.data.get("id");
 
     this.channel = createChannel(
-      {channel, id},
+      { channel, id },
       {
         received: (data) => {
           this.handleUpdate(data);

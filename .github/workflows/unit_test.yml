@@ -12,40 +12,32 @@ jobs:
     env:
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3
+      BUNDLE_FROZEN: true
       CI: true
       DATABASE_URL: postgres://postgres:postgres@localhost:5432
       RAILS_ENV: test
     services:
       postgres:
-        image: postgres:11.1
+        image: postgres:14.0
         ports: ["5432:5432"]
         env:
           POSTGRES_PASSWORD: postgres
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       redis:
-        image: redis:5.0-alpine
+        image: redis:6.2-alpine
         ports: ["6379:6379"]
         options: --health-cmd="redis-cli ping" --health-interval 1s --health-timeout 3s --health-retries 30
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/cache@v1
-        with:
-          path: /home/runner/bundle
-          key: bundle-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            bundle-
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: 3.0.1
+      - uses: actions/checkout@v3
       - name: Install PostgreSQL client
         run: |
           sudo apt-get -yqq install libpq-dev
-      - name: Bundle install
-        run: |
-          bundle config path /home/runner/bundle
-          bundle config set frozen 'true'
-          bundle install
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.1
+          bundler: 2.2.33
+          bundler-cache: true
       - name: Run RSpec
         run: |
-          bundle exec rails db:prepare
-          bundle exec rspec --tag ~type:system
+          bundle exec rails db:test:prepare
+          bundle exec rspec --tag ~type:system --force-color

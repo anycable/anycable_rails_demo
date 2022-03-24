@@ -1,6 +1,6 @@
-import { Controller } from "stimulus";
+import { Controller } from "@hotwired/stimulus";
 import { createCable } from "../utils/cable";
-import { isPreview as isTurboPreview } from '../utils/turbo';
+import { isPreview as isTurboPreview } from "../utils/turbo";
 
 export default class extends Controller {
   static targets = ["toggle", "icon"];
@@ -22,7 +22,7 @@ export default class extends Controller {
       this.connection.open = () => {
         origOpen.call();
         this.monitor(this.connection.webSocket);
-      }
+      };
     } else if (this.connection.isActive()) {
       return this.handleOpen();
     }

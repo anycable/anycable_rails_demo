@@ -1,4 +1,4 @@
-import { Controller } from "stimulus";
+import { Controller } from "@hotwired/stimulus";
 import { visitedWorkspaces } from "../../utils/workspaces";
 import { isPreview as isTurboPreview } from "../../utils/turbo";
 
@@ -7,7 +7,7 @@ export default class extends Controller {
     if (isTurboPreview()) return;
 
     // remove stale data first
-    this.element.innerHTML = '';
+    this.element.innerHTML = "";
 
     let visited = visitedWorkspaces();
     if (visited) {
@@ -26,7 +26,7 @@ export default class extends Controller {
   addWorkspaces(list) {
     const ul = document.createElement("ul");
 
-    list.forEach(({name, url}) => {
+    list.forEach(({ name, url }) => {
       const li = document.createElement("li");
       const a = document.createElement("a");
       a.href = url;

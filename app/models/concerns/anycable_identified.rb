@@ -10,7 +10,7 @@ module AnycableIdentified
   end
 
   def to_global_id(options = {})
-    super(attributes.merge!(options).merge!(app: :anycable))
+    super(attributes.merge!(options).merge!(app: "anycable"))
   end
 
   alias_method :to_gid, :to_global_id

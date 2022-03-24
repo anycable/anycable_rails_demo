@@ -1,49 +1,48 @@
-version: '2.4'
-
 x-app: &app
   build:
     context: .
-    dockerfile: ./.dockerdev/Dockerfile
     args:
-      RUBY_VERSION: '3.0.1'
-      PG_MAJOR: '13'
-      NODE_MAJOR: '12'
-      YARN_VERSION: '1.13.0'
-      BUNDLER_VERSION: '2.2.15'
+      RUBY_VERSION: '3.1.1'
+      PG_MAJOR: '14'
+      NODE_MAJOR: '16'
   environment: &env
     NODE_ENV: development
     RAILS_ENV: ${RAILS_ENV:-development}
-  image: anycable-rails-demo-dev:1.3.0
+  image: anycable-rails-demo-dev:2.0.0
   tmpfs:
     - /tmp
+    - /app/tmp/pids
 
 x-backend: &backend
   <<: *app
   stdin_open: true
   tty: true
   volumes:
-    - .:/app:cached
+    - ..:/app:cached
     - rails_cache:/app/tmp/cache
     - bundle:/usr/local/bundle
     - node_modules:/app/node_modules
-    - packs:/app/public/packs
-    - packs-test:/app/public/packs-test
-    - .dockerdev/.psqlrc:/root/.psqlrc:ro
-    - .dockerdev/.bashrc:/root/.bashrc:ro
-    - .dockerdev/.pryrc:/root/.pryrc:ro
+    - assets:/app/public/assets
+    - assets_builds:/app/app/assets/builds
+    - history:/usr/local/hist
+    - .psqlrc:/root/.psqlrc:ro
+    - .bashrc:/root/.bashrc:ro
   environment: &backend_environment
     <<: *env
     REDIS_URL: redis://redis:6379/
     DATABASE_URL: postgres://postgres:postgres@postgres:5432
-    CHROME_URL: http://chrome:3333
     BOOTSNAP_CACHE_DIR: /usr/local/bundle/_bootsnap
     WEBPACKER_DEV_SERVER_HOST: webpacker
     WEB_CONCURRENCY: 1
-    HISTFILE: /app/log/.bash_history
-    PSQL_HISTFILE: /app/log/.psql_history
+    HISTFILE: /usr/local/hist/.bash_history
+    PSQL_HISTFILE: /usr/local/hist/.psql_history
+    IRB_HISTFILE: /usr/local/hist/.irb_history
+    ACTION_CABLE_ADAPTER: ${ACTION_CABLE_ADAPTER:-anycable}
+    ANYCABLE_RPC_HOST: 0.0.0.0:50051
+    ANYCABLE_BROADCAST_ADAPTER: redis
+    CHROME_URL: http://chrome:3333
     EDITOR: vi
     LOG: ${LOG:-0}
-    ACTION_CABLE_ADAPTER: ${ACTION_CABLE_ADAPTER:-anycable}
   depends_on: &backend_depends_on
     postgres:
       condition: service_healthy
@@ -53,9 +52,23 @@ x-backend: &backend
 services:
   rails:
     <<: *backend
+    command: bundle exec rails
+
+  web:
+    <<: *backend
     command: bundle exec rails server -b 0.0.0.0
     ports:
       - '3000:3000'
+    depends_on:
+      <<: *backend_depends_on
+      css:
+        condition: service_started
+      js:
+        condition: service_started
+      ws:
+        condition: service_started
+      anycable:
+        condition: service_started
 
   # Separate definition for system tests to add Chrome as a dependency
   rspec_system:
@@ -79,19 +92,16 @@ services:
         aliases:
           - anycable.test
 
-  sidekiq:
-    <<: *backend
-    command: bundle exec sidekiq -C config/sidekiq.yml
-
   ws: &ws
-    image: anycable/anycable-go:1.1
+    image: anycable/anycable-go:1.2
     ports:
       - '8080:8080'
     environment: &ws_environment
       ANYCABLE_HOST: "0.0.0.0"
+      ANYCABLE_PORT: 8080
       ANYCABLE_REDIS_URL: redis://redis:6379/0
       ANYCABLE_RPC_HOST: anycable:50051
-      ANYCABLE_DEBUG: 1
+      ANYCABLE_DEBUG: ${ANYCABLE_DEBUG:-1}
     depends_on:
       redis:
         condition: service_healthy
@@ -115,7 +125,7 @@ services:
       <<: *backend_environment
       ANYCABLE_REDIS_URL: redis://redis:6379/0
       ANYCABLE_RPC_HOST: 0.0.0.0:50051
-      ANYCABLE_DEBUG: 1
+      ANYCABLE_DEBUG: ${ANYCABLE_DEBUG:-1}
     ports:
       - '50051'
     depends_on:
@@ -123,15 +133,23 @@ services:
       ws:
         condition: service_started
 
+  css:
+    <<: *backend
+    command: yarn build:css --watch
+
+  js:
+    <<: *backend
+    command: yarn build --watch
+
   postgres:
-    image: postgres:13.0
+    image: postgres:14.0
     volumes:
-      - .dockerdev/.psqlrc:/root/.psqlrc:ro
+      - .psqlrc:/root/.psqlrc:ro
       - postgres:/var/lib/postgresql/data
-      - ./log:/root/log:cached
+      - history:/user/local/hist
     environment:
       POSTGRES_PASSWORD: postgres
-      PSQL_HISTFILE: /root/log/.psql_history
+      PSQL_HISTFILE: /user/local/hist/.psql_history
     ports:
       - 5432
     healthcheck:
@@ -139,7 +157,7 @@ services:
       interval: 5s
 
   redis:
-    image: redis:5.0-alpine
+    image: redis:6.2-alpine
     volumes:
       - redis:/data
     ports:
@@ -150,24 +168,9 @@ services:
       timeout: 3s
       retries: 30
 
-  webpacker:
-    <<: *app
-    command: bundle exec ./bin/webpack-dev-server
-    ports:
-      - '3035:3035'
-      - 3036
-    volumes:
-      - .:/app:cached
-      - bundle:/usr/local/bundle
-      - node_modules:/app/node_modules
-      - packs:/app/public/packs
-      - packs-test:/app/public/packs-test
-    environment:
-      <<: *env
-      WEBPACKER_DEV_SERVER_HOST: 0.0.0.0
-
   chrome:
-    image: browserless/chrome:1.31-chrome-stable
+    # Works on Apple M1
+    image: barrenechea/browserless:latest
     ports:
       - '3333:3333'
     environment:
@@ -182,5 +185,6 @@ volumes:
   bundle:
   node_modules:
   rails_cache:
-  packs:
-  packs-test:
+  history:
+  assets:
+  assets_builds:

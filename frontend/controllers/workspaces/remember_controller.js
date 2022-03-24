@@ -1,4 +1,4 @@
-import { Controller } from "stimulus";
+import { Controller } from "@hotwired/stimulus";
 import { rememberWorkspace } from "../../utils/workspaces";
 
 export default class extends Controller {

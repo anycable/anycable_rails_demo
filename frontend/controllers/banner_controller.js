@@ -1,4 +1,4 @@
-import { Controller } from "stimulus";
+import { Controller } from "@hotwired/stimulus";
 import Cookies from "js-cookie";
 
 const PREFIX = "any_banner_";
