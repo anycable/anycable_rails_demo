@@ -8,7 +8,7 @@ export const createCable = () => {
   }
 
   return consumer;
-}
+};
 
 export const createChannel = (...args) => {
   const consumer = createCable();

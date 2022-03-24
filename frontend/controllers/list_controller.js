@@ -1,6 +1,6 @@
-import { Controller } from "stimulus";
+import { Controller } from "@hotwired/stimulus";
 import { createChannel } from "../utils/cable";
-import { isPreview as isTurboPreview } from '../utils/turbo';
+import { isPreview as isTurboPreview } from "../utils/turbo";
 import { DELETE, PATCH } from "../utils/api";
 
 export default class extends Controller {
@@ -14,7 +14,7 @@ export default class extends Controller {
     const workspace = this.data.get("workspace");
 
     this.channel = createChannel(
-      {channel, id, workspace},
+      { channel, id, workspace },
       {
         received: (data) => {
           this.handleUpdate(data);
@@ -61,7 +61,7 @@ export default class extends Controller {
       return;
     }
 
-    PATCH(url, {item: {completed: checkbox.checked}}).then((data) => {
+    PATCH(url, { item: { completed: checkbox.checked } }).then((data) => {
       this.updateCompleted(data.id, data.completed);
     });
   }
@@ -86,7 +86,7 @@ export default class extends Controller {
     const checkbox = item.querySelector("input[type=checkbox]");
 
     checkbox.checked = completed;
-    if(completed) {
+    if (completed) {
       item.classList.add("checked");
     } else if (item.classList.contains("checked")) {
       item.classList.remove("checked");

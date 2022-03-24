@@ -16,11 +16,7 @@ Bundler.require(*Rails.groups)
 
 module AnycableRailsDemo
   class Application < Rails::Application
-    config.load_defaults 6.0
-
-    # Make sure Tailwind JIT is not running file watcher
-    # (which makes bin/webpack to hang forever)
-    Webpacker::Compiler.env["TAILWIND_MODE"] = "build"
+    config.load_defaults 7.0
 
     config.generators do |g|
       g.assets false

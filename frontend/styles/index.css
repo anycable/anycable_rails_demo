@@ -1,8 +1,5 @@
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
-
-@import "core";
-@import "banner";
-@import "chat";
-@import "lists";
+@import "./tailwind.css";
+@import "./core.css";
+@import "./banner.css";
+@import "./chat.css";
+@import "./lists.css";

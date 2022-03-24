@@ -4,6 +4,9 @@
 require:
   - rubocop-rails
 
+Rails:
+  Enabled: false
+
 Rails/ActionFilter:
   Enabled: true
   EnforcedStyle: action

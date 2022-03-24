@@ -30,7 +30,7 @@ remote_options = remote_chrome ? {url: REMOTE_CHROME_URL} : {}
 
 require "capybara/cuprite"
 
-Capybara.register_driver(:cuprite) do |app|
+Capybara.register_driver(:better_cuprite) do |app|
   Capybara::Cuprite::Driver.new(
     app,
     **{
@@ -41,7 +41,7 @@ Capybara.register_driver(:cuprite) do |app|
   )
 end
 
-Capybara.default_driver = Capybara.javascript_driver = :cuprite
+Capybara.default_driver = Capybara.javascript_driver = :better_cuprite
 
 # Add shortcuts for cuprite-specific debugging helpers
 module CupriteHelpers
@@ -51,7 +51,7 @@ module CupriteHelpers
 
   def debug(binding = nil)
     $stdout.puts "🔎 Open Chrome inspector at http://localhost:3333"
-    return binding.pry if binding
+    return binding.break if binding
     page.driver.pause
   end
 end

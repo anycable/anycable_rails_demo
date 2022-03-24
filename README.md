@@ -16,11 +16,11 @@ This app has a Docker-first configuration based one the [Ruby on Whales post](ht
 
 You need:
 
-- `docker` and `docker-compose` installed.
+- Docker installed.
 
 For MacOS just use [official app](https://docs.docker.com/engine/installation/mac/).
 
-- [`dip`](https://github.com/bibendi/dip) installed.
+- [Dip](https://github.com/bibendi/dip) installed.
 
 Run the following command to build images and provision the application:
 
@@ -33,7 +33,7 @@ dip provision
 You can start Rails server along with AnyCable by running:
 
 ```sh
-dip up rails anycable
+dip up web
 ```
 
 Then go to [http://localhost:3000/](http://localhost:3000/) and see the application in action.
@@ -45,9 +45,6 @@ If you want to run Rails server and/or with debugging capabilites, run the follo
 ```sh
 # for Rails server
 dip rails s
-
-# for AnyCable
-dip anycable
 ```
 
 ## Testing

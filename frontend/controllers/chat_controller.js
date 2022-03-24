@@ -1,7 +1,7 @@
-import { Controller } from "stimulus";
+import { Controller } from "@hotwired/stimulus";
 import { createChannel } from "../utils/cable";
 import { currentUser } from "../utils/current_user";
-import { isPreview as isTurboPreview } from '../utils/turbo';
+import { isPreview as isTurboPreview } from "../utils/turbo";
 
 export default class extends Controller {
   static targets = ["input", "messages", "placeholder"];
@@ -12,7 +12,7 @@ export default class extends Controller {
     const channel = "ChatChannel";
     const id = this.data.get("id");
     this.channel = createChannel(
-      {channel, id},
+      { channel, id },
       {
         received: (data) => {
           this.handleMessage(data);
@@ -31,23 +31,27 @@ export default class extends Controller {
   handleMessage(data) {
     if (data.action == "newMessage") {
       this.hidePlaceholder();
-      const mine = currentUser().id == data.author_id
+      const mine = currentUser().id == data.author_id;
       this.appendMessage(data.html, mine);
     }
   }
 
   hidePlaceholder() {
-    if(this.placeholderTarget.classList.contains("hidden")) return;
+    if (this.placeholderTarget.classList.contains("hidden")) return;
 
     this.placeholderTarget.classList.add("hidden");
   }
 
   appendMessage(html, mine) {
     this.messagesTarget.insertAdjacentHTML("beforeend", html);
-    this.messagesTarget.lastElementChild.classList.add(mine ? "mine" : "theirs");
+    this.messagesTarget.lastElementChild.classList.add(
+      mine ? "mine" : "theirs"
+    );
 
     if (mine) {
-      const authorElement = this.messagesTarget.lastElementChild.querySelector('[data-role="author"]');
+      const authorElement = this.messagesTarget.lastElementChild.querySelector(
+        '[data-role="author"]'
+      );
       if (authorElement) authorElement.innerText = "You";
     }
 
@@ -61,6 +65,6 @@ export default class extends Controller {
 
     if (!message) return;
 
-    this.channel.perform("speak", {message});
+    this.channel.perform("speak", { message });
   }
 }

@@ -12,25 +12,19 @@ RSpec.configure do |config|
       next
     end
 
-    if Webpacker.dev_server.running?
-      $stdout.puts "\n⚙️  Webpack dev server is running! Skip assets compilation.\n"
-      next
-    else
-      $stdout.puts "\n🐢  Precompiling assets.\n"
-      original_stdout = $stdout.clone
-      # Use test-prof now 'cause it couldn't be monkey-patched (e.g., by Timecop or similar)
-      start = Time.current
-      begin
-        # Silence Webpacker output
-        $stdout.reopen(File.new("/dev/null", "w"))
-        # next 3 lines to compile webpacker before running our test suite
-        require "rake"
-        Rails.application.load_tasks
-        Rake::Task["webpacker:compile"].execute
-      ensure
-        $stdout.reopen(original_stdout)
-        $stdout.puts "Finished in #{(Time.current - start).round(2)} seconds"
-      end
+    $stdout.puts "\n🐢  Precompiling assets.\n"
+    original_stdout = $stdout.clone
+
+    start = Time.current
+    begin
+      $stdout.reopen(File.new("/dev/null", "w"))
+
+      require "rake"
+      Rails.application.load_tasks
+      Rake::Task["assets:precompile"].execute
+    ensure
+      $stdout.reopen(original_stdout)
+      $stdout.puts "Finished in #{(Time.current - start).round(2)} seconds"
     end
   end
 end

@@ -4,28 +4,23 @@ require "action_cable/subscription_adapter/any_cable"
 
 # Run AnyCable RPC server
 RSpec.configure do |config|
-  next if config.filter.opposite.rules[:type] == "system" || config.exclude_pattern.match?(%r{spec/system})
+  cli = nil
 
-  require "anycable/cli"
+  config.before(:suite) do
+    examples = RSpec.world.filtered_examples.values.flatten
+    has_no_system_tests = examples.none? { |example| example.metadata[:type] == :system }
 
-  cli = AnyCable::CLI.new(embedded: true)
-  cli.run
+    next if has_no_system_tests
+
+    require "anycable/cli"
+
+    $stdout.puts "\n⚡️  Starting AnyCable RPC server...\n"
+
+    cli = AnyCable::CLI.new(embedded: true)
+    cli.run
+  end
 
   config.after(:suite) do
     cli&.shutdown
-  end
-
-  config.before(:each, type: :system) do
-    next if ActionCable.server.pubsub.is_a?(ActionCable::SubscriptionAdapter::AnyCable)
-
-    @__was_pubsub_adapter__ = ActionCable.server.pubsub
-
-    adapter = ActionCable::SubscriptionAdapter::AnyCable.new(ActionCable.server)
-    ActionCable.server.instance_variable_set(:@pubsub, adapter)
-  end
-
-  config.after(:each, type: :system) do
-    next unless instance_variable_defined?(:@__was_pubsub_adapter__)
-    ActionCable.server.instance_variable_set(:@pubsub, @__was_pubsub_adapter__)
   end
 end

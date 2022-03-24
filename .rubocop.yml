@@ -1,6 +1,6 @@
 require:
   - ruby-next/rubocop
-  - standard/cop/block_single_line_braces
+  - standard
 
 inherit_mode:
   merge:
@@ -29,7 +29,3 @@ Standard/BlockSingleLineBraces:
 
 Style/FrozenStringLiteralComment:
   Enabled: true
-
-# FIXME: Re-enable when ruby-next 0.14 is released
-Layout/SpaceAfterColon:
-  Enabled: false
