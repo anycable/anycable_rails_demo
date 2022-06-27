@@ -16,9 +16,7 @@ gem 'ruby-next', '>= 0.15.0', require: false
 gem 'nanoid'
 gem 'turbo-rails'
 
-gem 'cssbundling-rails'
-gem 'jsbundling-rails'
-gem 'propshaft'
+gem 'vite_rails'
 
 group :development, :test do
   gem 'debug'

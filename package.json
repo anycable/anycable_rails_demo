@@ -7,16 +7,14 @@
     "@rails/actioncable": "^6.1.5",
     "@rails/ujs": "^6.1.5",
     "autoprefixer": "^10.4.4",
-    "esbuild": "^0.14.27",
-    "esbuild-rails": "^1.0.3",
     "js-cookie": "^3.0.1",
     "linkifyjs": "^3.0.5",
     "postcss": "^8.4.12",
     "postcss-import": "^14.1.0",
     "tailwindcss": "^3.0.23"
   },
-  "scripts": {
-    "build:css": "tailwindcss --postcss -i ./frontend/styles/index.css -o ./app/assets/builds/application.css",
-    "build": "node esbuild.config.js"
+  "devDependencies": {
+    "vite": "^2.9.1",
+    "vite-plugin-ruby": "^3.0.9"
   }
 }
