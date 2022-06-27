@@ -1,0 +1,6 @@
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+# https://github.com/ElMassimo/vite_ruby
+gem "vite_rails"

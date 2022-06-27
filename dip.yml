@@ -51,6 +51,17 @@ interaction:
         compose:
           run_options: [service-ports, use-aliases]
 
+  frontend:
+    description: Frontend development tasks
+    subcommands:
+      rails:
+        description: Run Rails server pointing to a local Vite dev server
+        service: web
+        environment:
+          VITE_HOST: host.docker.internal
+        compose:
+          run_options: [ service-ports, use-aliases ]
+
   psql:
     description: Run Postgres psql console
     service: postgres

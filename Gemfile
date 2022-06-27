@@ -16,7 +16,7 @@ gem 'ruby-next', '>= 0.15.0', require: false
 gem 'nanoid'
 gem 'turbo-rails'
 
-gem 'vite_rails'
+eval_gemfile 'gemfiles/frontend.gemfile'
 
 group :development, :test do
   gem 'debug'
