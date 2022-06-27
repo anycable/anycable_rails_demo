@@ -1,7 +1,7 @@
 import { Application } from "@hotwired/stimulus";
+import { registerControllers } from "stimulus-vite-helpers";
+
 const application = Application.start();
 
-import controllers from "./**/*_controller.js";
-controllers.forEach((controller) => {
-  application.register(controller.name, controller.module.default);
-});
+const controllers = import.meta.globEager("./**/*_controller.js");
+registerControllers(application, controllers);
