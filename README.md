@@ -40,7 +40,7 @@ Then go to [http://localhost:3000/](http://localhost:3000/) and see the applicat
 
 ## Debugging
 
-If you want to run Rails server and/or with debugging capabilites, run the following commands:
+If you want to run Rails server and/or with debugging capabilities, run the following commands:
 
 ```sh
 # for Rails server
