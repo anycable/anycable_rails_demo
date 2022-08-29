@@ -44,8 +44,6 @@ x-backend: &backend
     ANYCABLE_BROADCAST_ADAPTER: redis
     PROMETHEUS_EXPORTER_PORT: 5100
     CHROME_URL: http://chrome:3333
-    EDITOR: vi
-    LOG: ${LOG:-0}
   depends_on: &backend_depends_on
     postgres:
       condition: service_healthy
