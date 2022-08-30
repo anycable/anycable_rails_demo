@@ -59,6 +59,22 @@ dip rspec
 dip rspec system
 ```
 
+## Instrumentation
+
+You can also collect and visualize instrumentation metrics via Prometheus and Grafana:
+
+```sh
+# Start Prometheus, Grafana and Cadvisor
+dip up -d grafana
+```
+
+Open Grafana at [localhost:5000](http://localhost:5000/) (login `admin`, password `admin`) and navigate to Dashboards → Manage.
+
+Or just open dashboards using the direct links:
+
+- [AnyCable](http://localhost:5000/d/anycable-combined/anycable-combined)
+- [Docker containers CPU and RAM usage](http://localhost:5000/d/docker-containers/resource-consumption)
+
 ## Resources
 
 - [Ruby on Whales](https://evilmartians.com/chronicles/ruby-on-whales-docker-for-ruby-rails-development)—learn about the Docker development setup used for this application.

@@ -20,6 +20,12 @@ gem 'cssbundling-rails'
 gem 'jsbundling-rails'
 gem 'propshaft'
 
+gem "yabeda-anycable"
+gem "yabeda-rails"
+gem "yabeda-puma-plugin"
+gem "yabeda-prometheus"
+gem "webrick" # For exporting metrics from AnyCable RPC
+
 group :development, :test do
   gem 'debug'
   gem 'rspec-rails', '~> 4.0.0'
