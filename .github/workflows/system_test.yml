@@ -39,7 +39,7 @@ jobs:
         options: --add-host=host.docker.internal:host-gateway
         env:
           ANYCABLE_HOST: "0.0.0.0"
-          ANYCABLE_REDIS_URL: redis://redis:6379/0
+          ANYCABLE_REDIS_URL: redis://host.docker.internal:6379/0
           ANYCABLE_RPC_HOST: host.docker.internal:50051
     steps:
       - uses: actions/checkout@v3
@@ -50,13 +50,10 @@ jobs:
         with:
           ruby-version: 3.2.0
           bundler-cache: true
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '16.x'
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-      - uses: actions/cache@v2
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - uses: actions/cache@v3
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -71,3 +68,10 @@ jobs:
           bundle exec rails db:test:prepare
           export CABLE_URL="ws://$(hostname):8080/cable"
           bundle exec rspec --tag type:system --force-color
+      - name: Run WebSocket Director scenarios
+        run: |
+          bundle exec rails db:seed
+          mkdir -p tmp/pids
+          bundle exec anycabled start
+          gem install wsdirector-cli
+          wsdirector etc/wsdirector/chat.yml localhost:8080/cable -c -vv

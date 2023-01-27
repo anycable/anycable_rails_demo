@@ -9,6 +9,7 @@ gem 'puma', '~> 6.0'
 gem 'redis', '~> 5.0'
 gem 'grpc', '~> 1.37'
 gem 'anycable-rails', '~> 1.3.0'
+gem 'daemons', '~> 1.3', require: false
 
 gem 'bootsnap', '>= 1.4.2', require: false
 gem 'ruby-next', '>= 0.15.0', require: false

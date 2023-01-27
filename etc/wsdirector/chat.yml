@@ -1,0 +1,81 @@
+- client:
+    x-channel: &channel
+      channel: ChatChannel
+      params:
+        id: "demo"
+    protocol: action_cable
+    name: write
+    multiplier: ":scale"
+    connection_options:
+      cookies:
+        uid: "<%= ENV.fetch('NAME', 'ghost_writer') %>/<%= rand(100) %>"
+    actions:
+      - subscribe:
+          <<: *channel
+      - wait_all
+      - sleep:
+          time: 3
+          shift: 2
+      - perform:
+          <<: *channel
+          action: speak
+          data:
+            message: "hello"
+      - sleep:
+          time: 4
+          shift: 2
+      - perform:
+          <<: *channel
+          action: speak
+          data:
+            message: "hello 2"
+      - sleep:
+          time: 4
+          shift: 2
+      - perform:
+          <<: *channel
+          action: speak
+          data:
+            message: "hello 3"
+      - sleep:
+          time: 4
+          shift: 2
+
+- client:
+    protocol: action_cable
+    name: read
+    multiplier: ":scale * 2"
+    connection_options:
+      cookies:
+        uid: "<%= ENV.fetch('NAME', 'reader') %>/<%= rand(100) %>"
+    actions:
+      - subscribe:
+          <<: *channel
+      - wait_all
+      - sleep:
+          time: 3
+          shift: 2
+      - receive:
+          <<: *channel
+          multiplier: ":scale"
+          data>:
+            action: "newMessage"
+      - sleep:
+          time: 4
+          shift: 2
+      - receive:
+          <<: *channel
+          multiplier: ":scale"
+          data>:
+            action: "newMessage"
+      - sleep:
+          time: 4
+          shift: 2
+      - receive:
+          <<: *channel
+          multiplier: ":scale"
+          data>:
+            action: "newMessage"
+      - sleep:
+          time: 4
+          shift: 2
