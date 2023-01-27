@@ -23,7 +23,7 @@ describe "Workspaces -> List -> Delete" do
     expect(page).to have_text "#{list.name} has been deleted"
 
     within dom_id(workspace, :lists) do
-      expect(page).to have_no_text list.name
+      expect(page).not_to have_text list.name
     end
   end
 
@@ -54,7 +54,7 @@ describe "Workspaces -> List -> Delete" do
 
       within_session :john do
         within dom_id(workspace, :lists) do
-          expect(page).to have_no_text list.name
+          expect(page).not_to have_text list.name
         end
       end
     end

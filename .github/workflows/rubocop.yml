@@ -13,14 +13,14 @@ jobs:
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3
       BUNDLE_FROZEN: true
+      BUNDLE_GEMFILE: gemfiles/rubocop.gemfile
       CI: true
     steps:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7.2
+        ruby-version: 3.2.0
+        bundler-cache: true
     - name: Lint Ruby code with RuboCop
       run: |
-        gem install bundler
-        bundle install --gemfile gemfiles/rubocop.gemfile
-        bundle exec --gemfile gemfiles/rubocop.gemfile rubocop
+        bundle exec rubocop

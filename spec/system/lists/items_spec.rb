@@ -68,7 +68,7 @@ describe "Workspaces -> List -> Items" do
       end
 
       within dom_id(full_list, :items) do
-        expect(page).to have_no_text item.desc
+        expect(page).not_to have_text item.desc
       end
     end
 
@@ -88,12 +88,12 @@ describe "Workspaces -> List -> Items" do
         end
 
         within dom_id(full_list, :items) do
-          expect(page).to have_no_text item.desc
+          expect(page).not_to have_text item.desc
         end
 
         within_session :john do
           within dom_id(full_list, :items) do
-            expect(page).to have_no_text item.desc
+            expect(page).not_to have_text item.desc
           end
         end
       end

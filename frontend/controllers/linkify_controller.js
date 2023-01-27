@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
-import linkifyStr from "linkifyjs/string";
+import linkifyStr from "linkify-string";
 
 const MAX_SIZE = 25;
 

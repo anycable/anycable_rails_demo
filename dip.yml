@@ -63,8 +63,9 @@ interaction:
     command: psql -h postgres -U postgres
 
 provision:
-  - dip compose down --volumes
+  - '[[ "$RESET_DOCKER" == "true" ]] && echo "Re-creating the Docker env from scratch..." && dip compose down --volumes || echo "Re-provisioning the Docker env..."'
   - dip compose up -d postgres redis
   - dip bundle install
   - dip rails db:prepare
   - dip rails db:test:prepare
+  - echo "🚀 Ready to rock! Run 'dip rails s' to start a Rails web server w/ AnyCable"

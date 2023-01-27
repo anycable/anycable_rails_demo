@@ -21,7 +21,7 @@ RSpec.configure do |config|
 
       require "rake"
       Rails.application.load_tasks
-      Rake::Task["assets:precompile"].execute
+      Rake::Task["assets:precompile"].invoke
     ensure
       $stdout.reopen(original_stdout)
       $stdout.puts "Finished in #{(Time.current - start).round(2)} seconds"

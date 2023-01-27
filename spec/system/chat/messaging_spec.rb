@@ -23,7 +23,7 @@ describe "Workspaces -> Chat" do
         expect(page).to have_text "You"
       end
 
-      expect(page).to have_no_text "You will receive new messages as they come"
+      expect(page).not_to have_text "You will receive new messages as they come"
     end
   end
 

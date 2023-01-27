@@ -14,7 +14,7 @@ describe "Workspaces -> New list" do
 
   it "I can create a new list" do
     within dom_id(workspace, :lists) do
-      expect(page).to have_no_css(".any-list--panel")
+      expect(page).not_to have_css(".any-list--panel")
     end
 
     within dom_id(workspace, :new_list) do

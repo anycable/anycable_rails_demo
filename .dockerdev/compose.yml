@@ -2,13 +2,13 @@ x-app: &app
   build:
     context: .
     args:
-      RUBY_VERSION: '3.1.1'
-      PG_MAJOR: '14'
+      RUBY_VERSION: '3.2.0'
+      PG_MAJOR: '15'
       NODE_MAJOR: '16'
   environment: &env
     NODE_ENV: development
     RAILS_ENV: ${RAILS_ENV:-development}
-  image: anycable-rails-demo-dev:2.0.0
+  image: anycable-rails-demo-dev:2.1.0
   tmpfs:
     - /tmp
     - /app/tmp/pids
@@ -142,7 +142,7 @@ services:
     command: yarn build --watch
 
   postgres:
-    image: postgres:14.0
+    image: postgres:15.0
     volumes:
       - .psqlrc:/root/.psqlrc:ro
       - postgres:/var/lib/postgresql/data
@@ -169,8 +169,9 @@ services:
       retries: 30
 
   chrome:
-    # Works on Apple M1
-    image: barrenechea/browserless:latest
+    # Currently, Apple M1 is only supported in unnumbered "latest" versions.
+    # See https://github.com/browserless/chrome/issues/1393
+    image: browserless/chrome:latest
     ports:
       - '3333:3333'
     environment:
