@@ -13,7 +13,8 @@ test:
   database: any_rails_demo_test
 
 production:
-  <<: *default
   adapter: postgresql
-  host: <%= ENV['DB_HOST'] %>
-  password: <%= ENV['PG_ROOT_PASSWORD'] %>
+  host: localhost
+  username: <%= ENV['POSTGRES_USER'] %>
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
+  database: <%= ENV['POSTGRES_DB'] %>

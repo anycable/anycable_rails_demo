@@ -4,12 +4,13 @@ servers:
   web:
     hosts:
       - 167.99.251.136
-    env: 
-  anycable:
-    hosts:
-      - 167.99.251.136
-    port: 50051
-    cmd: bundle exec anycable
+    options:
+      network: host
+  <%# anycable: %>
+  <%#   hosts: %>
+  <%#     - 167.99.251.136 %>
+  <%#   port: 50051 %>
+  <%#   cmd: bundle exec anycable %>
 registry:
   username: kalashnikovisme
   password:
@@ -18,20 +19,25 @@ env:
   clear:
     ANYCABLE_REDIS_URL: redis://localhost:6379/0
     ANYCABLE_RPC_HOST: 0.0.0.0:50051
-    CABLE_URL: ws://localhost:8080/cable
-    DB_HOST: 157.230.127.126
+    CABLE_URL: ws://localhost:8081/cable
+    DB_HOST: localhost
+    POSTGRES_USER: 'anycable'
+    POSTGRES_DB: 'anycable_production'
   secret:
     - RAILS_MASTER_KEY
-    - PG_ROOT_PASSWORD
+    - POSTGRES_PASSWORD
 
 accessories:
   db:
     image: postgres:15.0
-    host: 157.230.127.126
+    host: 167.99.251.136
     port: 5432
     env:
+      clear:
+        POSTGRES_USER: 'anycable'
+        POSTGRES_DB: 'anycable_production'
       secret:
-        - PG_ROOT_PASSWORD
+        - POSTGRES_PASSWORD
     files:
       - db/production.sql:/docker-entrypoint-initdb.d/setup.sql
     directories:
@@ -48,11 +54,11 @@ accessories:
 
   ws:
     image: anycable/anycable-go:1.2
-    port: 8080
+    port: 8081
     host: 167.99.251.136
     env:
       clear:
         ANYCABLE_HOST: "0.0.0.0"
-        ANYCABLE_PORT: 8080
+        ANYCABLE_PORT: 8081
         ANYCABLE_REDIS_URL: redis://localhost:6379/0
         ANYCABLE_RPC_HOST: localhost:50051
