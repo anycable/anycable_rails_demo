@@ -38,3 +38,5 @@ group :test do
 
   gem 'test-prof'
 end
+
+gem "redis-session-store", "~> 0.11.5"

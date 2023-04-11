@@ -10,7 +10,7 @@ servers:
   anycable:
     hosts:
       - 64.226.100.79
-    cmd: bundle exec anycable
+    cmd: bundle exec anycable --log-file=log/production.log --debug
     env:
       clear: 
         ANYCABLE_RPC_HOST: 0.0.0.0:50051
@@ -63,8 +63,8 @@ accessories:
 
   ws:
     image: anycable/anycable-go:1.2
-    port: 8081
-    host: 167.99.251.136
+    host: 165.22.65.160
+    port: "8080:8080"
     env:
       clear:
         ANYCABLE_HOST: "0.0.0.0"

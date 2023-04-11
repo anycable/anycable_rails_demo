@@ -233,6 +233,9 @@ GEM
       redis-client (>= 0.9.0)
     redis-client (0.12.1)
       connection_pool
+    redis-session-store (0.11.5)
+      actionpack (>= 6, < 8)
+      redis (>= 3, < 6)
     regexp_parser (2.6.2)
     reline (0.3.2)
       io-console (~> 0.5)
@@ -310,6 +313,7 @@ DEPENDENCIES
   puma (~> 6.0)
   rails (~> 7.0)
   redis (~> 5.0)
+  redis-session-store (~> 0.11.5)
   rspec-rails (~> 6.0)
   ruby-next (>= 0.15.0)
   test-prof

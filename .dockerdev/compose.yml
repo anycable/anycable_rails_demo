@@ -43,6 +43,7 @@ x-backend: &backend
     CHROME_URL: http://chrome:3333
     EDITOR: vi
     LOG: ${LOG:-0}
+    CABLE_URL: "ws://165.22.65.160:8080/cable"
   depends_on: &backend_depends_on
     postgres:
       condition: service_healthy
