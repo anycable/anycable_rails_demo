@@ -35,6 +35,16 @@ env:
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
+    - DO_SPACES_KEY
+    - DO_SPACES_SECRET
+    - DO_SPACES_BUCKET
+
+builder:
+  args:
+    DO_SPACES_KEY: YOUR_SPACES_KEY
+    DO_SPACES_SECRET: YOUR_DO_SPACES_SECRET
+    DO_SPACES_BUCKET: YOUR_SPACES_BUCKET
+    ANYCABLE_REDIS_URL: redis://:REDIS_PASSWORD@64.226.116.153:6379/0
 
 accessories:
   db:
@@ -53,11 +63,10 @@ accessories:
       - postgres:/var/lib/postgresql/data
 
   redis:
-    image: redis:latest
-    host: 167.99.251.136
-    role:
-      - web
-    port: "36379:6379"
+    image: redis:7.0.10
+    host: 64.226.116.153
+    port: 6379
+    cmd: redis-server --requirepass REDIS_PASSWORD
     volumes:
       - /var/lib/redis:/data
 
@@ -68,6 +77,8 @@ accessories:
     env:
       clear:
         ANYCABLE_HOST: "0.0.0.0"
-        ANYCABLE_PORT: 8081
-        ANYCABLE_REDIS_URL: redis://localhost:6379/0
-        ANYCABLE_RPC_HOST: localhost:50051
+        ANYCABLE_PORT: 8080
+        ANYCABLE_REDIS_URL: redis://:REDIS_PASSWORD@64.226.116.153:6379/0
+        ANYCABLE_RPC_HOST: 64.226.100.79:50051
+        ANYCABLE_DEBUG: true
+        ANYCABLE_LOG_LEVEL: debug
