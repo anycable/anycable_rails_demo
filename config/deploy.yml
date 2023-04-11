@@ -26,7 +26,7 @@ registry:
     - MRSK_REGISTRY_PASSWORD
 env:
   clear:
-    ANYCABLE_REDIS_URL: redis://:bgfjnbjkgnbfguihbfguibjhfgoibjfgoerhordjio@64.226.116.153:6379/0
+    ANYCABLE_REDIS_URL: redis://:REDIS_PASSWORD@64.226.116.153:6379/0
     CABLE_URL: ws://165.22.65.160:8080/cable
     DB_HOST: 134.209.240.18
     POSTGRES_USER: 'anycable'
