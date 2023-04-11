@@ -2,6 +2,7 @@
 
 # If running the rails server then create or migrate existing database
 if [ "${*}" == "./bin/rails server" ]; then
+  # bundle exec anycable &
   ./bin/rails db:prepare
 fi
 

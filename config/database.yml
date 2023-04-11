@@ -14,7 +14,7 @@ test:
 
 production:
   adapter: postgresql
-  host: localhost
+  host: <%= ENV['DB_HOST'] %>
   username: <%= ENV['POSTGRES_USER'] %>
   password: <%= ENV['POSTGRES_PASSWORD'] %>
   database: <%= ENV['POSTGRES_DB'] %>

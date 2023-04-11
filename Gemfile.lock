@@ -80,6 +80,11 @@ GEM
       globalid
     anyway_config (2.3.1)
       ruby-next-core (>= 0.14.0)
+    asset_sync (2.18.0)
+      activemodel (>= 4.1.0)
+      fog-core
+      mime-types (>= 2.99)
+      unf
     ast (2.4.2)
     bootsnap (1.16.0)
       msgpack (~> 1.2)
@@ -108,11 +113,28 @@ GEM
       reline (>= 0.3.1)
     diff-lcs (1.5.0)
     erubi (1.12.0)
+    excon (0.99.0)
     ferrum (0.13)
       addressable (~> 2.5)
       concurrent-ruby (~> 1.1)
       webrick (~> 1.7)
       websocket-driver (>= 0.6, < 0.8)
+    fog-aws (3.18.0)
+      fog-core (~> 2.1)
+      fog-json (~> 1.1)
+      fog-xml (~> 0.1)
+    fog-core (2.3.0)
+      builder
+      excon (~> 0.71)
+      formatador (>= 0.2, < 2.0)
+      mime-types
+    fog-json (1.2.0)
+      fog-core
+      multi_json (~> 1.10)
+    fog-xml (0.1.4)
+      fog-core
+      nokogiri (>= 1.5.11, < 2.0.0)
+    formatador (1.1.0)
     globalid (1.1.0)
       activesupport (>= 5.0)
     google-protobuf (3.21.12)
@@ -139,9 +161,13 @@ GEM
     marcel (1.0.2)
     matrix (0.4.2)
     method_source (1.0.0)
+    mime-types (3.4.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2023.0218.1)
     mini_mime (1.1.2)
     minitest (5.17.0)
     msgpack (1.6.0)
+    multi_json (1.15.0)
     nanoid (2.0.0)
     net-imap (0.3.4)
       date
@@ -243,6 +269,9 @@ GEM
       railties (>= 6.0.0)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.8.2)
     unparser (0.6.7)
       diff-lcs (~> 1.3)
       parser (>= 3.2.0)
@@ -265,12 +294,14 @@ PLATFORMS
 
 DEPENDENCIES
   anycable-rails (~> 1.3.0)
+  asset_sync
   bootsnap (>= 1.4.2)
   capybara
   cssbundling-rails
   cuprite
   daemons (~> 1.3)
   debug (= 1.7.0)
+  fog-aws
   grpc (~> 1.37)
   jsbundling-rails
   nanoid

@@ -4,25 +4,34 @@ servers:
   web:
     hosts:
       - 167.99.251.136
+    env:
+      clear: 
+        ANYCABLE_RPC_HOST: 64.226.100.79:50051
+  anycable:
+    hosts:
+      - 64.226.100.79
+    cmd: bundle exec anycable
+    env:
+      clear: 
+        ANYCABLE_RPC_HOST: 0.0.0.0:50051
     options:
-      network: host
-  <%# anycable: %>
-  <%#   hosts: %>
-  <%#     - 167.99.251.136 %>
-  <%#   port: 50051 %>
-  <%#   cmd: bundle exec anycable %>
+      publish: "50051:50051"
+
+healthcheck:
+  path: /
+
 registry:
   username: kalashnikovisme
   password:
     - MRSK_REGISTRY_PASSWORD
 env:
   clear:
-    ANYCABLE_REDIS_URL: redis://localhost:6379/0
-    ANYCABLE_RPC_HOST: 0.0.0.0:50051
-    CABLE_URL: ws://localhost:8081/cable
-    DB_HOST: localhost
+    ANYCABLE_REDIS_URL: redis://:bgfjnbjkgnbfguihbfguibjhfgoibjfgoerhordjio@64.226.116.153:6379/0
+    CABLE_URL: ws://165.22.65.160:8080/cable
+    DB_HOST: 134.209.240.18
     POSTGRES_USER: 'anycable'
     POSTGRES_DB: 'anycable_production'
+    RAILS_SERVE_STATIC_FILES: true
   secret:
     - RAILS_MASTER_KEY
     - POSTGRES_PASSWORD
@@ -30,7 +39,7 @@ env:
 accessories:
   db:
     image: postgres:15.0
-    host: 167.99.251.136
+    host: 134.209.240.18
     port: 5432
     env:
       clear:

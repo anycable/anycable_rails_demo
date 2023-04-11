@@ -42,7 +42,7 @@ RUN apt-get install curl gnupg -y
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
   --mount=type=cache,target=/var/lib/apt,sharing=locked \
   --mount=type=tmpfs,target=/var/log \
-  curl -fsSL https://deb.nodesource.com/setup_14.x | bash - && \
+  curl -fsSL https://deb.nodesource.com/setup_18.x | bash - && \
   apt-get update -qq && DEBIAN_FRONTEND=noninteractive apt-get -yq dist-upgrade && \
   DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends nodejs
 
@@ -50,6 +50,10 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
 RUN apt -y update && apt install -y yarn
+
+ARG DO_SPACES_KEY
+ARG DO_SPACES_SECRET
+ARG DO_SPACES_BUCKET
 
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
