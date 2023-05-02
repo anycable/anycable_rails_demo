@@ -19,7 +19,7 @@ jobs:
     - uses: actions/checkout@v2
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.2.0
+        ruby-version: 3.2.1
         bundler-cache: true
     - name: Lint Ruby code with RuboCop
       run: |

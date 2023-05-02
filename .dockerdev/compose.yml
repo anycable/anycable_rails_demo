@@ -2,13 +2,13 @@ x-app: &app
   build:
     context: .
     args:
-      RUBY_VERSION: '3.2.0'
+      RUBY_VERSION: '3.2.1'
       PG_MAJOR: '15'
       NODE_MAJOR: '16'
   environment: &env
     NODE_ENV: development
     RAILS_ENV: ${RAILS_ENV:-development}
-  image: anycable-rails-demo-dev:2.1.0
+  image: anycable-rails-demo-dev:2.2.0
   tmpfs:
     - /tmp
     - /app/tmp/pids
