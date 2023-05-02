@@ -34,7 +34,7 @@ jobs:
         ports: ["3000:3000"]
         options: -e CONNECTION_TIMEOUT=600000 -e PORT=3000
       anycable:
-        image: anycable/anycable-go:1.2
+        image: anycable/anycable-go:1.4.0-rc.1
         ports: ["8080:8080"]
         options: --add-host=host.docker.internal:host-gateway
         env:

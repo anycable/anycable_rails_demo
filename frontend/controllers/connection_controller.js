@@ -13,47 +13,27 @@ export default class extends Controller {
   connect() {
     if (isTurboPreview()) return;
 
-    this.connection = createCable().connection;
+    this.cable = createCable().cable;
 
-    if (!this.connection.webSocket) {
-      // Action Cable initializes a WebSocket connection lazily,
-      // let's "append" the open method to know when a socket becomes available
-      const origOpen = this.connection.open.bind(this.connection);
-      this.connection.open = () => {
-        origOpen.call();
-        this.monitor(this.connection.webSocket);
-      };
-    } else if (this.connection.isActive()) {
-      return this.handleOpen();
-    }
+    this.unbind = [];
 
-    this.handleClose();
+    this.unbind.push(this.cable.on("connect", this.handleOpen));
+    this.unbind.push(this.cable.on("disconnect", this.handleClose));
+    this.unbind.push(this.cable.on("close", this.handleClose));
+
+    if (this.cable.state !== "connected") this.handleClose();
   }
 
   connectCable() {
-    if (!this.connection.webSocket) return this.connection.open();
+    if (this.cable.state !== "closed") return;
 
-    this.connection.monitor.reconnectAttempts = 2;
-    this.connection.monitor.start();
-    this.connection.open();
+    this.cable.connect();
   }
 
   disconnectCable() {
-    if (!this.connection.isActive()) return;
+    if (this.cable.state !== "connected") return;
 
-    this.connection.monitor.stop();
-    this.connection.close();
-  }
-
-  monitor(socket) {
-    if (this.socket) {
-      this.socket.removeEventListener("open", this.handleOpen);
-      this.socket.removeEventListener("close", this.handleClose);
-    }
-
-    this.socket = socket;
-    this.socket.addEventListener("open", this.handleOpen);
-    this.socket.addEventListener("close", this.handleClose);
+    this.cable.disconnect();
   }
 
   toggleState(e) {
@@ -76,5 +56,6 @@ export default class extends Controller {
 
   disconnect() {
     this.active = false;
+    if (this.unbind) this.unbind.forEach((clbk) => clbk());
   }
 }

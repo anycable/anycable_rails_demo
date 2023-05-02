@@ -2,6 +2,20 @@
 # yarn lockfile v1
 
 
+"@anycable/core@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@anycable/core/-/core-0.7.0.tgz#8b607b35f82fe8ae996a279c6cc2dbb90e44161a"
+  integrity sha512-S+hlxPapGq7PLN+wHPiBZbQP86nNkS6eFityXqcUCnIvXXumFCq3INUzzFhfZCYLmbwD3r6kbRTYwvJaw0P6WA==
+  dependencies:
+    nanoevents "^7.0.1"
+
+"@anycable/web@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@anycable/web/-/web-0.7.0.tgz#d74d3c546fc9807d236130e2f24d5928a9e8e394"
+  integrity sha512-v/KESqA7DP8PY2WM9BDpPSB9/4OLdfPFipW4LDl9/5fkOOHIlcwL6so20BoxNQLE4gg3E/e6Ey8UtQgO2Aa2XA==
+  dependencies:
+    "@anycable/core" "^0.7.0"
+
 "@esbuild/android-arm64@0.17.5":
   version "0.17.5"
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm64/-/android-arm64-0.17.5.tgz#a145f43018e639bed94ed637369e2dcdd6bf9ea2"
@@ -515,6 +529,11 @@ minimist@^1.2.6:
   version "1.2.7"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.7.tgz#daa1c4d91f507390437c6a8bc01078e7000c4d18"
   integrity sha512-bzfL1YUZsP41gmu/qjrEk0Q6i2ix/cVeAhbCbqH9u3zYutS1cLg00qhrD0M2MVdCcx4Sc0UpP2eBWo9rotpq6g==
+
+nanoevents@^7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/nanoevents/-/nanoevents-7.0.1.tgz#181580b47787688d8cac775b977b1cf24e26e570"
+  integrity sha512-o6lpKiCxLeijK4hgsqfR6CNToPyRU3keKyyI6uwuHRvpRTbZ0wXw51WRgyldVugZqoJfkGFrjrIenYH3bfEO3Q==
 
 nanoid@^3.3.4:
   version "3.3.4"
