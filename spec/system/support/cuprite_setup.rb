@@ -4,7 +4,20 @@
 # instead of Selenium & co.
 # See https://github.com/rubycdp/cuprite
 
-REMOTE_CHROME_URL = ENV["CHROME_URL"]
+remote_chrome_url = ENV["CHROME_URL"]
+
+# Chrome doesn't allow connecting to CDP by hostnames (other than localhost),
+# but allows using IP addresses.
+if remote_chrome_url&.match?(/host.docker.internal/)
+  require "resolv"
+
+  uri = URI.parse(remote_chrome_url)
+  ip = Resolv.getaddress(uri.host)
+
+  remote_chrome_url = remote_chrome_url.sub("host.docker.internal", ip)
+end
+
+REMOTE_CHROME_URL = remote_chrome_url
 REMOTE_CHROME_HOST, REMOTE_CHROME_PORT =
   if REMOTE_CHROME_URL
     URI.parse(REMOTE_CHROME_URL).yield_self do |uri|

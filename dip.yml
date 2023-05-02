@@ -33,12 +33,28 @@ interaction:
       RAILS_ENV: test
     command: bundle exec rspec --exclude-pattern 'system/**/*_spec.rb'
     subcommands:
-      system:
+      system: &rails_test_system
         description: Run all Rails system tests
         service: rspec_system
         command: bundle exec rspec --pattern 'system/**/*_spec.rb'
         compose:
           run_options: [ service-ports, use-aliases ]
+      # Run Chrome via:
+      #   chrome --remote-debugging-port=3333 --no-sandbox --no-startup-window
+      #
+      # NOTE: The command above assumes that you have a `chrome` alias to run Chrome executable.
+      # For example, on MacOS you can add the following to you shell profile:
+      #   alias chrome="/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome"
+      system:local:
+        <<: *rails_test_system
+        description: Run system tests via the local Chrome
+        environment:
+          RAILS_ENV: test
+          CHROME_URL: http://host.docker.internal:3333
+          CABLE_URL: ws://localhost:8081/cable
+          APP_HOST: localhost:3001
+        compose:
+          run_options: [service-ports, use-aliases]
 
   rails:
     description: Run Rails commands

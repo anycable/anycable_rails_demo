@@ -41,7 +41,7 @@ x-backend: &backend
     ANYCABLE_RPC_HOST: 0.0.0.0:50051
     ANYCABLE_BROADCAST_ADAPTER: http
     ANYCABLE_HTTP_BROADCAST_URL: http://ws:8090/_broadcast
-    CHROME_URL: http://chrome:3333
+    CHROME_URL: ${CHROME_URL:-http://chrome:3333}
     EDITOR: vi
     LOG: ${LOG:-0}
   depends_on: &backend_depends_on
@@ -75,14 +75,14 @@ services:
   rspec_system:
     <<: *backend
     ports:
-      - '3000:3000'
+      - '3001:3001'
       - '50051'
     environment:
       <<: *backend_environment
-      APP_HOST: anycable.test
+      APP_HOST: ${APP_HOST:-anycable.test}
       ANYCABLE_RPC_HOST: 0.0.0.0:50051
       ANYCABLE_HTTP_BROADCAST_URL: http://ws.anycable.test:8090/_broadcast
-      CABLE_URL: "ws://ws.anycable.test:8080/cable"
+      CABLE_URL: ${CABLE_URL:-ws://ws.anycable.test:8081/cable}
     depends_on:
       <<: *backend_depends_on
       chrome:
@@ -114,9 +114,10 @@ services:
   ws_test:
     <<: *ws
     ports:
-      - '8080'
+      - '8081:8081'
     environment:
       <<: *ws_environment
+      ANYCABLE_PORT: "8081"
       # Disable broker to avoid race conditions when
       # we load history since from previous examples
       ANYCABLE_BROKER: ""
