@@ -8,7 +8,7 @@ This repository contains the code for AnyCable Rails demo application and its di
 [List of all demonstration PRs](https://github.com/anycable/anycable_rails_demo/pulls?q=is%3Apr++label%3Ademo+)
 
 <img align="center" width="1416"
-     title="AnWork screenshot" src="./public/demo.png">
+     title="AnyWork screenshot" src="./public/demo.png">
 
 ## Installation
 
