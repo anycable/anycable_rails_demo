@@ -25,6 +25,7 @@ jobs:
         with:
           ruby-version: 3.2.2
           bundler-cache: true
+          bundler-version: 2.4.5
       - name: Run RSpec
         run: |
           bundle exec rails db:test:prepare
