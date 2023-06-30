@@ -328,6 +328,7 @@ PLATFORMS
   arm-linux
   arm64-darwin
   arm64-darwin-21
+  arm64-darwin-21
   x86-linux
   x86_64-darwin
   x86_64-linux
