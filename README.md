@@ -24,10 +24,10 @@ bin/setup
 
 ## Running
 
-You can start Rails server by running:
+Since you need to run multiple processes (Rails, AnyCable-Go), we recommend using a process manager, e.g., [Hivemind](https://github.com/DarthSim/hivemind):
 
 ```sh
-bundle exec rails s
+hivemind Procfile.dev
 ```
 
 Then go to [http://localhost:3000/](http://localhost:3000/) and see the application in action.

@@ -1,4 +1,4 @@
 server: bundle exec rails s -p 3000
 css: yarn build:css --watch
 js: yarn build --watch
-ws: anycable-go --port=8080 --broadcast_adapter=http
+ws: bin/anycable-go --port=8080 --broadcast_adapter=http --presets=broker --rpc_impl=http --rpc_host=http://localhost:3000/_anycable
