@@ -8,7 +8,7 @@ gem 'sqlite3', '~> 1.4'
 gem 'puma', '~> 6.0'
 gem 'redis', '~> 5.0'
 gem 'grpc', '~> 1.37'
-gem 'anycable-rails'
+gem 'anycable-rails', '1.4.0.rc.4'
 gem 'daemons', '~> 1.3', require: false
 
 gem 'bootsnap', '>= 1.4.2', require: false

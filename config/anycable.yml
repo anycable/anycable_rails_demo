@@ -28,7 +28,7 @@ default: &default
 
 development:
   <<: *default
-  embedded: true
+  http_rpc_mount_path: "/_anycable"
 
 test:
   <<: *default

@@ -68,10 +68,11 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
-    anycable (1.3.0)
-      anycable-core (= 1.3.0)
+    anycable (1.4.0.rc.3)
+      anycable-core (= 1.4.0.rc.3)
+      google-protobuf (~> 3.23)
       grpc (~> 1.37)
-    anycable-core (1.3.0)
+    anycable-core (1.4.0.rc.3)
       anyway_config (~> 2.2)
       google-protobuf (>= 3.13)
     anycable-rack-server (0.5.1)
@@ -79,9 +80,9 @@ GEM
       anyway_config (>= 2.1.0)
       connection_pool (~> 2.2)
       websocket (~> 1.2)
-    anycable-rails (1.3.7)
+    anycable-rails (1.4.0.rc.4)
       actioncable (>= 6.0)
-      anycable (~> 1.3.0)
+      anycable (>= 1.4.0.rc.2)
       globalid
     anyway_config (2.4.0)
       ruby-next-core (>= 0.14.0)
@@ -120,10 +121,10 @@ GEM
       websocket-driver (>= 0.6, < 0.8)
     globalid (1.1.0)
       activesupport (>= 5.0)
-    google-protobuf (3.22.3-aarch64-linux)
-    google-protobuf (3.22.3-arm64-darwin)
-    google-protobuf (3.22.3-x86_64-darwin)
-    google-protobuf (3.22.3-x86_64-linux)
+    google-protobuf (3.23.3-aarch64-linux)
+    google-protobuf (3.23.3-arm64-darwin)
+    google-protobuf (3.23.3-x86_64-darwin)
+    google-protobuf (3.23.3-x86_64-linux)
     googleapis-common-protos-types (1.6.0)
       google-protobuf (~> 3.14)
     grpc (1.54.0)
@@ -283,7 +284,7 @@ PLATFORMS
 
 DEPENDENCIES
   anycable-rack-server (~> 0.5)
-  anycable-rails
+  anycable-rails (= 1.4.0.rc.4)
   bootsnap (>= 1.4.2)
   capybara
   cssbundling-rails
