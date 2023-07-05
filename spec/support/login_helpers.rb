@@ -5,8 +5,7 @@ module LoginHelpers
     def login_user(name)
       page.driver.set_cookie(
         :uid,
-        [name, Nanoid.generate(size: 3)].join("/"),
-        domain: CAPYBARA_COOKIE_DOMAIN
+        [name, Nanoid.generate(size: 3)].join("/")
       )
     end
 

@@ -68,15 +68,21 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.1)
       public_suffix (>= 2.0.2, < 6.0)
-    anycable (1.3.0)
-      anycable-core (= 1.3.0)
+    anycable (1.4.0.rc.3)
+      anycable-core (= 1.4.0.rc.3)
+      google-protobuf (~> 3.23)
       grpc (~> 1.37)
-    anycable-core (1.3.0)
+    anycable-core (1.4.0.rc.3)
       anyway_config (~> 2.2)
       google-protobuf (>= 3.13)
-    anycable-rails (1.3.7)
+    anycable-rack-server (0.5.1)
+      anycable (> 1.0.99, < 2.0)
+      anyway_config (>= 2.1.0)
+      connection_pool (~> 2.2)
+      websocket (~> 1.2)
+    anycable-rails (1.4.0.rc.4)
       actioncable (>= 6.0)
-      anycable (~> 1.3.0)
+      anycable (>= 1.4.0.rc.2)
       globalid
     anyway_config (2.4.0)
       ruby-next-core (>= 0.14.0)
@@ -115,10 +121,10 @@ GEM
       websocket-driver (>= 0.6, < 0.8)
     globalid (1.1.0)
       activesupport (>= 5.0)
-    google-protobuf (3.22.3-aarch64-linux)
-    google-protobuf (3.22.3-arm64-darwin)
-    google-protobuf (3.22.3-x86_64-darwin)
-    google-protobuf (3.22.3-x86_64-linux)
+    google-protobuf (3.23.3-aarch64-linux)
+    google-protobuf (3.23.3-arm64-darwin)
+    google-protobuf (3.23.3-x86_64-darwin)
+    google-protobuf (3.23.3-x86_64-linux)
     googleapis-common-protos-types (1.6.0)
       google-protobuf (~> 3.14)
     grpc (1.54.0)
@@ -172,7 +178,6 @@ GEM
       racc (~> 1.4)
     parser (3.2.0.0)
       ast (~> 2.4.1)
-    pg (1.4.5)
     propshaft (0.6.4)
       actionpack (>= 7.0.0)
       activesupport (>= 7.0.0)
@@ -243,6 +248,10 @@ GEM
     ruby-next-core (0.15.3)
     ruby-next-parser (3.1.1.3)
       parser (>= 3.0.3.1)
+    sqlite3 (1.6.3-aarch64-linux)
+    sqlite3 (1.6.3-arm64-darwin)
+    sqlite3 (1.6.3-x86_64-darwin)
+    sqlite3 (1.6.3-x86_64-linux)
     test-prof (1.1.0)
     thor (1.2.1)
     timeout (0.3.1)
@@ -256,6 +265,7 @@ GEM
       diff-lcs (~> 1.3)
       parser (>= 3.2.0)
     webrick (1.8.1)
+    websocket (1.2.9)
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
@@ -273,7 +283,8 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  anycable-rails (~> 1.3)
+  anycable-rack-server (~> 0.5)
+  anycable-rails (= 1.4.0.rc.4)
   bootsnap (>= 1.4.2)
   capybara
   cssbundling-rails
@@ -283,13 +294,13 @@ DEPENDENCIES
   grpc (~> 1.37)
   jsbundling-rails
   nanoid
-  pg (~> 1.0)
   propshaft
   puma (~> 6.0)
   rails (~> 7.0)
   redis (~> 5.0)
   rspec-rails (~> 6.0)
   ruby-next (>= 0.15.0)
+  sqlite3 (~> 1.4)
   test-prof
   turbo-rails
 

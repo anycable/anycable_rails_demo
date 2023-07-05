@@ -14,24 +14,24 @@
           <<: *channel
       - wait_all
       - sleep:
-          time: 3
-          shift: 2
+          time: 2
+          shift: 1
       - perform:
           <<: *channel
           action: speak
           data:
             message: "hello"
       - sleep:
-          time: 4
-          shift: 2
+          time: 2
+          shift: 1
       - perform:
           <<: *channel
           action: speak
           data:
             message: "hello 2"
       - sleep:
-          time: 4
-          shift: 2
+          time: 2
+          shift: 1
       - perform:
           <<: *channel
           action: speak
@@ -53,8 +53,8 @@
           <<: *channel
       - wait_all
       - sleep:
-          time: 3
-          shift: 2
+          time: 4
+          shift: 1
       - receive:
           <<: *channel
           multiplier: ":scale"
@@ -62,7 +62,7 @@
             action: "newMessage"
       - sleep:
           time: 4
-          shift: 2
+          shift: 1
       - receive:
           <<: *channel
           multiplier: ":scale"
@@ -70,7 +70,7 @@
             action: "newMessage"
       - sleep:
           time: 4
-          shift: 2
+          shift: 1
       - receive:
           <<: *channel
           multiplier: ":scale"
@@ -78,4 +78,4 @@
             action: "newMessage"
       - sleep:
           time: 4
-          shift: 2
+          shift: 1
