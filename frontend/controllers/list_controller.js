@@ -36,7 +36,9 @@ export default class extends Controller {
     } else if (data.type == "updated") {
       this.updateCompleted(data.id, data.completed);
     } else if (data.type == "created") {
-      this.itemsTarget.insertAdjacentHTML("beforeend", data.html);
+      if (!document.getElementById(data.id)) {
+        this.itemsTarget.insertAdjacentHTML("beforeend", data.html);
+      }
     }
   }
 

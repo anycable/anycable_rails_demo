@@ -32,7 +32,9 @@ export default class extends Controller {
     if (data.type == "deletedList") {
       this.listsTarget.querySelector(`#list_${data.id}`).remove();
     } else if (data.type == "newList") {
-      this.formTarget.insertAdjacentHTML("beforebegin", data.html);
+      if (!document.getElementById(data.id)) {
+        this.formTarget.insertAdjacentHTML("beforebegin", data.html);
+      }
     }
   }
 }

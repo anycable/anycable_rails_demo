@@ -71,7 +71,7 @@ class ItemsController < ApplicationController
 
   def broadcast_new_item
     return if item.errors.any?
-    ListChannel.broadcast_to list, type: "created", html: render_to_string(partial: "items/item", layout: false, locals: {item:})
+    ListChannel.broadcast_to list, type: "created", html: render_to_string(partial: "items/item", layout: false, locals: {item:}), id: item.id
   end
 
   def broadcast_changes
