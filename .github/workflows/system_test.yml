@@ -50,7 +50,7 @@ jobs:
       BUNDLE_RETRY: 3
       BUNDLE_FROZEN: true
       CI: true
-      RAILS_ENV: test
+      RAILS_ENV: development
     services:
       anycable:
         image: anycable/anycable-go:1.5.0
@@ -58,8 +58,8 @@ jobs:
         options: --add-host=host.docker.internal:host-gateway
         env:
           ANYCABLE_HOST: "0.0.0.0"
-          ANYCABLE_REDIS_URL: redis://host.docker.internal:6379/0
-          ANYCABLE_RPC_HOST: host.docker.internal:50051
+          ANYCABLE_RPC_HOST: http://host.docker.internal:3000/_anycable
+          ANYCABLE_BROADCAST_ADAPTER: http
           ANYCABLE_DEBUG: "true"
     steps:
       - uses: actions/checkout@v3
@@ -73,10 +73,9 @@ jobs:
           bundler-cache: true
       - name: Run WebSocket Director scenarios
         run: |
-          bundle exec rails db:test:prepare
+          bundle exec rails db:prepare
           bundle exec rails db:seed
-          mkdir -p tmp/pids
-          bundle exec anycabled start
+          bundle exec rails server -b 0.0.0.0 -d
           sleep 10
           gem install wsdirector-cli
           wsdirector etc/wsdirector/chat.yml localhost:8080/cable -c -vv
