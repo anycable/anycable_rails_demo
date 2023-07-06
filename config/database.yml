@@ -14,4 +14,4 @@ test:
 
 production:
   <<: *default
-  adapter: postgresql
+  database: db/any_rails_demo.sqlite3
