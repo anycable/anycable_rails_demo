@@ -6,3 +6,15 @@
 require_relative "config/application"
 
 Rails.application.load_tasks
+
+namespace :heroku do
+  task release: ["db:migrate"] do
+    # Seed database if empty
+    if Workspace.count.zero?
+      load "./db/seeds.rb"
+    end
+
+    # Wait for Litestream to catch up
+    sleep 5
+  end
+end

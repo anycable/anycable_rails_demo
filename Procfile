@@ -1,2 +1,2 @@
-web: bundle exec rails server -p $PORT -b 0.0.0.0
-release: bundle exec rails db:migrate
+web: ./litestream restore -o ./db/any_rails_demo.sqlite3 s3://heroku-anycable-demo-db/any_rails_demo.sqlite3 && ./litestream replicate -exec "bundle exec rails server -p $PORT -b 0.0.0.0" /app/db/any_rails_demo.sqlite3 s3://heroku-anycable-demo-db/any_rails_demo.sqlite3
+release: ./litestream restore -o ./db/any_rails_demo.sqlite3 s3://heroku-anycable-demo-db/any_rails_demo.sqlite3 && ./litestream replicate -exec "bundle exec rails heroku:release" /app/db/any_rails_demo.sqlite3 s3://heroku-anycable-demo-db/any_rails_demo.sqlite3
