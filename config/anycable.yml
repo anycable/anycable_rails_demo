@@ -24,11 +24,11 @@ default: &default
   broadcast_adapter: http
   # Use the same channel name for WebSocket server, e.g.:
   #   $ anycable-go --redis-channel="__anycable__"
-  redis_channel: "__anycable__"
+  # redis_channel: "__anycable__"
+  http_rpc_mount_path: "/_anycable"
 
 development:
   <<: *default
-  http_rpc_mount_path: "/_anycable"
 
 test:
   <<: *default
@@ -36,5 +36,3 @@ test:
 
 production:
   <<: *default
-  # Use Redis in production
-  broadcast_adapter: redis
