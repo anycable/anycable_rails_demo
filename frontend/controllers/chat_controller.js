@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
-import { createChannel } from "../utils/cable";
+import { createCable } from "../utils/cable";
 import { currentUser } from "../utils/current_user";
 import { isPreview as isTurboPreview } from "../utils/turbo";
 
@@ -9,16 +9,13 @@ export default class extends Controller {
   connect() {
     if (isTurboPreview()) return;
 
-    const channel = "ChatChannel";
-    const id = this.data.get("id");
-    this.channel = createChannel(
-      { channel, id },
-      {
-        received: (data) => {
-          this.handleMessage(data);
-        },
-      }
-    );
+    const cable = createCable();
+    const stream = this.data.get("stream");
+
+    this.channel = cable.streamFrom(stream);
+    this.channel.on("message", (data) => {
+      this.handleMessage(data);
+    });
   }
 
   disconnect() {
@@ -65,6 +62,25 @@ export default class extends Controller {
 
     if (!message) return;
 
-    this.channel.perform("speak", { message });
+    const author_id = this.data.get("user");
+    const name = this.data.get("name");
+    const html = this.generateMessageHTML(message, name);
+
+    const event = {
+      action: "newMessage",
+      html,
+      author_id,
+    };
+
+    this.channel.whisper(event);
+    this.appendMessage(html, true);
+  }
+
+  generateMessageHTML(body, name) {
+    const template = this.element.querySelector("template");
+
+    return template.innerHTML
+      .replace("%%BODY%%", body)
+      .replace("%%USER%%", name);
   }
 }

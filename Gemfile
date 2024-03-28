@@ -3,12 +3,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '~> 3.2.0'
 
-gem 'rails', '7.1.0.beta1'
+gem 'rails', '~> 7.1.0'
 gem 'pg', '~> 1.0'
 gem 'puma', '~> 6.0'
-gem 'redis', '~> 5.0'
-gem 'grpc', '~> 1.37'
-gem 'anycable-rails', '~> 1.4'
+gem 'anycable-rails-core', '1.5.0.rc.1', require: ['anycable-rails']
+gem 'google-protobuf', '~> 3.25'
 gem 'daemons', '~> 1.3', require: false
 
 gem 'bootsnap', '>= 1.4.2', require: false

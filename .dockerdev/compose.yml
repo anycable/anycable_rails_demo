@@ -95,12 +95,13 @@ services:
           - anycable.test
 
   ws: &ws
-    image: anycable/anycable-go:1.4
+    image: anycable/anycable-go:edge
     ports:
       - '8080:8080'
     environment: &ws_environment
       ANYCABLE_HOST: "0.0.0.0"
       ANYCABLE_PORT: 8080
+      ANYCABLE_PUBLIC: true
       ANYCABLE_REDIS_URL: redis://redis:6379/0
       ANYCABLE_RPC_HOST: anycable:50051
       ANYCABLE_BROADCAST_ADAPTER: http
