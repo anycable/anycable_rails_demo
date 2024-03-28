@@ -1,18 +1,14 @@
-import { createConsumer } from "@anycable/web";
+import { createCable as create } from "@anycable/web";
 
 let consumer;
 
 export const createCable = () => {
   if (!consumer) {
-    consumer = createConsumer({
+    consumer = create({
+      logLevel: "debug",
       protocol: "actioncable-v1-ext-json",
     });
   }
 
   return consumer;
-};
-
-export const createChannel = (...args) => {
-  const consumer = createCable();
-  return consumer.subscriptions.create(...args);
 };

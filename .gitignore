@@ -34,3 +34,8 @@ yarn-debug.log*
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+# ruby.wasm stuff
+build/
+rubies/
+*.wasm

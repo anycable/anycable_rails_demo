@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 import { createCable } from "../utils/cable";
+
 import { isPreview as isTurboPreview } from "../utils/turbo";
 
 export default class extends Controller {
@@ -13,7 +14,7 @@ export default class extends Controller {
   connect() {
     if (isTurboPreview()) return;
 
-    this.cable = createCable().cable;
+    this.cable = createCable();
 
     this.unbind = [];
 
@@ -25,15 +26,19 @@ export default class extends Controller {
   }
 
   connectCable() {
-    if (this.cable.state !== "closed") return;
+    if (!this.cable) return;
+
+    if (this.cable.state !== "disconnected") return;
 
     this.cable.connect();
   }
 
   disconnectCable() {
+    if (!this.cable) return;
+
     if (this.cable.state !== "connected") return;
 
-    this.cable.disconnect();
+    this.cable.close();
   }
 
   toggleState(e) {
