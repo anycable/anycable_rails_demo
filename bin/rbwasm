@@ -1,0 +1,23 @@
+#!/usr/bin/env ruby
+
+ENV["BUNDLE_ONLY"] = "wasm"
+
+if ENV["JS"] == "true"
+  ENV["BUNDLE_ONLY"] = "wasm js"
+end
+
+require "bundler/setup"
+
+require "ruby_wasm"
+require "ruby_wasm/cli"
+
+# Add excluded gems
+RubyWasm::Packager::EXCLUDED_GEMS << "bigdecimal"
+RubyWasm::Packager::EXCLUDED_GEMS << "nio4r"
+RubyWasm::Packager::EXCLUDED_GEMS << "io-console"
+RubyWasm::Packager::EXCLUDED_GEMS << "psych"
+RubyWasm::Packager::EXCLUDED_GEMS << "msgpack"
+RubyWasm::Packager::EXCLUDED_GEMS << "bootsnap"
+RubyWasm::Packager::EXCLUDED_GEMS << "puma"
+
+RubyWasm::CLI.new(stdout: $stdout, stderr: $stderr).run(ARGV)

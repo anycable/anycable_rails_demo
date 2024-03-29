@@ -4,7 +4,8 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '~> 3.2.0'
 
 gem 'rails', '~> 7.1.0'
-gem 'pg', '~> 1.0'
+# gem 'pg', '~> 1.0'
+gem 'sqlite3'
 gem 'puma', '~> 6.0'
 gem 'anycable-rails-core', '1.5.0.rc.1', require: ['anycable-rails']
 gem 'google-protobuf', '~> 3.25'
@@ -19,6 +20,19 @@ gem 'turbo-rails'
 gem 'cssbundling-rails'
 gem 'jsbundling-rails'
 gem 'propshaft'
+
+group :wasm do
+  # Use nulldb as the database for Active Record
+  gem "activerecord-nulldb-adapter"
+
+  # Time zone info for ActiveSupport
+  gem "tzinfo-data"
+
+  # Building
+  gem "ruby_wasm", "~> 2.5"
+end
+
+gem "js", group: :js
 
 group :development, :test do
   gem 'debug', '1.7.0'

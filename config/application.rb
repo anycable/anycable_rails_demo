@@ -12,7 +12,14 @@ require "active_job/railtie"
 
 require "active_support/core_ext/integer/time"
 
-Bundler.require(*Rails.groups)
+if RUBY_PLATFORM.match?(/wasm/)
+  require "anycable-rails"
+  require "turbo-rails"
+  require "propshaft"
+  require "nanoid"
+else
+  Bundler.require(*Rails.groups)
+end
 
 module AnycableRailsDemo
   class Application < Rails::Application

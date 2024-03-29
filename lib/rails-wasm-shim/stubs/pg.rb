@@ -1,0 +1,5 @@
+class PG
+  PQTRANS_IDLE = 0
+  PQTRANS_INTRANS = 2
+  PQTRANS_INERROR = 3
+end

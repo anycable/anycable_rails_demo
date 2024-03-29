@@ -1,5 +1,5 @@
 default: &default
-  adapter: postgresql
+  adapter: <%= ENV.fetch("ACTIVE_RECORD_ADAPTER") { "postgresql" } %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
   url: <%= ENV["DATABASE_URL"] %>
   timeout: 5000
@@ -14,4 +14,3 @@ test:
 
 production:
   <<: *default
-  adapter: postgresql
