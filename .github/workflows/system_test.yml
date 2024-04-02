@@ -20,7 +20,7 @@ jobs:
       RAILS_ENV: test
     services:
       postgres:
-        image: postgres:15.0
+        image: postgres:16.0
         env:
           POSTGRES_PASSWORD: postgres
         ports: ["5432:5432"]
@@ -34,7 +34,7 @@ jobs:
         ports: ["3000:3000"]
         options: -e CONNECTION_TIMEOUT=600000 -e PORT=3000
       anycable:
-        image: anycable/anycable-go:1.4.0-rc.1
+        image: anycable/anycable-go:1.5.0
         ports: ["8080:8080"]
         options: --add-host=host.docker.internal:host-gateway
         env:
@@ -48,7 +48,7 @@ jobs:
           sudo apt-get -yqq install libpq-dev
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2.1
+          ruby-version: 3.3.0
           bundler-cache: true
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -66,7 +66,7 @@ jobs:
       - name: Run RSpec
         run: |
           bundle exec rails db:test:prepare
-          export CABLE_URL="ws://$(hostname):8080/cable"
+          export ANYCABLE_WEBSOCKET_URL="ws://$(hostname):8080/cable"
           bundle exec rspec --tag type:system --force-color
   wsdirector:
     runs-on: ubuntu-latest
@@ -80,7 +80,7 @@ jobs:
       RAILS_ENV: test
     services:
       postgres:
-        image: postgres:15.0
+        image: postgres:16.0
         env:
           POSTGRES_PASSWORD: postgres
         ports: ["5432:5432"]
@@ -90,13 +90,14 @@ jobs:
         ports: ["6379:6379"]
         options: --health-cmd="redis-cli ping" --health-interval 1s --health-timeout 3s --health-retries 30
       anycable:
-        image: anycable/anycable-go:1.4.0-rc.1
+        image: anycable/anycable-go:1.5.0
         ports: ["8080:8080"]
         options: --add-host=host.docker.internal:host-gateway
         env:
           ANYCABLE_HOST: "0.0.0.0"
           ANYCABLE_REDIS_URL: redis://host.docker.internal:6379/0
           ANYCABLE_RPC_HOST: host.docker.internal:50051
+          ANYCABLE_DEBUG: "true"
     steps:
       - uses: actions/checkout@v3
       - name: Install PostgreSQL client
@@ -104,7 +105,7 @@ jobs:
           sudo apt-get -yqq install libpq-dev
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2.1
+          ruby-version: 3.3.0
           bundler-cache: true
       - name: Run WebSocket Director scenarios
         run: |
@@ -112,5 +113,6 @@ jobs:
           bundle exec rails db:seed
           mkdir -p tmp/pids
           bundle exec anycabled start
+          sleep 10
           gem install wsdirector-cli
           wsdirector etc/wsdirector/chat.yml localhost:8080/cable -c -vv

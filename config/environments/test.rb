@@ -8,7 +8,7 @@
 Rails.application.configure do
   # Specify AnyCable WebSocket server URL to use by JS client
   config.after_initialize do
-    config.action_cable.url = ActionCable.server.config.url = ENV.fetch("CABLE_URL", "ws://localhost:8080/cable")
+    config.action_cable.url = ActionCable.server.config.url = AnyCable.config.websocket_url
 
     # Make test adapter AnyCable-compatible
     AnyCable::Rails.extend_adapter!(ActionCable.server.pubsub)

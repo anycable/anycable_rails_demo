@@ -2,13 +2,13 @@ x-app: &app
   build:
     context: .
     args:
-      RUBY_VERSION: '3.2.1'
-      PG_MAJOR: '15'
-      NODE_MAJOR: '16'
+      RUBY_VERSION: '3.3.0'
+      PG_MAJOR: '16'
+      NODE_MAJOR: '18'
   environment: &env
     NODE_ENV: development
     RAILS_ENV: ${RAILS_ENV:-development}
-  image: anycable-rails-demo-dev:2.2.0
+  image: anycable-rails-demo-dev:2.3.0
   tmpfs:
     - /tmp
     - /app/tmp/pids
@@ -82,7 +82,7 @@ services:
       APP_HOST: ${APP_HOST:-anycable.test}
       ANYCABLE_RPC_HOST: 0.0.0.0:50051
       ANYCABLE_HTTP_BROADCAST_URL: http://ws.anycable.test:8090/_broadcast
-      CABLE_URL: ${CABLE_URL:-ws://ws.anycable.test:8081/cable}
+      ANYCABLE_WEBSOCKET_URL: ${ANYCABLE_WEBSOCKET_URL:-ws://ws.anycable.test:8081/cable}
     depends_on:
       <<: *backend_depends_on
       chrome:
@@ -95,7 +95,7 @@ services:
           - anycable.test
 
   ws: &ws
-    image: anycable/anycable-go:1.4
+    image: anycable/anycable-go:1.5
     ports:
       - '8080:8080'
     environment: &ws_environment
@@ -151,7 +151,7 @@ services:
     command: yarn build --watch
 
   postgres:
-    image: postgres:15.0
+    image: postgres:16.0
     volumes:
       - .psqlrc:/root/.psqlrc:ro
       - postgres:/var/lib/postgresql/data

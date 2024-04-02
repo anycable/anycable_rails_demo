@@ -35,7 +35,7 @@ require "rspec/rails"
 Dir[File.join(__dir__, "support/**/*.rb")].sort.each { |file| require file }
 
 RSpec.configure do |config|
-  config.fixture_path = Rails.root.join("spec", "fixtures")
+  config.fixture_paths = [Rails.root.join("spec", "fixtures")]
 
   # Wrap each example into a transaction to avoid DB state leak
   config.use_transactional_fixtures = true

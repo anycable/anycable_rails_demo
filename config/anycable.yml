@@ -25,9 +25,16 @@ default: &default
   # Use the same channel name for WebSocket server, e.g.:
   #   $ anycable-go --redis-channel="__anycable__"
   redis_channel: "__anycable__"
+  # WebSocket server URL for clients
+  websocket_url: "ws://localhost:8080/cable"
 
 development:
   <<: *default
 
+test:
+  <<: *default
+  rpc_pool_size: 5
+
 production:
   <<: *default
+  websocket_url: ~

@@ -18,7 +18,7 @@ jobs:
       RAILS_ENV: test
     services:
       postgres:
-        image: postgres:15.0
+        image: postgres:16.0
         ports: ["5432:5432"]
         env:
           POSTGRES_PASSWORD: postgres
@@ -34,7 +34,7 @@ jobs:
           sudo apt-get -yqq install libpq-dev
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.2.1
+          ruby-version: 3.3.0
           bundler-cache: true
       - name: Run RSpec
         run: |
