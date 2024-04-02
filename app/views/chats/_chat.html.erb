@@ -13,7 +13,8 @@
     <p class="text-gray-300 w-full text-center my-4" data-target="chat.placeholder">You will receive new messages as they come</p>
   </div>
   <div class="sticky bottom-0 inset-auto left-0 right-0 bg-white py-4 bg-opacity-90">
-    <form data-action="chat#send" class="flex items-center border-b-2 border-teal-500 mb-4 pb-1">
+    <div data-target="chat.typings" class="text-xs text-gray-400 text-right mb-2 absolute top-0 right-0"></div>
+    <form data-action="chat#send" class="flex items-center border-b-2 border-teal-500 mb-4 pb-1 mt-2">
       <input autocomplete="off" data-target="chat.input" name="message" class="any-text-input" type="text" placeholder="Type message">
       <button type="submit" class="flex-shrink-0 any-button">Send</button>
     </form>

@@ -41,6 +41,7 @@ jobs:
           ANYCABLE_HOST: "0.0.0.0"
           ANYCABLE_REDIS_URL: redis://host.docker.internal:6379/0
           ANYCABLE_RPC_HOST: host.docker.internal:50051
+          ANYCABLE_STREAMS_SECRET: "secr3t"
     steps:
       - uses: actions/checkout@v3
       - name: Install PostgreSQL client
@@ -98,6 +99,7 @@ jobs:
           ANYCABLE_REDIS_URL: redis://host.docker.internal:6379/0
           ANYCABLE_RPC_HOST: host.docker.internal:50051
           ANYCABLE_DEBUG: "true"
+          ANYCABLE_STREAMS_SECRET: "secr3t"
     steps:
       - uses: actions/checkout@v3
       - name: Install PostgreSQL client

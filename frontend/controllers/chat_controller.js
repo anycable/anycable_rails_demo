@@ -2,9 +2,15 @@ import { Controller } from "@hotwired/stimulus";
 import { createCable } from "../utils/cable";
 import { currentUser } from "../utils/current_user";
 import { isPreview as isTurboPreview } from "../utils/turbo";
+import { debounce } from "@github/mini-throttle";
 
 export default class extends Controller {
-  static targets = ["input", "messages", "placeholder"];
+  static targets = ["input", "messages", "placeholder", "typings"];
+
+  initialize() {
+    // Store typing user names
+    this.typings = {};
+  }
 
   connect() {
     if (isTurboPreview()) return;
@@ -20,6 +26,11 @@ export default class extends Controller {
     this.channel.on("disconnect", () =>
       this.element.removeAttribute("connected")
     );
+
+    this.deboucedHandleInput = debounce(this.handleInput.bind(this), 300, {
+      start: true,
+    });
+    this.inputTarget.addEventListener("input", this.deboucedHandleInput);
   }
 
   disconnect() {
@@ -27,14 +38,37 @@ export default class extends Controller {
       this.channel.disconnect();
       delete this.channel;
     }
+
+    this.inputTarget.removeEventListener("input", this.deboucedHandleInput);
   }
 
   handleMessage(data) {
-    if (data.action == "newMessage") {
+    if (data.action === "newMessage") {
       this.hidePlaceholder();
       const mine = currentUser().id == data.author_id;
       this.appendMessage(data.html, mine);
+      delete this.typings[data.author_id];
+      this.invalidateTypings();
     }
+
+    if (data.action === "typing" && data.id != currentUser().id) {
+      this.typings[data.id] = { name: data.name, timestamp: Date.now() };
+      this.invalidateTypings();
+    }
+  }
+
+  handleInput(_e) {
+    const message = this.inputTarget.value.trim();
+    if (!message) return;
+
+    const name = currentUser().name;
+    if (!name) return;
+
+    const id = currentUser().id;
+
+    if (!this.channel) return;
+
+    this.channel.whisper({ action: "typing", name, id });
   }
 
   hidePlaceholder() {
@@ -67,5 +101,27 @@ export default class extends Controller {
     if (!message) return;
 
     this.channel.perform("speak", { message });
+  }
+
+  invalidateTypings() {
+    let names = [];
+    for (const id in this.typings) {
+      const typing = this.typings[id];
+      if (Date.now() - typing.timestamp > 3000) {
+        delete this.typings[id];
+      } else {
+        names.push(typing.name);
+      }
+    }
+
+    if (names.length === 0) {
+      this.typingsTarget.innerText = "";
+    } else if (names.length === 1) {
+      this.typingsTarget.innerText = `${names[0]} is typing...`;
+    } else {
+      this.typingsTarget.innerText = `${names.length} persons are typing...`;
+    }
+
+    setTimeout(() => this.invalidateTypings(), 1000);
   }
 }
