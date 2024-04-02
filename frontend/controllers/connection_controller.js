@@ -13,7 +13,7 @@ export default class extends Controller {
   connect() {
     if (isTurboPreview()) return;
 
-    this.cable = createCable().cable;
+    this.cable = createCable();
 
     this.unbind = [];
 

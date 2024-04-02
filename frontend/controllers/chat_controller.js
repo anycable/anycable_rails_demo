@@ -1,5 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
-import { createChannel } from "../utils/cable";
+import { createCable } from "../utils/cable";
 import { currentUser } from "../utils/current_user";
 import { isPreview as isTurboPreview } from "../utils/turbo";
 
@@ -9,21 +9,16 @@ export default class extends Controller {
   connect() {
     if (isTurboPreview()) return;
 
-    const channel = "ChatChannel";
     const id = this.data.get("id");
-    this.channel = createChannel(
-      { channel, id },
-      {
-        received: (data) => {
-          this.handleMessage(data);
-        },
-      }
-    );
+    const cable = createCable();
+
+    this.channel = cable.subscribeTo("ChatChannel", { id });
+    this.channel.on("message", (data) => this.handleMessage(data));
   }
 
   disconnect() {
     if (this.channel) {
-      this.channel.unsubscribe();
+      this.channel.disconnect();
       delete this.channel;
     }
   }

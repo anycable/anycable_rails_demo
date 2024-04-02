@@ -1,18 +1,18 @@
-import { createConsumer } from "@anycable/web";
+import { createCable as create } from "@anycable/web";
 
-let consumer;
+let instance;
 
 export const createCable = () => {
-  if (!consumer) {
-    consumer = createConsumer({
+  if (!instance) {
+    instance = create({
       protocol: "actioncable-v1-ext-json",
     });
   }
 
-  return consumer;
+  return instance;
 };
 
 export const createChannel = (...args) => {
-  const consumer = createCable();
-  return consumer.subscriptions.create(...args);
+  const cable = createCable();
+  return cable.subscribeTo(...args);
 };
