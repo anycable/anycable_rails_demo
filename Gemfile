@@ -22,7 +22,7 @@ gem 'jsbundling-rails'
 gem 'propshaft'
 
 group :development, :test do
-  gem 'debug', '1.7.0'
+  gem 'debug', '~> 1.9'
   gem 'rspec-rails', '~> 6.0'
 end
 
