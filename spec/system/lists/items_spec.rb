@@ -79,6 +79,7 @@ describe "Workspaces -> List -> Items" do
 
           visit workspace_path(workspace)
           expect(page).to have_text workspace.name
+          expect(page).to have_css("#{dom_id(full_list)}[connected]")
         end
       end
 

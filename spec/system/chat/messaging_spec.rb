@@ -8,6 +8,7 @@ describe "Workspaces -> Chat" do
   before do
     visit workspace_path(workspaces(:demo))
     expect(page).to have_text "Demo Workspace"
+    expect(page).to have_css "#{dom_id(workspaces(:demo), "chat")}[connected]"
   end
 
   it "I can send a message" do
@@ -34,6 +35,7 @@ describe "Workspaces -> Chat" do
 
         visit workspace_path(workspaces(:demo))
         expect(page).to have_text "Demo Workspace"
+        expect(page).to have_css "#{dom_id(workspaces(:demo), "chat")}[connected]"
       end
     end
 

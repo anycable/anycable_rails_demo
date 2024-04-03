@@ -27,7 +27,11 @@ RSpec.configure do |config|
   config.around(:each, type: :system) do |ex|
     was_host, Rails.application.default_url_options[:host] = Rails.application.default_url_options[:host], Capybara.server_host
     ex.run
-    Rails.application.default_url_options[:host] = was_host
+    if was_host
+      Rails.application.default_url_options[:host] = was_host
+    else
+      Rails.application.default_url_options.delete(:host)
+    end
   end
 
   # Make sure this hook runs before others

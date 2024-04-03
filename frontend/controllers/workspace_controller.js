@@ -14,6 +14,12 @@ export default class extends Controller {
 
     this.channel = cable.subscribeTo("WorkspaceChannel", { id });
     this.channel.on("message", (data) => this.handleUpdate(data));
+    this.channel.on("connect", () =>
+      this.element.setAttribute("connected", "")
+    );
+    this.channel.on("disconnect", () =>
+      this.element.removeAttribute("connected")
+    );
   }
 
   disconnect() {
@@ -27,7 +33,7 @@ export default class extends Controller {
     if (data.type == "deletedList") {
       this.listsTarget.querySelector(`#list_${data.id}`).remove();
     } else if (data.type == "newList") {
-      if (!document.getElementById(data.id)) {
+      if (!document.getElementById(`list_${data.id}`)) {
         this.formTarget.insertAdjacentHTML("beforebegin", data.html);
       }
     }

@@ -16,6 +16,12 @@ export default class extends Controller {
 
     this.channel = cable.subscribeTo("ListChannel", { id, workspace });
     this.channel.on("message", (data) => this.handleUpdate(data));
+    this.channel.on("connect", () =>
+      this.element.setAttribute("connected", "")
+    );
+    this.channel.on("disconnect", () =>
+      this.element.removeAttribute("connected")
+    );
   }
 
   disconnect() {

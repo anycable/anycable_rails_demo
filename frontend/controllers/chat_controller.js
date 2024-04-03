@@ -14,6 +14,12 @@ export default class extends Controller {
 
     this.channel = cable.subscribeTo("ChatChannel", { id });
     this.channel.on("message", (data) => this.handleMessage(data));
+    this.channel.on("connect", () =>
+      this.element.setAttribute("connected", "")
+    );
+    this.channel.on("disconnect", () =>
+      this.element.removeAttribute("connected")
+    );
   }
 
   disconnect() {
