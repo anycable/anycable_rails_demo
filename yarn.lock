@@ -126,6 +126,11 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.17.5.tgz#a8f3d26d8afc5186eccda265ceb1820b8e8830be"
   integrity sha512-XgA9qWRqby7xdYXuF6KALsn37QGBMHsdhmnpjfZtYxKxbTOwfnDM6MYi2WuUku5poNaX2n9XGVr20zgT/2QwCw==
 
+"@github/mini-throttle@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@github/mini-throttle/-/mini-throttle-2.1.0.tgz#583a1d5e383caa21a1c067a649f15f7ab575dccf"
+  integrity sha512-iEeR2OdVCPkdIPUszL8gJnKNu4MR8ANh7y0u/LPyaatYezgaWxUZEzhFntloqQq+HE6MZkFy+cl+xzCNuljOdw==
+
 "@hotwired/stimulus@^3.2.1":
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/@hotwired/stimulus/-/stimulus-3.2.1.tgz#e3de23623b0c52c247aba4cd5d530d257008676b"

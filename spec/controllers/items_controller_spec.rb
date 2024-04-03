@@ -21,7 +21,7 @@ describe ItemsController do
     end
 
     it "broadcasts a created message" do
-      expect { subject }.to have_broadcasted_to(ListChannel.broadcasting_for(list))
+      expect { subject }.to have_broadcasted_to(AnyCable::Rails.stream_name_from(list))
         .with(a_hash_including(type: "created"))
     end
   end
@@ -36,7 +36,7 @@ describe ItemsController do
     end
 
     it "broadcasts a deleted message" do
-      expect { subject }.to have_broadcasted_to(ListChannel.broadcasting_for(list))
+      expect { subject }.to have_broadcasted_to(AnyCable::Rails.stream_name_from(list))
         .with(type: "deleted", id: item.id)
     end
   end
@@ -49,7 +49,7 @@ describe ItemsController do
     subject { patch :update, params: {workspace_id: workspace.to_param, list_id: list.id, id: item.id, item: form_params} }
 
     it "broadcasts an updated message" do
-      expect { subject }.to have_broadcasted_to(ListChannel.broadcasting_for(list))
+      expect { subject }.to have_broadcasted_to(AnyCable::Rails.stream_name_from(list))
         .with(type: "updated", id: item.id, completed: true, desc: item.desc)
     end
   end

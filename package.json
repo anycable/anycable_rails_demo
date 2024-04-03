@@ -4,6 +4,7 @@
   "dependencies": {
     "@anycable/core": "^0.8.1",
     "@anycable/web": "^0.8.0",
+    "@github/mini-throttle": "2.1.0",
     "@hotwired/stimulus": "^3.2.1",
     "@hotwired/turbo-rails": "^7.2.4",
     "@rails/actioncable": "^7.0.4",

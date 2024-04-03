@@ -20,7 +20,7 @@ describe ListsController do
     end
 
     it "broadcasts a newList message" do
-      expect { subject }.to have_broadcasted_to(WorkspaceChannel.broadcasting_for(workspace))
+      expect { subject }.to have_broadcasted_to(AnyCable::Rails.stream_name_from(workspace))
         .with(a_hash_including(type: "newList"))
     end
   end
@@ -35,7 +35,7 @@ describe ListsController do
     end
 
     it "broadcasts a deletedList message" do
-      expect { subject }.to have_broadcasted_to(WorkspaceChannel.broadcasting_for(workspace))
+      expect { subject }.to have_broadcasted_to(AnyCable::Rails.stream_name_from(workspace))
         .with(type: "deletedList", id: list.id)
     end
   end

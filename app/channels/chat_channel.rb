@@ -7,7 +7,7 @@ class ChatChannel < ApplicationCable::Channel
     self.workspace = Workspace.find_by(public_id: params[:id])
     return reject unless workspace
 
-    stream_for workspace
+    stream_for workspace, whisper: true
   end
 
   def speak(data)
