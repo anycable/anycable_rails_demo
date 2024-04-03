@@ -54,7 +54,9 @@ jobs:
     services:
       anycable:
         image: anycable/anycable-go:1.5.0
-        ports: ["8080:8080"]
+        ports:
+          - 8080:8080
+          - 8090:8090
         options: --add-host=host.docker.internal:host-gateway
         env:
           ANYCABLE_HOST: "0.0.0.0"
