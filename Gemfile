@@ -27,6 +27,7 @@ group :development, :test do
 end
 
 group :development do
+  gem 'overmind'
 end
 
 group :test do

@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+bin/overmind start -f Procfile.dev
