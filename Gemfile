@@ -21,8 +21,11 @@ gem 'cssbundling-rails'
 gem 'jsbundling-rails'
 gem 'propshaft'
 
+gem 'anycable-thruster'
+
 group :development, :test do
-  gem 'debug', '~> 1.9'
+  # FIXME: Fails with Operation not supported by device - <STDIN> when running within Thruster
+  gem 'debug', '~> 1.9'#, require: false
   gem 'rspec-rails', '~> 6.0'
 end
 
@@ -33,9 +36,7 @@ end
 group :test do
   gem 'capybara'
   gem 'cuprite'
-
-  # Rack-based AnyCable server implementation
-  gem 'anycable-rack-server', '~> 0.5'
+  gem 'childprocess'
 
   gem 'test-prof'
 end

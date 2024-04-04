@@ -24,10 +24,10 @@ bin/setup
 
 ## Running
 
-Since you need to run multiple processes (Rails, AnyCable-Go), we recommend using a process manager, e.g., [Hivemind](https://github.com/DarthSim/hivemind):
+Run Rails server and all secondary processes (CSS/JS bundling):
 
 ```sh
-hivemind Procfile.dev
+bin/dev
 ```
 
 Then go to [http://localhost:3000/](http://localhost:3000/) and see the application in action.
