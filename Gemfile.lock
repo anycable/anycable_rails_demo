@@ -88,10 +88,10 @@ GEM
       anyway_config (>= 2.1.0)
       connection_pool (~> 2.2)
       websocket (~> 1.2)
-    anycable-rails (1.5.0)
+    anycable-rails (1.5.1)
       anycable (~> 1.5.0)
-      anycable-rails-core (= 1.5.0)
-    anycable-rails-core (1.5.0)
+      anycable-rails-core (= 1.5.1)
+    anycable-rails-core (1.5.1)
       actioncable (>= 6.0)
       anycable-core (~> 1.5.0)
       globalid
