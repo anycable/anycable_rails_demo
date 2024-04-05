@@ -20,8 +20,8 @@ default: &default
   rpc_host: "127.0.0.1:50051"
   # Whether to enable gRPC level logging or not
   log_grpc: false
-  # Use Redis to broadcast messages to AnyCable server
-  broadcast_adapter: redis
+  # Use HTTP adapter for a quick start (since redis gem is not present in the project)
+  broadcast_adapter: http
   # Use the same channel name for WebSocket server, e.g.:
   #   $ anycable-go --redis-channel="__anycable__"
   redis_channel: "__anycable__"
@@ -30,10 +30,12 @@ default: &default
 
 development:
   <<: *default
+  http_rpc_mount_path: "/_anycable"
 
 test:
   <<: *default
   rpc_pool_size: 5
+  http_broadcast_url: "http://localhost:3023/_anycable_rack_broadcast"
 
 production:
   <<: *default

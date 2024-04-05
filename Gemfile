@@ -1,10 +1,10 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '~> 3.3.0'
+ruby '~> 3.2.0'
 
 gem 'rails', '~> 7.1.0'
-gem 'pg', '~> 1.0'
+gem 'sqlite3', '~> 1.4'
 gem 'puma', '~> 6.0'
 gem 'redis', '~> 5.0'
 gem 'grpc', '~> 1.37'
@@ -22,16 +22,20 @@ gem 'jsbundling-rails'
 gem 'propshaft'
 
 group :development, :test do
-  gem 'debug', '1.7.0'
+  gem 'debug', '~> 1.9'
   gem 'rspec-rails', '~> 6.0'
 end
 
 group :development do
+  gem 'overmind'
 end
 
 group :test do
   gem 'capybara'
   gem 'cuprite'
+
+  # Rack-based AnyCable server implementation
+  gem 'anycable-rack-server', '~> 0.5'
 
   gem 'test-prof'
 end
