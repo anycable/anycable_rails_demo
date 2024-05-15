@@ -59,7 +59,38 @@ module Iodine
 
     # Socket wraps Iodine client and provides ActionCable::Server::_Socket interface
     class Socket
-      private attr_reader :server, :coder, :connection, :client
+      # This is a custom _Server interface to support Iodine native pub/sub
+      class ServerInterface < Data.define(:pubsub, :executor, :config)
+      end
+
+      # This is a _PubSub interface implementation that uses
+      # Iodine client to subscribe to channels.
+      # For that, we need an instance of Iodine::Connection to call #subscribe/#unsubscribe on.
+      class PubSubInterface < Data.define(:socket)
+        delegate :client, to: :socket, allow_nil: true
+
+        def subscribe(channel, handler, on_success = nil)
+          return unless client
+
+          # NOTE: Iodine doesn't allow having different handlers for the same channel name,
+          # so, having multiple channels listening to the same stream is not possible.
+          #
+          # Maybe, we need to pass the identifier to subscribe/unsubscribe methods to allow
+          # server implementations to distinguish between different subscriptions.
+          #
+          # (In Iodine's case, we can create internal, server-side, subscribers to handle original broadcast requests
+          # and then forward them to the specific identifiers. SubsriberMap can be reused for that.)
+          client.subscribe(to: channel, handler: proc { |_, msg| handler.call(msg) })
+          on_success&.call
+        end
+
+        def unsubscribe(channel, _handler)
+          client&.unsubscribe(channel)
+        end
+      end
+
+      private attr_reader :server, :coder, :connection
+      attr_reader :client
 
       delegate :worker_pool, to: :server
 
@@ -69,7 +100,17 @@ module Iodine
         @env = env
         @logger = server.new_tagged_logger { request }
         @protocol = protocol
-        @connection = server.config.connection_class.call.new(server, self)
+
+        # Pick the server interface for Action Cable depending on the subscription adapter
+        server_interface =
+          if server.config.cable&.fetch("adapter", nil).to_s == "iodine"
+            pubsub = PubSubInterface.new(self)
+            ServerInterface.new(pubsub, server.executor, server.config)
+          else
+            server
+          end
+
+        @connection = server.config.connection_class.call.new(server_interface, self)
 
         # Underlying Iodine client is set on connection open
         @client = nil
@@ -123,6 +164,21 @@ module Iodine
 
       def perform_work(receiver, method_name, *args)
         worker_pool.async_invoke(receiver, method_name, *args, connection: self)
+      end
+    end
+  end
+end
+
+# Define Action Cable subscription adapter
+# Mark it is loaded to pass the `require ...` in the `#pubsub_adapter` method.
+# TODO: Make it possible to provide adapter class directly.
+$LOADED_FEATURES << "action_cable/subscription_adapter/iodine"
+
+module ActionCable
+  module SubscriptionAdapter
+    class Iodine < Base
+      def broadcast(channel, payload)
+        ::Iodine.publish(channel, payload)
       end
     end
   end
