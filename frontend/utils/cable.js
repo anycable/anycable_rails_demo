@@ -5,7 +5,8 @@ let instance;
 export const createCable = () => {
   if (!instance) {
     instance = create({
-      protocol: "actioncable-v1-ext-json",
+      // This demo uses regular Action Cable
+      // protocol: "actioncable-v1-ext-json",
     });
   }
 

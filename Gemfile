@@ -3,12 +3,33 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
 ruby '~> 3.2.0'
 
-gem 'rails', '~> 7.1.0'
+if File.directory?('../../rails')
+  path '../../rails' do
+    # We need to enumerate all Rails gems to avoid updating the Gemfile.lock
+    # when using a local copy of Rails
+    gem 'activesupport'
+    gem 'actioncable'
+    gem 'actionview'
+    gem 'actionpack'
+    gem 'actionmailer'
+    gem 'activemodel'
+    gem 'activerecord'
+    gem 'actiontext'
+    gem 'actionmailbox'
+    gem 'activejob'
+    gem 'activestorage'
+    gem 'railties'
+    gem 'rails'
+  end
+else
+  gem 'rails', github: 'palkan/rails', branch: 'refactor/action-cable-server-adapterization'
+end
+
 gem 'sqlite3', '~> 1.4'
-gem 'puma', '~> 6.0'
+gem 'iodine'
 gem 'redis', '~> 5.0'
 gem 'grpc', '~> 1.37'
-gem 'anycable-rails', '~> 1.5'
+gem 'anycable-rails', '~> 1.5', require: false
 gem 'daemons', '~> 1.3', require: false
 
 gem 'bootsnap', '>= 1.4.2', require: false

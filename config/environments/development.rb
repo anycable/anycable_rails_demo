@@ -38,6 +38,9 @@ Rails.application.configure do
 
   config.hosts = []
 
+  # Iodine doesn't broadcast logs to STDOUT for some reason
+  config.logger = ActiveSupport::Logger.new($stdout)
+
   # Highlight code that triggered database queries in logs.
   # config.active_record.verbose_query_logs = true
 

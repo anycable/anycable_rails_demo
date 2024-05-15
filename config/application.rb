@@ -14,9 +14,14 @@ require "active_support/core_ext/integer/time"
 
 Bundler.require(*Rails.groups)
 
+require_relative "../lib/iodine/action_cable"
+
 module AnycableRailsDemo
   class Application < Rails::Application
     config.load_defaults 7.0
+
+    config.action_cable.mount_path = nil
+    config.action_cable.url = "/cable"
 
     config.generators do |g|
       g.assets false
