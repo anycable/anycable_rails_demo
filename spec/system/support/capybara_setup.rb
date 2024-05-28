@@ -13,6 +13,10 @@ Capybara.save_path = ENV.fetch("CAPYBARA_ARTIFACTS", "./tmp/capybara")
 
 # Use fixed server port to configure AnyCable broadcast url
 Capybara.server_port = 3023
+Capybara.server = :thruster, {debug: ENV["DEBUG"] == "1", env: {
+  "ANYCABLE_BROADCAST_ADAPTER" => "http",
+  "ANYCABLE_RPC_HOST" => "http://localhost:#{Capybara.server_port}/_anycable"
+}}
 
 Capybara.singleton_class.prepend(Module.new do
   attr_accessor :last_used_session
