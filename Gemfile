@@ -35,8 +35,8 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'capybara-thruster'
   gem 'cuprite'
-  gem 'childprocess'
 
   gem 'test-prof'
 end
