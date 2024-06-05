@@ -1,0 +1,60 @@
+#!/usr/bin/env ruby
+
+require 'fileutils'
+require 'rbconfig'
+
+Dir.chdir(File.expand_path('..', __dir__))
+
+version = '0.1.1'
+os = case RbConfig::CONFIG['host_os']
+     when /darwin/  then 'darwin'
+     when /linux/   then 'linux'
+     when /freebsd/ then 'freebsd'
+     else
+       raise "Unknown OS: #{RbConfig::CONFIG['host_os']}"
+     end
+arch = case RbConfig::CONFIG['host_cpu']
+       when /x86_64/ then 'amd64'
+       when /aarch64|arm64/ then 'arm64'
+       when /arm/ then 'arm'
+       else
+         raise "Unknown architecture: #{RbConfig::CONFIG['host_cpu']}"
+       end
+
+binary_name = "caddy-rails-#{os}-#{arch}"
+binary_path = "./bin/dist/#{binary_name}"
+
+def download_caddy_rails(version, binary_name, binary_path)
+  puts "Downloading caddy_rails version #{version} for #{binary_name}..."
+  url = "https://github.com/evilmartians/caddy_rails/releases/download/v#{version}/#{binary_name}"
+
+  system("curl -L -o #{binary_path} #{url}")
+  FileUtils.chmod('+x', binary_path)
+
+  puts "caddy_rails was downloaded"
+
+  # if RbConfig::CONFIG['host_os'] =~ /linux/
+  #   puts "Setting capabilities for #{binary_path}"
+  #   system("sudo setcap 'cap_net_bind_service=+ep' #{binary_path}")
+  # end
+end
+
+def equal_version?(binary_path, target_version)
+  output = `#{binary_path} --version`
+
+  $?.success? && output.start_with?("Version: v#{target_version}")
+end
+
+unless File.exist?(binary_path)
+  download_caddy_rails(version, binary_name, binary_path)
+end
+
+unless equal_version?(binary_path, version)
+  puts "Caddy Rails version is not #{version}, downloading a new version"
+  download_caddy_rails(version, binary_name, binary_path)
+end
+
+# Ensures arguments are properly quoted if they contain spaces
+args = ARGV.map { |x| x.include?(" ") ? "'#{x}'" : x }
+
+exec("#{binary_path} #{args.join(" ")}")

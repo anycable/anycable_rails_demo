@@ -12,29 +12,16 @@
 default: &default
   # Turn on/off access logs ("Started..." and "Finished...")
   access_logs_disabled: false
-  # Persist "dirty" session between RPC calls (might be required for apps using stimulus_reflex <3.0)
-  # persistent_session_enabled: true
-  # This is the host and the port to run AnyCable RPC server on.
-  # You must configure your WebSocket server to connect to it, e.g.:
-  #   $ anycable-go --rpc-host="<rpc hostname>:50051"
-  rpc_host: "127.0.0.1:50051"
-  # Whether to enable gRPC level logging or not
-  log_grpc: false
-  # Use HTTP adapter for a quick start (since redis gem is not present in the project)
-  broadcast_adapter: http
-  # Use the same channel name for WebSocket server, e.g.:
-  #   $ anycable-go --redis-channel="__anycable__"
-  redis_channel: "__anycable__"
   # WebSocket server URL for clients
-  websocket_url: "ws://localhost:8080/cable"
+  broadcast_adapter: http
+  websocket_url: "/cable"
+  http_rpc_mount_path: "/_anycable"
 
 development:
   <<: *default
-  http_rpc_mount_path: "/_anycable"
 
 test:
   <<: *default
-  rpc_pool_size: 5
   http_broadcast_url: "http://localhost:3023/_anycable_rack_broadcast"
 
 production:
