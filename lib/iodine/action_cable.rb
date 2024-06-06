@@ -13,7 +13,7 @@ module Iodine
 
       def call(env)
         if env["rack.upgrade?"] == :websocket &&
-            allow_request_origin?(env)
+            server.allow_request_origin?(env)
           (subprotocol = select_protocol(env))
 
           env["rack.upgrade"] = Socket.new(server, env, protocol: subprotocol)
@@ -25,21 +25,6 @@ module Iodine
       end
 
       private
-
-      # TODO: Shouldn't this be moved to ActionCable::Server::Base?
-      def allow_request_origin?(env)
-        return true if server.config.disable_request_forgery_protection
-
-        proto = ::Rack::Request.new(env).ssl? ? "https" : "http"
-        if server.config.allow_same_origin_as_host && env["HTTP_ORIGIN"] == "#{proto}://#{env["HTTP_HOST"]}"
-          true
-        elsif Array(server.config.allowed_request_origins).any? { |allowed_origin| allowed_origin === env["HTTP_ORIGIN"] }
-          true
-        else
-          logger.error("Request origin not allowed: #{env["HTTP_ORIGIN"]}")
-          false
-        end
-      end
 
       def select_protocol(env)
         supported_protocols = ::ActionCable::INTERNAL[:protocols]
