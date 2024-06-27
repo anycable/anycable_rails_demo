@@ -5,7 +5,7 @@ require 'rbconfig'
 
 Dir.chdir(File.expand_path('..', __dir__))
 
-version = '0.1.4'
+version = '0.1.5'
 os = case RbConfig::CONFIG['host_os']
      when /darwin/  then 'darwin'
      when /linux/   then 'linux'
