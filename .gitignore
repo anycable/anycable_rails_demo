@@ -35,4 +35,5 @@ yarn-debug.log*
 /app/assets/builds/*
 !/app/assets/builds/.keep
 
-bin/dist
+bin/dist/*
+!/bin/dist/.keep
