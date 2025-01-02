@@ -21,6 +21,9 @@ gem 'cssbundling-rails'
 gem 'jsbundling-rails'
 gem 'propshaft'
 
+gem 'kamal', '~> 2.4', require: false
+gem 'thruster', '~> 0.1.9', require: false
+
 group :development, :test do
   gem 'debug', '1.7.0'
   gem 'rspec-rails', '~> 6.0'

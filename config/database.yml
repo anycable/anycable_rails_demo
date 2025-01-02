@@ -14,4 +14,7 @@ test:
 
 production:
   <<: *default
-  adapter: postgresql
+  host: <%= ENV['DB_HOST'] %>
+  database: any_rails_demo_production
+  username: any_rails_demo
+  password: <%= ENV['POSTGRES_PASSWORD'] %>
