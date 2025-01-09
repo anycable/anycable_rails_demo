@@ -2,7 +2,7 @@
 
 Rails.application.routes.draw do
   # App boot health check
-  get '/up', to: 'rails/health#show', as: :rails_health_check
+  get "/up", to: "rails/health#show", as: :rails_health_check
 
   get "/login", to: "sessions#new", as: :login
   post "/login", to: "sessions#create"
