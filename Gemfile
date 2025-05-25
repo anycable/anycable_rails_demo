@@ -24,6 +24,7 @@ gem 'propshaft'
 group :development, :test do
   gem 'debug', '1.7.0'
   gem 'rspec-rails', '~> 6.0'
+  gem 'dotenv', '~> 3.1', '>= 3.1.8'
 end
 
 group :development do

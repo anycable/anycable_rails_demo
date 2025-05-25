@@ -121,6 +121,7 @@ GEM
       irb (>= 1.5.0)
       reline (>= 0.3.1)
     diff-lcs (1.5.1)
+    dotenv (3.1.8)
     drb (2.2.1)
     erubi (1.12.0)
     ferrum (0.14)
@@ -328,6 +329,7 @@ DEPENDENCIES
   cuprite
   daemons (~> 1.3)
   debug (= 1.7.0)
+  dotenv (~> 3.1, >= 3.1.8)
   grpc (~> 1.37)
   jsbundling-rails
   nanoid

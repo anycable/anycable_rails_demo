@@ -68,7 +68,7 @@ interaction:
           run_options: [service-ports, use-aliases]
 
   yarn:
-    descriptinn: Run yarn commands
+    description: Run yarn commands
     service: rails
     command: yarn
 
@@ -84,4 +84,5 @@ provision:
   - dip bundle install
   - dip rails db:prepare
   - dip rails db:test:prepare
+  - dip yarn
   - echo "🚀 Ready to rock! Run 'dip rails s' to start a Rails web server w/ AnyCable"

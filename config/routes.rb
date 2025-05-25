@@ -12,4 +12,6 @@ Rails.application.routes.draw do
   end
 
   root to: "workspaces#index"
+
+  get "/up", to: "healths#index"
 end
