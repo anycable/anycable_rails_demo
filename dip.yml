@@ -68,7 +68,7 @@ interaction:
           run_options: [service-ports, use-aliases]
 
   yarn:
-    descriptinn: Run yarn commands
+    description: Run yarn commands
     service: rails
     command: yarn
 
