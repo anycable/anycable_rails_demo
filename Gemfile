@@ -17,7 +17,6 @@ gem 'ruby-next', '~> 1.0', require: false
 gem 'nanoid'
 gem 'turbo-rails'
 
-gem 'cssbundling-rails'
 gem 'jsbundling-rails'
 gem 'propshaft'
 

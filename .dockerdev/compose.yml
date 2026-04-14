@@ -4,7 +4,7 @@ x-app: &app
     args:
       RUBY_VERSION: '3.3.0'
       PG_MAJOR: '16'
-      NODE_MAJOR: '18'
+      NODE_MAJOR: '22'
   environment: &env
     NODE_ENV: development
     RAILS_ENV: ${RAILS_ENV:-development}
@@ -62,9 +62,7 @@ services:
       - '3000:3000'
     depends_on:
       <<: *backend_depends_on
-      css:
-        condition: service_started
-      js:
+      vite:
         condition: service_started
       ws:
         condition: service_started
@@ -142,13 +140,11 @@ services:
       ws:
         condition: service_started
 
-  css:
+  vite:
     <<: *backend
-    command: yarn build:css --watch
-
-  js:
-    <<: *backend
-    command: yarn build --watch
+    command: yarn run vite --host
+    ports:
+      - '5173:5173'
 
   postgres:
     image: postgres:16.0
