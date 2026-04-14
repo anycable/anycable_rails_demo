@@ -1,5 +1,5 @@
 module.exports = {
-  content: ["./frontend/javascript/**/*_controller.js", "./app/**/*.html.erb"],
+  content: ["./frontend/**/*.js", "./app/**/*.html.erb"],
   theme: {
     colors: {
       transparent: "transparent",
