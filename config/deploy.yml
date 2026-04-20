@@ -1,0 +1,82 @@
+# Name of your application. Used to uniquely configure containers.
+service: anycable_rails_demo
+
+# Name of the container image.
+image: pjpires10/anycable_rails_demo
+
+# Deploy to these servers.
+servers:
+  web:
+    - 192.168.0.1
+
+  anycable-rpc:
+    hosts:
+      - 192.168.0.1
+    cmd: bundle exec anycable
+    options:
+      network-alias: anycable_rails_demo-rpc
+
+proxy:
+  ssl: true
+  host: demo.anycable.io
+
+registry:
+  # Specify the registry server, if you're not using Docker Hub
+  # server: registry.digitalocean.com / ghcr.io / ...
+  username: pjpires10
+
+  # Always use an access token rather than real password (pulled from .kamal/secrets).
+  password:
+    - KAMAL_REGISTRY_PASSWORD
+
+env:
+  secret:
+    - RAILS_MASTER_KEY
+    - POSTGRES_PASSWORD
+  clear:
+    DB_HOST: anycable_rails_demo-db
+    REDIS_URL: "redis://anycable_rails_demo-redis:6379"
+    ANYCABLE_RPC_HOST: "0.0.0.0:50051"
+    ANYCABLE_REDIS_URL: "redis://anycable_rails_demo-redis:6379/0"
+    ANYCABLE_WEBSOCKET_URL: "wss://ws.demo.anycable.io/cable"
+
+# Bridge fingerprinted assets, like JS and CSS, between versions to avoid
+# hitting 404 on in-flight requests. Combines all files from new and old
+# version inside the asset_path.
+asset_path: /rails/public/assets
+
+builder:
+  arch: amd64
+
+accessories:
+  db:
+    image: postgres:16
+    host: 192.168.0.1
+    env:
+      clear:
+        POSTGRES_USER: any_rails_demo
+        POSTGRES_DB: any_rails_demo_production
+      secret:
+        - POSTGRES_PASSWORD
+    directories:
+      - data:/var/lib/postgresql/data
+  redis:
+    image: redis:7.0
+    host: 192.168.0.1
+    directories:
+      - data:/data
+  anycable-go:
+    image: anycable/anycable-go:1.5
+    host: 192.168.0.1
+    proxy:
+      host: ws.demo.anycable.io
+      ssl: true
+      app_port: 8080
+      healthcheck:
+        path: /health
+    env:
+      clear:
+        ANYCABLE_HOST: "0.0.0.0"
+        ANYCABLE_PORT: 8080
+        ANYCABLE_RPC_HOST: anycable_rails_demo-rpc:50051
+        ANYCABLE_REDIS_URL: "redis://anycable_rails_demo-redis:6379/0"
