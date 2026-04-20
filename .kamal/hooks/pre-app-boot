@@ -1,0 +1,23 @@
+#!/bin/bash
+# This script is a Kamal pre-app-boot hook.
+# It uses 'kamal app stop' to stop old containers of the 'rpc' role
+# This helps prevent "port already allocated" errors for services with fixed published ports.
+
+# Exit immediately if any command fails.
+set -e
+
+KAMAL_CMD="kamal" # Or "./bin/kamal" or "/path/to/kamal_executable"
+
+# The role whose containers need to be stopped.
+# This must match the role name in your deploy.yml
+ROLES_TO_STOP="rpc"
+KAMAL_ARGS=(--roles "$ROLES_TO_STOP")
+
+if "$KAMAL_CMD" app stop --roles "${ROLES_TO_STOP}"; then
+  echo "'kamal app stop --roles $ROLES_TO_STOP' completed successfully."
+else
+  exit_code=$?
+  echo "Error: '$KAMAL_CMD app stop --roles $ROLES_TO_STOP' failed with exit code $exit_code." >&2
+
+  exit $exit_code
+fi

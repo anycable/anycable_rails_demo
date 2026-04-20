@@ -1,10 +1,12 @@
 x-app: &app
   build:
-    context: .
+    context: ..
     args:
       RUBY_VERSION: '3.3.0'
       PG_MAJOR: '16'
       NODE_MAJOR: '18'
+    dockerfile: .dockerdev/Dockerfile
+    target: development
   environment: &env
     NODE_ENV: development
     RAILS_ENV: ${RAILS_ENV:-development}
@@ -18,7 +20,7 @@ x-backend: &backend
   stdin_open: true
   tty: true
   volumes:
-    - ..:/app:cached
+    - ../:/app:cached
     - rails_cache:/app/tmp/cache
     - bundle:/usr/local/bundle
     - node_modules:/app/node_modules

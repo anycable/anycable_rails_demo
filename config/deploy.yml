@@ -1,0 +1,118 @@
+# https://kamal-deploy.org/docs/upgrading/secrets-changes/
+<% require "dotenv"; Dotenv.load(".env", overwrite: true) %>
+
+service: anycable
+image: <%= ENV.fetch("KAMAL_REGISTRY_USERNAME") %>/anycable_rails_demo
+
+env:
+  clear: &default_env
+    RAILS_ENV: production
+    RAILS_SERVE_STATIC_FILES: "true"
+    RAILS_LOG_TO_STDOUT: "1"
+
+    # Redis
+    REDIS_URL: "redis://:<%= ENV.fetch("REDIS_PASSWORD") %>@<%= ENV.fetch("REDIS_HOST") %>:6379/0"
+
+    ACTION_CABLE_ADAPTER: "anycable"
+
+    # Anycable
+    ANYCABLE_WEBSOCKET_URL: wss://<%= ENV.fetch("WS_PROXY_HOST") %>/cable
+    ANYCABLE_BROADCAST_ADAPTER: redis
+  secret:
+    - RAILS_MASTER_KEY
+    - POSTGRES_PASSWORD
+    - DATABASE_URL
+    - REDIS_PASSWORD
+
+servers:
+  web:
+    hosts: <%= ENV.fetch("WEB_HOSTS").split(",") %>
+    proxy:
+      host: <%= ENV.fetch("PROXY_HOST") %>
+      ssl: true
+      app_port: 3000
+      healthcheck:
+        path: /up
+        interval: 1
+        timeout: 5
+
+  rpc:
+    hosts: <%= ENV.fetch("RPC_HOSTS").split(",") %>
+    cmd: bundle exec anycable
+    env:
+      clear:
+        <<: *default_env
+        ANYCABLE_RPC_HOST: "0.0.0.0:50051"
+        ANYCABLE_DEBUG: <%= ENV.fetch("ANYCABLE_DEBUG", "1") %>
+    options:
+      publish:
+        - "50051:50051"
+    proxy: false
+
+registry:
+  server: <%= ENV.fetch("KAMAL_REGISTRY_SERVER") %>
+  username: <%= ENV.fetch("KAMAL_REGISTRY_USERNAME") %>
+  password: [KAMAL_REGISTRY_PASSWORD]
+
+builder:
+  context: .
+  dockerfile: .dockerdev/Dockerfile
+  arch: amd64
+  secrets: [RAILS_MASTER_KEY]
+  args:
+    RUBY_VERSION: <%= ENV.fetch("RUBY_VERSION") %>
+    PG_MAJOR: <%= ENV.fetch("PG_MAJOR") %>
+    NODE_MAJOR: <%= ENV.fetch("NODE_MAJOR") %>
+    YARN_VERSION: <%= ENV.fetch("YARN_VERSION") %>
+    APP_USER: <%= ENV.fetch("APP_USER") %>
+
+accessories:
+  db:
+    host: <%= ENV.fetch("DB_HOST") %>
+    image: postgres:16
+    port: "5432:5432"
+    env:
+      secret: [ POSTGRES_PASSWORD ]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    host: <%= ENV.fetch("REDIS_HOST") %>
+    image: redis:8.0.1-alpine
+    port: "6379:6379"
+    cmd: /bin/sh -c "redis-server --requirepass <%= ENV.fetch("REDIS_PASSWORD") %>"
+    volumes: [ redisdata:/data ]
+
+  anycable-go:
+    host: <%= ENV.fetch("WS_HOSTS") %>
+    image: anycable/anycable-go:1.6.2-alpine
+    env:
+      clear:
+        <<: *default_env
+        ANYCABLE_HOST: "0.0.0.0"
+        ANYCABLE_PORT: "8080"
+        ANYCABLE_BROKER: "memory"
+        ANYCABLE_PUBSUB: "redis"
+        ANYCABLE_DEBUG: "1"
+        # Using a fixed list of RPC addresses https://docs.anycable.io/deployment/load_balancing?id=using-a-fixed-list-of-rpc-addresses
+        ANYCABLE_RPC_HOST: "grpc-list://<%= ENV.fetch("RPC_HOSTS").split(",").map { "#{_1}:50051" }.join(",") %>"
+        ANYCABLE_ALLOWED_ORIGINS: "<%= ENV.fetch("WS_ALLOWED_ORIGINS") %>"
+        ANYCABLE_REDIS_URL: "redis://:<%= ENV.fetch("REDIS_PASSWORD") %>@<%= ENV.fetch("REDIS_HOST") %>:6379/0"
+    proxy:
+      host: <%= ENV.fetch("WS_PROXY_HOST") %>
+      ssl: true
+      app_port: 8080
+      healthcheck:
+        path: /health
+        interval: 1
+        timeout: 5
+
+volumes:
+  - app_storage:/app/storage
+
+asset_path: /home/<%= ENV.fetch("APP_USER") %>/app/public/assets
+
+aliases:
+  console: app exec --interactive --reuse "bin/rails console"
+  shell: app exec --interactive --reuse "bash"
+  logs: app logs -f

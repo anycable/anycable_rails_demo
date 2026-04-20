@@ -38,6 +38,63 @@ dip up web
 
 Then go to [http://localhost:3000/](http://localhost:3000/) and see the application in action.
 
+## Deploying with Kamal 2
+Copy the sample files and fill in your values:
+
+```bash
+cp .env.sample .env
+cp .kamal/secrets.sample .kamal/secrets
+```
+
+#### Environment variables
+
+| Variable                  | Description                                                                                      |
+| ------------------------- |--------------------------------------------------------------------------------------------------|
+| `WEB_HOSTS`               | Comma-separated hosts for Rails web servers                                                      |
+| `RPC_HOSTS`               | Comma-separated AnyCable RPC server hosts                                                        |
+| `WS_HOSTS`                | Comma-separated hosts for the AnyCable Go                                                        |
+| `REDIS_HOST`              | Redis server host                                                                                |
+| `DB_HOST`                 | PostgreSQL host (e.g. `db.example.com`)                                                          |
+| `PROXY_HOST`              | Public web domain (e.g. `anycable.example.com`)                                                  |
+| `WS_PROXY_HOST`           | WebSocket proxy domain (e.g. `websocket.example.com`)                                            |
+| `WS_ALLOWED_ORIGINS`      | Comma-separated list of hostnames to check the Origin header (e.g. `*.example.com`)              |
+| `KAMAL_REGISTRY_SERVER`   | Docker registry hostname (e.g. `registry.digitalocean.com`)                                      |
+| `KAMAL_REGISTRY_USERNAME` | Username for the Docker registry                                                                 |
+| `KAMAL_REGISTRY_PASSWORD` | Password the Docker registry                                                                     |
+| `POSTGRES_PASSWORD`       | Password for the `postgres` user                                                  |
+| `DATABASE_URL`            | Postgres connection url (e.g. `postgres://postgres:<POSTGRES_PASSWORD>@<DB_HOST>:5432/<dbname>`) |
+| `REDIS_PASSWORD`          | Redis password                                                                                   |
+| `RUBY_VERSION`            | Ruby version (default `3.3.0`)                                                                   |
+| `PG_MAJOR`                | PostgreSQL major version                                                                         |
+| `NODE_MAJOR`              | Node.js major version                                                                            |
+| `YARN_VERSION`            | Yarn version  (default `latest`)                                                                 |
+| `APP_USER`                | Non-root user in Docker containers (default `app_user`)                                          |
+| `RAILS_MASTER_KEY`        | Content of `config/credentials/production.key`                                                   |
+
+
+Follow the [Kamal 2 installation guide](https://kamal-deploy.org/docs/installation/) to get started.
+
+Build and deploy:
+
+```bash
+kamal setup
+```
+
+Follow the [Kamal 2 commands](https://kamal-deploy.org/docs/commands/view-all-commands/) to get the full list of commands or invoke
+
+```bash
+kamal help
+```
+
+#### Generating credentials.yml.enc
+
+Before your first deploy, you must create the encrypted credentials file. From your project root, run:
+
+```bash
+RAILS_ENV=production bin/rails credentials:edit
+```
+
+
 ## Debugging
 
 If you want to run Rails server and/or with debugging capabilities, run the following commands:

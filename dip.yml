@@ -84,4 +84,5 @@ provision:
   - dip bundle install
   - dip rails db:prepare
   - dip rails db:test:prepare
+  - dip yarn
   - echo "🚀 Ready to rock! Run 'dip rails s' to start a Rails web server w/ AnyCable"
