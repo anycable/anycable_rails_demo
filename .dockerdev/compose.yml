@@ -41,6 +41,7 @@ x-backend: &backend
     ANYCABLE_RPC_HOST: 0.0.0.0:50051
     ANYCABLE_BROADCAST_ADAPTER: http
     ANYCABLE_HTTP_BROADCAST_URL: http://ws:8090/_broadcast
+    ANYCABLE_STREAMS_SECRET: secr3t
     CHROME_URL: ${CHROME_URL:-http://chrome:3333}
     EDITOR: vi
     LOG: ${LOG:-0}
@@ -101,6 +102,7 @@ services:
     environment: &ws_environment
       ANYCABLE_HOST: "0.0.0.0"
       ANYCABLE_PORT: 8080
+      ANYCABLE_STREAMS_SECRET: secr3t
       ANYCABLE_REDIS_URL: redis://redis:6379/0
       ANYCABLE_RPC_HOST: anycable:50051
       ANYCABLE_BROADCAST_ADAPTER: http

@@ -27,6 +27,8 @@ default: &default
   redis_channel: "__anycable__"
   # WebSocket server URL for clients
   websocket_url: "ws://localhost:8080/cable"
+  # Secret used to generate signed streams
+  streams_secret: "secr3t"
 
 development:
   <<: *default

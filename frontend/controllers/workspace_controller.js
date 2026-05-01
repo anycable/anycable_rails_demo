@@ -8,11 +8,11 @@ export default class extends Controller {
   connect() {
     if (isTurboPreview()) return;
 
-    const id = this.data.get("id");
+    const stream = this.data.get("stream");
 
     const cable = createCable();
 
-    this.channel = cable.subscribeTo("WorkspaceChannel", { id });
+    this.channel = cable.streamFromSigned(stream);
     this.channel.on("message", (data) => this.handleUpdate(data));
     this.channel.on("connect", () =>
       this.element.setAttribute("connected", "")

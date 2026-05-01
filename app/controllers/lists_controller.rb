@@ -44,13 +44,13 @@ class ListsController < ApplicationController
 
   def broadcast_new_list
     return if list.errors.any?
-    WorkspaceChannel.broadcast_to workspace, {type: "newList", html: render_to_string(partial: "lists/list", layout: false, locals: {list:}), id: list.id}
+    ActionCable.server.broadcast workspace, {type: "newList", html: render_to_string(partial: "lists/list", layout: false, locals: {list:}), id: list.id}
   end
 
   def broadcast_changes
     return if list.errors.any?
     if list.destroyed?
-      WorkspaceChannel.broadcast_to workspace, {type: "deletedList", id: list.id}
+      ActionCable.server.broadcast workspace, {type: "deletedList", id: list.id}
     end
   end
 end
