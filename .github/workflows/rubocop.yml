@@ -16,10 +16,9 @@ jobs:
       BUNDLE_GEMFILE: gemfiles/rubocop.gemfile
       CI: true
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v6
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 3.2.1
         bundler-cache: true
     - name: Lint Ruby code with RuboCop
       run: |

@@ -1,17 +1,20 @@
 require:
   - ruby-next/rubocop
-  - standard
 
 inherit_mode:
   merge:
     - Exclude
 
+plugins:
+  - rubocop-performance
+  - rubocop-rails
+
 inherit_gem:
   standard: config/base.yml
 
 inherit_from:
-  - .rubocop/rubocop_rspec.yml
-  - .rubocop/rubocop_rails.yml
+  - .rubocop/rspec.yml
+  - .rubocop/rails.yml
 
 AllCops:
   Exclude:
@@ -22,10 +25,8 @@ AllCops:
     - 'gemfiles/**/*'
     - 'node_modules/**/*'
   DisplayCopNames: true
+  NewCops: disable
   TargetRubyVersion: next
-
-Standard/BlockSingleLineBraces:
-  Enabled: false
 
 Style/FrozenStringLiteralComment:
   Enabled: true

@@ -17,7 +17,7 @@ RSpec.configure do |config|
 
     start = Time.current
     begin
-      $stdout.reopen(File.new("/dev/null", "w"))
+      $stdout.reopen(File.new(File::NULL, "w"))
 
       require "rake"
       Rails.application.load_tasks

@@ -1,4 +1,4 @@
-require:
+plugins:
   - rubocop-rspec
 
 RSpec:
@@ -41,28 +41,4 @@ RSpec/MissingExampleGroupArgument:
   Enabled: true
 
 RSpec/ReceiveCounts:
-  Enabled: true
-
-Capybara/CurrentPathExpectation:
-  Enabled: true
-
-RSpec/FactoryBot/AttributeDefinedStatically:
-  Enabled: true
-
-RSpec/FactoryBot/CreateList:
-  Enabled: true
-
-Capybara/MatchStyle:
-  Enabled: true
-
-Capybara/NegationMatcher:
-  Enabled: true
-
-Capybara/SpecificActions:
-  Enabled: true
-
-Capybara/SpecificFinders:
-  Enabled: true
-
-Capybara/SpecificMatcher:
   Enabled: true

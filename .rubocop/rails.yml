@@ -1,7 +1,7 @@
 # Based on removed standard configuration:
 # https://github.com/testdouble/standard/commit/94d133f477a5694084ac974d5ee01e8a66ce777e#diff-65478e10d5b2ef41c7293a110c0e6b7c
 
-require:
+plugins:
   - rubocop-rails
 
 Rails:

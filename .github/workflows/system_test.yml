@@ -20,13 +20,13 @@ jobs:
       RAILS_ENV: test
     services:
       postgres:
-        image: postgres:16.0
+        image: postgres:18.0
         env:
           POSTGRES_PASSWORD: postgres
         ports: ["5432:5432"]
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       redis:
-        image: redis:6.2-alpine
+        image: redis:7-alpine
         ports: ["6379:6379"]
         options: --health-cmd="redis-cli ping" --health-interval 1s --health-timeout 3s --health-retries 30
       chrome:
@@ -34,7 +34,7 @@ jobs:
         ports: ["3000:3000"]
         options: -e CONNECTION_TIMEOUT=600000 -e PORT=3000
       anycable:
-        image: anycable/anycable-go:1.5.0
+        image: anycable/anycable-go:1.6
         ports: ["8080:8080"]
         options: --add-host=host.docker.internal:host-gateway
         env:
@@ -42,18 +42,17 @@ jobs:
           ANYCABLE_REDIS_URL: redis://host.docker.internal:6379/0
           ANYCABLE_RPC_HOST: host.docker.internal:50051
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: Install PostgreSQL client
         run: |
           sudo apt-get -yqq install libpq-dev
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.0
           bundler-cache: true
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
         run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
@@ -80,17 +79,17 @@ jobs:
       RAILS_ENV: test
     services:
       postgres:
-        image: postgres:16.0
+        image: postgres:18.0
         env:
           POSTGRES_PASSWORD: postgres
         ports: ["5432:5432"]
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
       redis:
-        image: redis:6.2-alpine
+        image: redis:7-alpine
         ports: ["6379:6379"]
         options: --health-cmd="redis-cli ping" --health-interval 1s --health-timeout 3s --health-retries 30
       anycable:
-        image: anycable/anycable-go:1.5.0
+        image: anycable/anycable-go:1.6
         ports: ["8080:8080"]
         options: --add-host=host.docker.internal:host-gateway
         env:
@@ -99,13 +98,12 @@ jobs:
           ANYCABLE_RPC_HOST: host.docker.internal:50051
           ANYCABLE_DEBUG: "true"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
       - name: Install PostgreSQL client
         run: |
           sudo apt-get -yqq install libpq-dev
       - uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.0
           bundler-cache: true
       - name: Run WebSocket Director scenarios
         run: |
